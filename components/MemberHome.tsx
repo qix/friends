@@ -1,6 +1,7 @@
 import { signOut } from "next-auth/react";
 import useSWR from "swr";
 import styles from "../styles/Home.module.css";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 const fetcher = async (...args: Parameters<typeof fetch>) => {
   const res = await fetch(...args);
@@ -25,7 +26,7 @@ export const MemberHome = (props: {}) => {
   const { member, isError, isLoading } = useCurrentMember();
 
   if (isError) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <main className={styles.main}>

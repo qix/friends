@@ -4,16 +4,20 @@ import Head from "next/head";
 import { FriandsSession } from "./api/auth/[...nextauth]";
 import { MemberHome } from "../components/MemberHome";
 import styles from "../styles/Home.module.css";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 const Home: NextPage<{
   discordLink: string;
 }> = (props) => {
   const { discordLink } = props;
-  const { data: session } = useSession() as {
+  const { data: session, status: sessionStatus } = useSession() as {
     data: FriandsSession;
-    status: string;
+    status: "authenticated" | "loading" | "unauthenticated";
   };
 
+  if (sessionStatus === "loading") {
+    return <LoadingSpinner />;
+  }
   return (
     <div className="container">
       <Head>
@@ -37,7 +41,13 @@ const Home: NextPage<{
               {session ? (
                 <div className="alert alert-warning" role="alert">
                   You are signed in, but do not have an active membership.{" "}
-                  <a href="#" onClick={() => signOut()}>
+                  <a
+                    href="#"
+                    onClick={(evt) => {
+                      evt.preventDefault();
+                      signOut();
+                    }}
+                  >
                     Sign out
                   </a>
                   .

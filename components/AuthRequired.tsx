@@ -1,5 +1,6 @@
 import { signOut, useSession } from "next-auth/react";
 import { FunctionComponent } from "react";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export const AuthRequired: FunctionComponent<{}> = ({ children }) => {
   const { data: session, status } = useSession({ required: true });
@@ -28,11 +29,5 @@ export const AuthRequired: FunctionComponent<{}> = ({ children }) => {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return (
-    <div className="d-flex align-items-center m-5 justify-content-center">
-      <div className="spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  );
+  return <LoadingSpinner />;
 };
