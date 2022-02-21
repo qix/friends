@@ -4,15 +4,18 @@ import { Person, pronounOptions } from "../models/Person";
 import Image from "next/image";
 
 import { useSession, signIn, signOut } from "next-auth/react";
+import { performAction } from "../frontend/performAction";
+import { useState } from "react";
+import { FriandsSession } from "../pages/api/auth/[...nextauth]";
+import Link from "next/link";
 
 const schema = object({
   email: string()
     .email()
     .required("We require your email address for login and updates"),
-  password: string().required("Password is required"),
   name: string().required("Name is required"),
   pronouns: string()
-    .oneOf(pronounOptions)
+    .oneOf([...pronounOptions])
     .required("Your choice of pronoun is required"),
   whatDo: string()
     .required("What you do is a required field")
@@ -21,22 +24,56 @@ const schema = object({
 type SignupFields = InferType<typeof schema>;
 const initalValues: SignupFields = {
   email: "",
-  password: "",
   name: "",
   pronouns: "",
   whatDo: "",
 };
 
-const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
-  const { data: session } = useSession();
+const SignupForm = (props: {
+  vouchFrom: Person;
+  vouchMessage: string;
+  invitedName: string;
+  invitedEmail: string;
+  inviteCode: string;
+}) => {
+  const { vouchFrom, vouchMessage, invitedEmail, invitedName, inviteCode } =
+    props;
+  const [status, setStatus] = useState<JSX.Element>();
+
+  const { data: session } = useSession() as {
+    data: FriandsSession;
+    status: string;
+  };
   if (!session) {
     return (
       <div className="card">
         <h5 className="card-header">Ready to sign up?</h5>
         <div className="card-body">
           <button className="btn btn-primary" onClick={() => signIn()}>
-            Sign-in with Google
+            Sign in with Google
           </button>
+        </div>
+        <div className="card-body">
+          <p>
+            Your Google account is used for shared calendars, and some future
+            services.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (session.user.memberActive) {
+    return (
+      <div className="card">
+        <h5 className="card-header">Member already active</h5>
+        <div className="card-body">
+          <div className="alert alert-danger" role="alert">
+            You are already logged in as an active member.{" "}
+            <Link href="/">
+              <a>Go to membership page</a>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -46,7 +83,6 @@ const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
     throw new Error("Expected session user to have email address");
   }
 
-  const { vouchFrom, vouchMessage } = props;
   const registrationFields = (
     <fieldset>
       <div className="mb-3">
@@ -56,21 +92,6 @@ const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
         <ErrorMessage
           className="form-text text-danger"
           name="email"
-          component="div"
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="password">Password</label>
-        <Field
-          type="password"
-          id="password"
-          name="password"
-          className="form-control"
-        />
-        <div className="form-text">Password to login to membership website</div>
-        <ErrorMessage
-          className="form-text text-danger"
-          name="password"
           component="div"
         />
       </div>
@@ -148,13 +169,51 @@ const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
     <Formik
       initialValues={{
         ...initalValues,
+        email: invitedEmail,
+        name: invitedName,
       }}
       validationSchema={schema}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        setStatus(
+          <div className="alert alert-secondary" role="alert">
+            Creating new account...
+          </div>
+        );
+        performAction({
+          type: "acceptInvite",
+          payload: {
+            ...values,
+            pronouns: values.pronouns as typeof pronounOptions[number],
+            inviteCode,
+          },
+        })
+          .then(
+            (data) => {
+              if (data.error) {
+                setStatus(
+                  <div className="alert alert-danger" role="alert">
+                    Error: {data.error}
+                  </div>
+                );
+              } else {
+                setStatus(
+                  <div className="alert alert-success" role="alert">
+                    Okay: {JSON.stringify(data)}
+                  </div>
+                );
+              }
+            },
+            (err) => {
+              setStatus(
+                <div className="alert alert-danger" role="alert">
+                  Failed to create account: {err.toString()}
+                </div>
+              );
+            }
+          )
+          .finally(() => {
+            setSubmitting(false);
+          });
       }}
     >
       {({ isSubmitting }) => (
@@ -163,10 +222,32 @@ const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
             <h5 className="card-header">Ready to sign up?</h5>
 
             <div className="card-body">
-              Signed in as {sessionEmail} <br />
-              <button onClick={() => signOut()}>Sign out</button>
+              <div className="mb-3">
+                <label htmlFor="google">Google account</label>
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    id="google"
+                    name="google"
+                    disabled={true}
+                    value={sessionEmail}
+                    className="form-control"
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    onClick={() => signOut()}
+                    style={{
+                      textAlign: "center",
+                      fontSize: "0.8em",
+                    }}
+                  >
+                    Sign out
+                  </button>
+                </div>
+                <div className="form-text">Required for some services</div>
+              </div>
+              {registrationFields}
             </div>
-            <div className="card-body">{registrationFields}</div>
             <h5 className="card-header">Member visible fields</h5>
             <div className="card-body">
               <div
@@ -192,6 +273,7 @@ const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
                 Submit
               </button>
             </div>
+            {status ? <div className="card-body">{status}</div> : null}
           </div>
         </Form>
       )}

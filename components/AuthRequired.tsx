@@ -28,5 +28,11 @@ export const AuthRequired: FunctionComponent<{}> = ({ children }) => {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>;
+  return (
+    <div className="d-flex align-items-center m-5 justify-content-center">
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
 };

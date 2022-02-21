@@ -1,6 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import { FriandsSession } from "../pages/api/auth/[...nextauth]";
 import { invariant } from "./invariant";
@@ -34,7 +32,11 @@ export function asyncHandler<
     res: NextApiResponse<ResponseData | { error: string }>
   ) {
     try {
-      invariant(typeof req.body === "object", "Could not parse request body");
+      if (req.method === "POST") {
+        invariant(typeof req.body === "object", "Could not parse request body");
+      } else if (req.method !== "GET") {
+        throw new Error("Unhandled request method");
+      }
 
       return getSession({ req })
         .then((session) => {

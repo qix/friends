@@ -1,15 +1,18 @@
 import type { NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import WelcomePage from "../components/WelcomePage";
+import { FriandsSession } from "./api/auth/[...nextauth]";
+import { MemberHome } from "../components/MemberHome";
+import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
-  const message =
-    "Jess is smart, creative, and friendly. She always brings the best out of " +
-    "people and manages to bring some of the best people together.\n" +
-    "\n" +
-    "A digital artist herself, she manages to find and promote a wide variety " +
-    "of other artists.";
-  const josh = { name: "Josh", pronoun1: "he", pronoun2: "him" };
+const Home: NextPage<{
+  discordLink: string;
+}> = (props) => {
+  const { discordLink } = props;
+  const { data: session } = useSession() as {
+    data: FriandsSession;
+    status: string;
+  };
 
   return (
     <div className="container">
@@ -19,9 +22,47 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <WelcomePage vouchFrom={josh} vouchMessage={message} inviteName="Jess" />
+      {session && session.user.memberActive ? (
+        <MemberHome />
+      ) : (
+        <main className={styles.main}>
+          <div className="card">
+            <h5 className="card-header">Welcome to Friands Club</h5>
+            <div className="card-body">
+              <p>
+                Friands Club is a private club. If you already have a membership
+                please use the button below, otherwise please follow the link in
+                your invitation email.
+              </p>
+              {session ? (
+                <div className="alert alert-warning" role="alert">
+                  You are signed in, but do not have an active membership.{" "}
+                  <a href="#" onClick={() => signOut()}>
+                    Sign out
+                  </a>
+                  .
+                </div>
+              ) : (
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() => signIn()}
+                >
+                  Sign in
+                </button>
+              )}
+            </div>
+          </div>
+        </main>
+      )}
     </div>
   );
 };
 
+export async function getServerSideProps() {
+  return {
+    props: {
+      discordLink: process.env.DISCORD_LINK,
+    },
+  };
+}
 export default Home;

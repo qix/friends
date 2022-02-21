@@ -1,19 +1,22 @@
 import { Person } from "../models/Person";
-import styles from "../styles/Welcome.module.css";
+import styles from "../styles/Invitation.module.css";
 import SignupForm from "./SignupForm";
 
-const WelcomePage = (props: {
+export const InvitationBlock = (props: {
   vouchFrom: Person;
   vouchMessage: string;
-  inviteName: string;
+  invitedName: string;
+  invitedEmail: string;
+  inviteCode: string;
 }) => {
-  const { vouchFrom, vouchMessage, inviteName } = props;
+  const { vouchFrom, vouchMessage, invitedName, invitedEmail, inviteCode } =
+    props;
   return (
     <div className={styles.main}>
       <div className={styles.invite}>
         <h1>Your invitation to Friands Club</h1>
 
-        <p>Hi {inviteName},</p>
+        <p>Hi {invitedName},</p>
         <p>
           Firstly well done, and thank you! In order to receive one of these
           invites, you are one of the nicer inhabitants of our lovely planet.
@@ -41,10 +44,14 @@ const WelcomePage = (props: {
         </p>
       </div>
       <div className={styles.signupForm}>
-        <SignupForm vouchFrom={vouchFrom} vouchMessage={vouchMessage} />
+        <SignupForm
+          vouchFrom={vouchFrom}
+          vouchMessage={vouchMessage}
+          invitedName={invitedName}
+          invitedEmail={invitedEmail}
+          inviteCode={inviteCode}
+        />
       </div>
     </div>
   );
 };
-
-export default WelcomePage;

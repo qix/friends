@@ -3,4 +3,4 @@ export interface Person {
   pronoun1: string;
   pronoun2: string;
 }
-export const pronounOptions = ["he/him", "she/her", "they/them"];
+export const pronounOptions = ["he/him", "she/her", "they/them"] as const;

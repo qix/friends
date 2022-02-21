@@ -6,6 +6,7 @@ import { object, string, number, date, InferType } from "yup";
 import { AuthRequired } from "../components/AuthRequired";
 import { useState } from "react";
 import { Action } from "../models/Action";
+import { performAction } from "../frontend/performAction";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -18,18 +19,6 @@ const initalValues: CreateInviteFields = {
   email: "",
   vouchMessage: "",
 };
-
-async function performAction(action: Action) {
-  const res = await fetch("/api/performAction", {
-    body: JSON.stringify(action),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  });
-
-  return await res.json();
-}
 
 const CreateInvite: NextPage = () => {
   const [message, setMessage] = useState<string>();

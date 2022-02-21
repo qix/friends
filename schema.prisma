@@ -17,12 +17,13 @@ model ActionLog {
 }
 
 model Invitation {
-  id           String @id @default(cuid())
-  inviteCode   String
+  id           String  @id @default(cuid())
+  inviteCode   String  @unique
+  inviteUsed   Boolean @default(false)
   invitedName  String
-  invitedEmail String @unique
+  invitedEmail String  @unique
   senderUserId String
-  vouchMessage String @db.Text
+  vouchMessage String  @db.Text
 }
 
 model Vouch {
@@ -48,6 +49,9 @@ model User {
   memberEmail         String?
   memberEmailVerified Boolean @default(false)
   memberInvitationId  String?
+  memberPronoun1      String?
+  memberPronoun2      String?
+  memberWhatDo        String? @db.Text
 }
 
 // next-auth models
