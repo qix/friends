@@ -1,11 +1,7 @@
+import { Person } from "../models/Person";
 import styles from "../styles/Welcome.module.css";
 import { SignupForm } from "./SignupForm";
 
-interface Person {
-  name: string;
-  pronoun1: string;
-  pronoun2: string;
-}
 export const Welcome = (props: {
   vouchFrom: Person;
   vouchMessage: string;
@@ -27,8 +23,8 @@ export const Welcome = (props: {
           had to say:
         </p>
         <blockquote>
-          {vouchMessage.split("\n\n").map((p) => (
-            <p>{p}</p>
+          {vouchMessage.split("\n\n").map((p, idx) => (
+            <p key={idx}>{p}</p>
           ))}
         </blockquote>
         <p>
@@ -45,12 +41,7 @@ export const Welcome = (props: {
         </p>
       </div>
       <div className={styles.signupForm}>
-        <div className="card">
-          <h5 className="card-header">Ready to sign up?</h5>
-          <div className="card-body">
-            <SignupForm vouchFrom={vouchFrom} vouchMessage={vouchMessage} />
-          </div>
-        </div>
+        <SignupForm vouchFrom={vouchFrom} vouchMessage={vouchMessage} />
       </div>
     </div>
   );
