@@ -2,9 +2,10 @@ import NextAuth, { Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
+import { getPrismaClient } from "../../../server/db";
 
-const prisma = new PrismaClient();
+const prisma = getPrismaClient();
 
 export type FriandsSession = Session & {
   user: User;
