@@ -1,6 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "interactiveTransactions"]
+
 }
 
 datasource db {
@@ -9,13 +10,47 @@ datasource db {
   referentialIntegrity = "prisma"
 }
 
-model Action {
+model ActionLog {
   id      Int    @id @default(autoincrement())
   type    String
   payload String @db.Text
 }
 
-// next-auth
+model Invitation {
+  id           String @id @default(cuid())
+  inviteCode   String
+  invitedName  String
+  invitedEmail String @unique
+  senderUserId String
+  vouchMessage String @db.Text
+}
+
+model Vouch {
+  id           String @id @default(cuid())
+  sourceUserId String
+  targetUserId String
+  message      String @db.Text
+}
+
+model User {
+  // next-auth fields:
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  // custom fields:
+  memberActive        Boolean @default(false)
+  memberName          String?
+  memberEmail         String?
+  memberEmailVerified Boolean @default(false)
+  memberInvitationId  String?
+}
+
+// next-auth models
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -43,16 +78,6 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
 }
 
 model VerificationToken {
