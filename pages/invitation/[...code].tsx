@@ -6,13 +6,15 @@ import { getPrismaClient } from "../../server/db";
 import { invariant } from "../../server/invariant";
 
 const Invitation: NextPage<{
+  error: string;
   vouchFrom: Person;
   message: string;
   invitedName: string;
   invitedEmail: string;
   inviteCode: string;
 }> = (props) => {
-  const { vouchFrom, message, invitedName, invitedEmail, inviteCode } = props;
+  const { error, vouchFrom, message, invitedName, invitedEmail, inviteCode } =
+    props;
 
   return (
     <div className="container">
@@ -21,13 +23,19 @@ const Invitation: NextPage<{
         <meta name="description" content="Friands Club" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <InvitationBlock
-        vouchFrom={vouchFrom}
-        vouchMessage={message}
-        invitedName={invitedName}
-        invitedEmail={invitedEmail}
-        inviteCode={inviteCode}
-      />
+      {error ? (
+        <div className="alert alert-danger m-5" role="alert">
+          {error}
+        </div>
+      ) : (
+        <InvitationBlock
+          vouchFrom={vouchFrom}
+          vouchMessage={message}
+          invitedName={invitedName}
+          invitedEmail={invitedEmail}
+          inviteCode={inviteCode}
+        />
+      )}
     </div>
   );
 };
@@ -49,7 +57,21 @@ export async function getServerSideProps(context: {
       inviteCode: code,
     },
   });
-  invariant(invitation, "Expected to find invitation");
+  if (!invitation) {
+    return {
+      props: {
+        error: "Could not find an invitation at the given address.",
+      },
+    };
+  }
+  if (!invitation.isOpen) {
+    return {
+      props: {
+        error: "Invitation has been used, expired, or was retracted.",
+      },
+    };
+  }
+
   const from = await prisma.user.findFirst({
     where: {
       id: invitation.senderUserId,
