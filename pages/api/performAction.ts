@@ -75,6 +75,7 @@ export default asyncHandler<Action, { message: string; error?: string }>(
           },
         });
         invariant(invitation, "Expected to find invitation");
+        invariant(invitation.isOpen, "Expected to find invitation");
 
         const splitPronouns = p.pronouns.split("/");
         invariant(splitPronouns.length === 2, "Expected two pronouns");
@@ -99,11 +100,28 @@ export default asyncHandler<Action, { message: string; error?: string }>(
             targetUserId: session.user.id,
           },
         });
+        await tx.invitation.update({
+          where: {
+            id: invitation.id,
+          },
+          data: {
+            isOpen: false,
+          },
+        });
       } else {
         throw new Error("Unhandled action type during transaction");
       }
     });
 
-    return { message: "Invitation created!" };
+    if (action.type === "createInvite") {
+      return {
+        message: "Invitation created!",
+        inviteCode: action.payload.inviteCode!,
+      };
+    } else if (action.type === "acceptInvite") {
+      return { message: "Membership activated!" };
+    } else {
+      throw new Error("Unhandled action type post transaction");
+    }
   }
 );

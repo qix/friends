@@ -18,8 +18,8 @@ model ActionLog {
 
 model Invitation {
   id           String  @id @default(cuid())
+  isOpen       Boolean @default(true)
   inviteCode   String  @unique
-  inviteUsed   Boolean @default(false)
   invitedName  String
   invitedEmail String  @unique
   senderUserId String
