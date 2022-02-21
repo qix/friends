@@ -17,10 +17,10 @@ export const Welcome = (props: {
         <p>
           Firstly well done, and thank you! In order to receive one of these
           invites, you are one of the nicer inhabitants of our lovely planet.
-          You've also shown yourself to be trustworthy, creative and tasteful.
-          Atleast {vouchFrom.name} thinks so, and strongly enough that{" "}
-          {vouchFrom.pronoun1} vouched for you. Here's what {vouchFrom.pronoun1}{" "}
-          had to say:
+          You&apos;ve also shown yourself to be trustworthy, creative and
+          tasteful. Atleast {vouchFrom.name} thinks so, and strongly enough that{" "}
+          {vouchFrom.pronoun1} vouched for you. Here&apos;s what{" "}
+          {vouchFrom.pronoun1} had to say:
         </p>
         <blockquote>
           {vouchMessage.split("\n\n").map((p, idx) => (
@@ -28,9 +28,9 @@ export const Welcome = (props: {
           ))}
         </blockquote>
         <p>
-          Okay! So what is Friands Club? We hope it'll be one of the most
-          valuable communities that you'll be a part of. We're trying to
-          creative a new tight-knit online community of nice, creative and
+          Okay! So what is Friands Club? We hope it&apos;ll be one of the most
+          valuable communities that you&apos;ll be a part of. We&apos;re trying
+          to creative a new tight-knit online community of nice, creative and
           tasteful humans. A space where you can safely trust everyone else by
           default, and where its members are proactive in helping eachother and
           hosting events.

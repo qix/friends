@@ -3,6 +3,8 @@ import { object, string, number, date, InferType } from "yup";
 import { Person, pronounOptions } from "../models/Person";
 import Image from "next/image";
 
+import { useSession, signIn, signOut } from "next-auth/react";
+
 const schema = object({
   email: string()
     .email()
@@ -29,6 +31,24 @@ export const SignupForm = (props: {
   vouchFrom: Person;
   vouchMessage: string;
 }) => {
+  const { data: session } = useSession();
+  if (!session) {
+    return (
+      <div className="card">
+        <h5 className="card-header">Ready to sign up?</h5>
+        <div className="card-body">
+          <button className="btn btn-primary" onClick={() => signIn()}>
+            Sign-in with Google
+          </button>
+        </div>
+      </div>
+    );
+  }
+  const sessionEmail = session.user?.email;
+  if (!sessionEmail) {
+    throw new Error("Expected session user to have email address");
+  }
+
   const { vouchFrom, vouchMessage } = props;
   const registrationFields = (
     <fieldset>
@@ -144,6 +164,11 @@ export const SignupForm = (props: {
         <Form>
           <div className="card">
             <h5 className="card-header">Ready to sign up?</h5>
+
+            <div className="card-body">
+              Signed in as {sessionEmail} <br />
+              <button onClick={() => signOut()}>Sign out</button>
+            </div>
             <div className="card-body">{registrationFields}</div>
             <h5 className="card-header">Member visible fields</h5>
             <div className="card-body">
