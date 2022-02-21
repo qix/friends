@@ -7,6 +7,8 @@ import { AuthRequired } from "../components/AuthRequired";
 import { useState } from "react";
 import { Action } from "../models/Action";
 import { performAction } from "../frontend/performAction";
+import { useRouter } from "next/router";
+import { resolve } from "uri-js";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -22,6 +24,8 @@ const initalValues: CreateInviteFields = {
 
 const CreateInvite: NextPage = () => {
   const [message, setMessage] = useState<string>();
+  const router = useRouter();
+
   const formFields = (
     <fieldset>
       <div className="mb-3">
@@ -85,7 +89,15 @@ const CreateInvite: NextPage = () => {
           })
             .then(
               (rv) => {
-                setMessage("Okay: " + JSON.stringify(rv));
+                if (rv.error) {
+                  setMessage("Error: " + rv.error);
+                } else {
+                  const inviteUrl = resolve(
+                    router.basePath,
+                    "invitation/" + rv.inviteCode
+                  );
+                  setMessage("Okay: " + inviteUrl);
+                }
               },
               (err) => {
                 setMessage("Error: " + err.toString());
