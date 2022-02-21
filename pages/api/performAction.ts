@@ -17,11 +17,12 @@ const prisma: PrismaClient = getPrismaClient();
 export default asyncHandler<Action, { message: string; error?: string }>(
   async function performAction(session, action: Action) {
     const email = session.user?.email;
-    if (!email || !adminUsers.includes(email)) {
-      throw new HttpError(400, "Admin-only endpoint");
-    }
 
     if (action.type === "createInvite") {
+      if (!email || !adminUsers.includes(email)) {
+        throw new HttpError(400, "Admin-only endpoint");
+      }
+
       const inviteCode = randomBytes(8).toString("hex").toUpperCase();
       action.payload.inviteCode = inviteCode;
     } else if (action.type === "acceptInvite") {
