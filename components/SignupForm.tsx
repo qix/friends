@@ -27,10 +27,7 @@ const initalValues: SignupFields = {
   whatDo: "",
 };
 
-export const SignupForm = (props: {
-  vouchFrom: Person;
-  vouchMessage: string;
-}) => {
+const SignupForm = (props: { vouchFrom: Person; vouchMessage: string }) => {
   const { data: session } = useSession();
   if (!session) {
     return (
@@ -201,3 +198,5 @@ export const SignupForm = (props: {
     </Formik>
   );
 };
+
+export default SignupForm;

@@ -1,8 +1,8 @@
 import { Person } from "../models/Person";
 import styles from "../styles/Welcome.module.css";
-import { SignupForm } from "./SignupForm";
+import SignupForm from "./SignupForm";
 
-export const Welcome = (props: {
+const WelcomePage = (props: {
   vouchFrom: Person;
   vouchMessage: string;
   inviteName: string;
@@ -46,3 +46,5 @@ export const Welcome = (props: {
     </div>
   );
 };
+
+export default WelcomePage;
