@@ -12,13 +12,23 @@
     flex-direction: column;
 }
 .invite blockquote {
+    border: 1px solid #eee;
     border-left: 5px solid #999;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
     margin-left: 0;
     padding-left: 2rem;
 }
-.invite form div {
-    display: block;
+.invite blockquote p:last-child {
+    margin-bottom: 0;
 }
-.invite form div label {
-    display: block;
+.signupForm {
+    max-width: 40rem;
+    margin: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.signupForm textarea {
+    height: 10rem;
 }
