@@ -34,9 +34,12 @@ const Home: NextPage<{
             <h5 className="card-header">Welcome to Friands Club</h5>
             <div className="card-body">
               <p>
-                Friands Club is a private club. If you already have a membership
-                please use the button below, otherwise please follow the link in
-                your invitation email.
+                Friands Club is a private club. It&apos;s unfortunately
+                invite-only for the foreseeable future.
+              </p>
+              <p>
+                If you already have a membership please use the button below,
+                otherwise please follow the link in your invitation email.
               </p>
               {session ? (
                 <div className="alert alert-warning" role="alert">
