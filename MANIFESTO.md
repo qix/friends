@@ -1,1 +1,1 @@
-website/MANIFESTO.md
+website/public/MANIFESTO.md
