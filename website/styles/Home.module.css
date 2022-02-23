@@ -1,5 +1,6 @@
 .container {
   padding: 0 2rem;
+  max-width: 60rem;
 }
 
 .main {

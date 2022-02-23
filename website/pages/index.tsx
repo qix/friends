@@ -19,7 +19,7 @@ const Home: NextPage<{
     return <LoadingSpinner />;
   }
   return (
-    <div className="container">
+    <div className={"container " + styles.container}>
       <Head>
         <title>Friands</title>
         <meta name="description" content="Friands Club" />
