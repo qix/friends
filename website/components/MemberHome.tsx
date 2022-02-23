@@ -2,7 +2,7 @@ import { signOut } from "next-auth/react";
 import useSWR from "swr";
 import styles from "../styles/Home.module.css";
 import { LoadingSpinner } from "./LoadingSpinner";
-import manifesto from "../../MANIFESTO.md";
+import manifesto from "../MANIFESTO.md";
 import ReactMarkdown from "react-markdown";
 const fetcher = async (...args: Parameters<typeof fetch>) => {
   const res = await fetch(...args);
