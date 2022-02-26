@@ -1,30 +1,30 @@
 # NYC Friands
 
-I am creating a new social members club. I explicitly want it to be open to a larger community, but constrained in size.
+I am creating a new social members club. It will initially start small, but I'm going to be working hard on keeping it awesome while still allowing it to grow.
 
 ## Membership
 
-The goal is to create a tight community diverse people. About 20 to 30 at the start, maybe up to 100 later.
+The goal is to create a trusted community of diverse people. You should feel safe trusting any member of the group, even if you don't know them directly.
 
-Some characteristics I'm looking for in members:
+A couple broad characteristics are required to be a member:
 
-**Nice**: Assumes best intent.
+**Nice**: Assumes best intent. Genuinely a nice person to be around, and is fair to everyone (i.e. none of that sexism, racism, transphobia, etc.)
 
-**Trustworthy**: Doesn't flake.
+**Trustworthy**: Doesn't betray the groups trust. Ask for permission before sharing outside of the group. If you say you're going to an event, don't flake without a good reason.
 
-**Creative**: Make things.
+**Creative**: We're looking for an eclectic group of people. You don't need to be an artist, but you should bring something novel and interesting to the group.
 
-**Tasteful**: Have opinions... good ones.
+**Tasteful**: No-one can dictate what you like, but we're looking for people who think about what they consume. Make concious decisions about what your food, music and art choices.
 
-Members are expected to be active in the group, and host events if they can. In order to make room for new people inactive members may be removed.
+**Active**: Lurkers and inactive members make it harder to build the trust we're looking for. If you're not active we may ask you to leave to make room for people that want to be involved and contribute.
 
 ## New members
 
 Every member in the club needs to be vouched for by at least one other member.
 
-Vouching for a new member declares confidence in your trust for the new person. If a club member betrays the trust of the group, both them and any members who vouched for them may be removed from the club.
+Vouching for a new member declares confidence in your trust for the new person. If a club member betrays the trust of the group both them, and any members who vouched for them, may be removed.
 
-I haven't decided on the exact process yet, but in order to constrain growth a vouch is _not enough_. Perhaps slots are opened up occassionally.
+This is a requirement, but not sufficient, for membership. In order to ensure the groups quality, and to slow down the growth of the group, there will be other requirements to be added.
 
 ## Use cases
 
@@ -56,12 +56,6 @@ If you can't afford to host a dinner, but want to, then sure – set a attendanc
 
 That said, I'm aware some members could afford to pay something, and it would open up a lot more possibilities for what we could rent/purchase as a group.
 
-## Software and website
+## Open-source
 
-The whole point of this is in-person interaction, **but** there are various places where useful tools can be built to facilitate that.
-
-We'll take the _less is better_ approach, and use as many free services as possible. The website will facilitate integration between all the services.
-
-Initially I expect it'll be built around a Discord chat server, Google Calendar, and a weekly email mailing list.
-
-Everything will be open-source, and members are encouraged to improve the site, or anyone can spin off their own version of this club.
+All the software built around this will be available for people to manage their own groups ([github.com/qix/friands](https://github.com/qix/friands)). It's also open for contributions.
