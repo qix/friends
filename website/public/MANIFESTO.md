@@ -1,12 +1,12 @@
-# Friands
+# NYC Friands
 
-I'm creating a new social network, or members club. I explicitly want it to be open to a larger community, but constrained in size.
+I am creating a new social members club. I explicitly want it to be open to a larger community, but constrained in size.
 
 ## Membership
 
 The goal is to create a tight community diverse people. About 20 to 30 at the start, maybe up to 100 later.
 
-Some characteristics I'm looking for in members:  
+Some characteristics I'm looking for in members:
 
 **Nice**: Assumes best intent.
 
@@ -48,7 +48,7 @@ I've got a lot of hopes for this group, but among the immediate list:
 
 I am hoping to this will spawn a diverse group of friends, but with diversity comes inequality. I would love to see a pay-it-forward approach to group activities.
 
-If you can't afford to host a dinner, but want to, then sure – set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it,  pay for another one in the future.
+If you can't afford to host a dinner, but want to, then sure – set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it, pay for another one in the future.
 
 ## Membership fee
 

@@ -58,9 +58,9 @@ const Home: NextPage<{
               ) : (
                 <button
                   className="btn btn-outline-secondary"
-                  onClick={() => signIn()}
+                  onClick={() => signIn("google")}
                 >
-                  Sign in
+                  Sign in with Google
                 </button>
               )}
             </div>

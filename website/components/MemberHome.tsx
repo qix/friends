@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css";
 import { LoadingSpinner } from "./LoadingSpinner";
 import manifesto from "../public/MANIFESTO.md";
 import ReactMarkdown from "react-markdown";
+
 const fetcher = async (...args: Parameters<typeof fetch>) => {
   const res = await fetch(...args);
   if (!res.ok) {
@@ -34,7 +35,7 @@ export const MemberHome = (props: {}) => {
       <div className="card">
         <h5 className="card-header">Welcome Friand</h5>
         <div className="card-body">
-          <ReactMarkdown children={manifesto.replace(/^# .*$/gm, "")} />
+          <ReactMarkdown>{manifesto.replace(/^# .*$/gm, "")}</ReactMarkdown>
         </div>
         <h5 className="card-header">Discord Chat</h5>
         <div className="card-body">

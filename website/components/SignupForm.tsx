@@ -49,7 +49,7 @@ const SignupForm = (props: {
       <div className="card">
         <h5 className="card-header">Ready to sign up?</h5>
         <div className="card-body">
-          <button className="btn btn-primary" onClick={() => signIn()}>
+          <button className="btn btn-primary" onClick={() => signIn("google")}>
             Sign in with Google
           </button>
         </div>
