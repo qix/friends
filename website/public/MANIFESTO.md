@@ -44,7 +44,7 @@ I've got a lot of hopes for this group, but among the immediate list:
 
 **Sublets**: I'm headed out of town, anyone trusted want to sublet my place?
 
-## Sharing
+## Sharing and inequality
 
 I am hoping to this will spawn a diverse group of friends, but with diversity comes inequality. I would love to see a pay-it-forward approach to group activities.
 
@@ -52,10 +52,4 @@ If you can't afford to host a dinner, but want to, then sure – set a attendanc
 
 ## Membership fee
 
-**Free**, for now. Probably free later too... I'm not doing this to earn money.
-
-That said, I'm aware some members could afford to pay something, and it would open up a lot more possibilities for what we could rent/purchase as a group.
-
-## Open-source
-
-All the software built around this will be available for people to manage their own groups ([github.com/qix/friands](https://github.com/qix/friands)). It's also open for contributions.
+**Free**.
