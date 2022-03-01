@@ -9,6 +9,7 @@ import { Action } from "../models/Action";
 import { performAction } from "../frontend/performAction";
 import { useRouter } from "next/router";
 import { resolve } from "uri-js";
+import Link from "next/link";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -23,7 +24,7 @@ const initalValues: CreateInviteFields = {
 };
 
 const CreateInvite: NextPage = () => {
-  const [message, setMessage] = useState<string>();
+  const [message, setMessage] = useState<JSX.Element>();
   const router = useRouter();
 
   const formFields = (
@@ -82,7 +83,7 @@ const CreateInvite: NextPage = () => {
         }}
         validationSchema={schema}
         onSubmit={(values, { setSubmitting }) => {
-          setMessage("Submitting...");
+          setMessage(<div>Submitting...</div>);
           performAction({
             type: "createInvite",
             payload: values,
@@ -90,17 +91,28 @@ const CreateInvite: NextPage = () => {
             .then(
               (rv) => {
                 if (rv.error) {
-                  setMessage("Error: " + rv.error);
+                  setMessage(<div>Error: {rv.error}</div>);
                 } else {
                   const inviteUrl = resolve(
                     router.basePath,
                     "invitation/" + rv.inviteCode
                   );
-                  setMessage("Okay: " + inviteUrl);
+                  setMessage(
+                    <div>
+                      Okay{" "}
+                      <Link
+                        href={{
+                          href: inviteUrl,
+                        }}
+                      >
+                        {inviteUrl}
+                      </Link>
+                    </div>
+                  );
                 }
               },
               (err) => {
-                setMessage("Error: " + err.toString());
+                setMessage(<div>Error: {err.toString()}</div>);
               }
             )
             .finally(() => {
