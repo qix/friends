@@ -1,15 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string, number, date, InferType } from "yup";
+import { object, string, InferType } from "yup";
 
 import { AuthRequired } from "../components/AuthRequired";
 import { useState } from "react";
-import { Action } from "../models/Action";
 import { performAction } from "../frontend/performAction";
 import { useRouter } from "next/router";
 import { resolve } from "uri-js";
 import Link from "next/link";
+import styles from "../styles/Home.module.css";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -77,68 +77,72 @@ const CreateInvite: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Formik
-        initialValues={{
-          ...initalValues,
-        }}
-        validationSchema={schema}
-        onSubmit={(values, { setSubmitting }) => {
-          setMessage(<div>Submitting...</div>);
-          performAction({
-            type: "createInvite",
-            payload: values,
-          })
-            .then(
-              (rv) => {
-                if (rv.error) {
-                  setMessage(<div>Error: {rv.error}</div>);
-                } else {
-                  const inviteUrl = resolve(
-                    router.basePath,
-                    "invitation/" + rv.inviteCode
-                  );
-                  setMessage(
-                    <div>
-                      Okay{" "}
-                      <Link
-                        href={{
-                          href: inviteUrl,
-                        }}
-                      >
-                        {inviteUrl}
-                      </Link>
-                    </div>
-                  );
-                }
-              },
-              (err) => {
-                setMessage(<div>Error: {err.toString()}</div>);
-              }
-            )
-            .finally(() => {
-              setSubmitting(false);
-            });
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <div className="card">
-              <h5 className="card-header">Create a new invite</h5>
-              <div className="card-body">
-                {formFields}
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </Form>
-        )}
-      </Formik>
-      <div>{message}</div>
+      <main className={styles.main}>
+        <div className={styles.container}>
+          <Formik
+            initialValues={{
+              ...initalValues,
+            }}
+            validationSchema={schema}
+            onSubmit={(values, { setSubmitting }) => {
+              setMessage(<div>Submitting...</div>);
+              performAction({
+                type: "createInvite",
+                payload: values,
+              })
+                .then(
+                  (rv) => {
+                    if (rv.error) {
+                      setMessage(<div>Error: {rv.error}</div>);
+                    } else {
+                      const inviteUrl = resolve(
+                        router.basePath,
+                        "invitation/" + rv.inviteCode
+                      );
+                      setMessage(
+                        <div>
+                          Okay{" "}
+                          <Link
+                            href={{
+                              href: inviteUrl,
+                            }}
+                          >
+                            {inviteUrl}
+                          </Link>
+                        </div>
+                      );
+                    }
+                  },
+                  (err) => {
+                    setMessage(<div>Error: {err.toString()}</div>);
+                  }
+                )
+                .finally(() => {
+                  setSubmitting(false);
+                });
+            }}
+          >
+            {({ isSubmitting }) => (
+              <Form>
+                <div className="card">
+                  <h5 className="card-header">Create a new invite</h5>
+                  <div className="card-body">
+                    {formFields}
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      disabled={isSubmitting}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </Form>
+            )}
+          </Formik>
+          <div>{message}</div>
+        </div>
+      </main>
     </AuthRequired>
   );
 };

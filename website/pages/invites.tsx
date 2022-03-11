@@ -1,14 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string, number, date, InferType } from "yup";
 
 import { AuthRequired } from "../components/AuthRequired";
-import { useState } from "react";
-import { Action } from "../models/Action";
-import { performAction } from "../frontend/performAction";
 import { useRouter } from "next/router";
-import { resolve } from "uri-js";
 import { getSession } from "next-auth/react";
 import { IncomingMessage } from "http";
 import { FriendsSession } from "./api/auth/[...nextauth]";
@@ -18,19 +12,7 @@ import { Invitation } from ".prisma/client";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
-const schema = object({
-  name: string().required("Name is required"),
-  email: string().email().required("Email is required"),
-  vouchMessage: string().required("Message is required"),
-});
-type CreateInviteFields = InferType<typeof schema>;
-const initalValues: CreateInviteFields = {
-  name: "",
-  email: "",
-  vouchMessage: "",
-};
-
-const CreateInvite: NextPage<{
+const InviteList: NextPage<{
   invitations: Invitation[];
 }> = ({ invitations }) => {
   const router = useRouter();
@@ -43,8 +25,8 @@ const CreateInvite: NextPage<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <div className={styles.container}>
+      <div className={styles.container}>
+        <main className={styles.main}>
           {invitations.map((invite) => {
             const inviteUrl = "invitation/" + invite.inviteCode;
 
@@ -95,8 +77,8 @@ const CreateInvite: NextPage<{
               </Link>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </AuthRequired>
   );
 };
@@ -121,4 +103,4 @@ export async function getServerSideProps({ req }: { req: IncomingMessage }) {
     },
   };
 }
-export default CreateInvite;
+export default InviteList;
