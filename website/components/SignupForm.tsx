@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { performAction } from "../frontend/performAction";
 import { useState } from "react";
-import { FriandsSession } from "../pages/api/auth/[...nextauth]";
+import { FriendsSession } from "../pages/api/auth/[...nextauth]";
 import Link from "next/link";
 
 const schema = object({
@@ -41,7 +41,7 @@ const SignupForm = (props: {
   const [status, setStatus] = useState<JSX.Element>();
 
   const { data: session } = useSession() as {
-    data: FriandsSession;
+    data: FriendsSession;
     status: string;
   };
   if (!session) {
@@ -106,7 +106,7 @@ const SignupForm = (props: {
         <Field className="form-control" id="name" name="name" />
         <div className="form-text">
           What&apos;s your name? Ideally just your full legal name. To reduce
-          confusion we do require this to be unique across all Friands.
+          confusion we do require this to be unique across all Friends.
         </div>
         <ErrorMessage
           className="form-text text-danger"
@@ -261,7 +261,7 @@ const SignupForm = (props: {
                   height="16"
                   className="icon"
                 />
-                Everything below will be visible to all other Friands Club
+                Everything below will be visible to all other Friends.nyc
                 members
               </div>
               {publicFields}

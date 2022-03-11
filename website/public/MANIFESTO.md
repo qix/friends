@@ -1,4 +1,4 @@
-# NYC Friands
+# Friends.nyc
 
 I am creating a new social members club. It will initially start small, but I'm going to be working hard on keeping it awesome while still allowing it to grow.
 

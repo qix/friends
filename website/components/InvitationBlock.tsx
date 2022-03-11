@@ -14,7 +14,7 @@ export const InvitationBlock = (props: {
   return (
     <div className={styles.main}>
       <div className={styles.invite}>
-        <h1>Your invitation to Friands Club</h1>
+        <h1>Your invitation to Friends.nyc</h1>
 
         <p>Hi {invitedName},</p>
         <p>
@@ -31,7 +31,7 @@ export const InvitationBlock = (props: {
           ))}
         </blockquote>
         <p>
-          Okay! So what is Friands Club? We hope it&apos;ll be one of the most
+          Okay! So what is Friends.nyc? We hope it&apos;ll be one of the most
           valuable communities that you&apos;ll be a part of. We&apos;re trying
           to creative a new tight-knit online community of nice, creative and
           tasteful humans. A space where you can safely trust everyone else by

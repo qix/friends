@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
-import { FriandsSession } from "./api/auth/[...nextauth]";
+import { FriendsSession } from "./api/auth/[...nextauth]";
 import { MemberHome } from "../components/MemberHome";
 import styles from "../styles/Home.module.css";
 import { LoadingSpinner } from "../components/LoadingSpinner";
@@ -11,7 +11,7 @@ const Home: NextPage<{
 }> = (props) => {
   const { discordLink } = props;
   const { data: session, status: sessionStatus } = useSession() as {
-    data: FriandsSession;
+    data: FriendsSession;
     status: "authenticated" | "loading" | "unauthenticated";
   };
 
@@ -21,8 +21,8 @@ const Home: NextPage<{
   return (
     <div className={"container " + styles.container}>
       <Head>
-        <title>Friands</title>
-        <meta name="description" content="Friands Club" />
+        <title>Friends</title>
+        <meta name="description" content="Friends.nyc" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -31,10 +31,10 @@ const Home: NextPage<{
       ) : (
         <main className={styles.main}>
           <div className="card">
-            <h5 className="card-header">Welcome to Friands Club</h5>
+            <h5 className="card-header">Welcome to Friends.nyc</h5>
             <div className="card-body">
               <p>
-                Friands Club is a private club. It&apos;s unfortunately
+                Friends.nyc is a private club. It&apos;s unfortunately
                 invite-only for the foreseeable future.
               </p>
               <p>

@@ -19,8 +19,8 @@ const Invitation: NextPage<{
   return (
     <div className="container">
       <Head>
-        <title>Friands</title>
-        <meta name="description" content="Friands Club" />
+        <title>Friends</title>
+        <meta name="description" content="Friends.nyc" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {error ? (

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { resolve } from "uri-js";
 import { getSession } from "next-auth/react";
 import { IncomingMessage } from "http";
-import { FriandsSession } from "./api/auth/[...nextauth]";
+import { FriendsSession } from "./api/auth/[...nextauth]";
 import { invariant } from "../server/invariant";
 import { getPrismaClient } from "../server/db";
 import { Invitation } from ".prisma/client";
@@ -38,8 +38,8 @@ const CreateInvite: NextPage<{
   return (
     <AuthRequired>
       <Head>
-        <title>Friands</title>
-        <meta name="description" content="Friands Club" />
+        <title>Friends.nyc</title>
+        <meta name="description" content="Friends.nyc" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -101,14 +101,14 @@ const CreateInvite: NextPage<{
   );
 };
 
-async function requireFriandsSession(req: IncomingMessage) {
+async function requireFriendsSession(req: IncomingMessage) {
   const session = await getSession({ req });
   invariant(session, "Expected session");
-  return session as FriandsSession;
+  return session as FriendsSession;
 }
 
 export async function getServerSideProps({ req }: { req: IncomingMessage }) {
-  const session = await requireFriandsSession(req);
+  const session = await requireFriendsSession(req);
   const db = getPrismaClient();
   const invitations = await db.invitation.findMany({
     where: {

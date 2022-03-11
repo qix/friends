@@ -33,7 +33,7 @@ export const MemberHome = (props: {}) => {
   return (
     <main className={styles.main}>
       <div className="card">
-        <h5 className="card-header">Welcome Friand</h5>
+        <h5 className="card-header">Welcome Friend</h5>
         <div className="card-body">
           <ReactMarkdown>{manifesto.replace(/^# .*$/gm, "")}</ReactMarkdown>
         </div>

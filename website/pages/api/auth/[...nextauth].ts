@@ -7,7 +7,7 @@ import { getPrismaClient } from "../../../server/db";
 
 const prisma = getPrismaClient();
 
-export type FriandsSession = Session & {
+export type FriendsSession = Session & {
   user: User;
 };
 
@@ -24,7 +24,7 @@ export default NextAuth({
       return {
         ...session,
         user,
-      } as FriandsSession;
+      } as FriendsSession;
     },
   },
 });

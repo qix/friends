@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { FriandsSession } from "../pages/api/auth/[...nextauth]";
+import { FriendsSession } from "../pages/api/auth/[...nextauth]";
 import { invariant } from "./invariant";
 
 function thrownErrorMessage(err: unknown) {
@@ -23,7 +23,7 @@ export function asyncHandler<
   }
 >(
   callback: (
-    session: FriandsSession,
+    session: FriendsSession,
     requestBody: RequestData
   ) => Promise<ResponseData>
 ) {
@@ -43,7 +43,7 @@ export function asyncHandler<
           if (!session) {
             throw new HttpError(400, "Not signed in");
           }
-          return callback(session as FriandsSession, req.body);
+          return callback(session as FriendsSession, req.body);
         })
         .then(
           (responseData) => {
