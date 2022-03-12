@@ -2,6 +2,7 @@ import { Client, Intents } from "discord.js";
 
 export const RULE_CHANNEL_ID = "944630927328436314";
 export const RULE_MESSAGE_ID = "945787612415811604";
+export const FRIENDS_GUILD_ID = "944628347101642752";
 
 export function createDiscordClient() {
   return new Client({
