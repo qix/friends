@@ -21,12 +21,7 @@ export function asyncHandler<
   ResponseData extends {
     error?: string;
   }
->(
-  callback: (
-    session: FriendsSession,
-    requestBody: RequestData
-  ) => Promise<ResponseData>
-) {
+>(callback: (req: NextApiRequest) => Promise<ResponseData>) {
   return function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData | { error: string }>
@@ -38,13 +33,7 @@ export function asyncHandler<
         throw new Error("Unhandled request method");
       }
 
-      return getSession({ req })
-        .then((session) => {
-          if (!session) {
-            throw new HttpError(400, "Not signed in");
-          }
-          return callback(session as FriendsSession, req.body);
-        })
+      return callback(req)
         .then(
           (responseData) => {
             invariant(
@@ -75,4 +64,25 @@ export function asyncHandler<
       });
     }
   };
+}
+
+export function sessionAsyncHandler<
+  RequestData,
+  ResponseData extends {
+    error?: string;
+  }
+>(
+  callback: (
+    session: FriendsSession,
+    requestBody: RequestData
+  ) => Promise<ResponseData>
+) {
+  return asyncHandler((req) => {
+    return getSession({ req }).then((session) => {
+      if (!session) {
+        throw new HttpError(400, "Not signed in");
+      }
+      return callback(session as FriendsSession, req.body);
+    });
+  });
 }

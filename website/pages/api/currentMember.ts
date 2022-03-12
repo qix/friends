@@ -1,5 +1,5 @@
 import { Action } from "../../models/Action";
-import { asyncHandler, HttpError } from "../../server/asyncHandler";
+import { sessionAsyncHandler, HttpError } from "../../server/asyncHandler";
 import { invariant } from "../../server/invariant";
 
 export interface CurrentMemberResponse {
@@ -8,7 +8,7 @@ export interface CurrentMemberResponse {
   error?: string;
 }
 
-export default asyncHandler<Action, CurrentMemberResponse>(
+export default sessionAsyncHandler<Action, CurrentMemberResponse>(
   async function currentMember(session, action: Action) {
     invariant(session.user.memberActive, "Expected active member");
     return {

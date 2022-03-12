@@ -2,7 +2,7 @@ import { PrismaClient, PrismaPromise } from "@prisma/client";
 
 import { Action } from "../../models/Action";
 import { randomBytes } from "crypto";
-import { asyncHandler, HttpError } from "../../server/asyncHandler";
+import { sessionAsyncHandler, HttpError } from "../../server/asyncHandler";
 import { getPrismaClient } from "../../server/db";
 import { invariant } from "../../server/invariant";
 
@@ -14,7 +14,7 @@ const adminUsers = (process.env.ADMIN_USERS || "").split(",").filter((v) => v);
 
 const prisma: PrismaClient = getPrismaClient();
 
-export default asyncHandler<Action, { message: string; error?: string }>(
+export default sessionAsyncHandler<Action, { message: string; error?: string }>(
   async function performAction(session, action: Action) {
     const email = session.user?.email;
 

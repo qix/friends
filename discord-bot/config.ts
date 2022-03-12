@@ -10,6 +10,7 @@ export function createDiscordClient() {
       Intents.FLAGS.GUILDS,
       Intents.FLAGS.GUILD_MESSAGES,
       Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+      Intents.FLAGS.GUILD_MEMBERS,
     ],
     partials: ["MESSAGE", "CHANNEL", "REACTION"],
   });
@@ -18,7 +19,7 @@ export function createDiscordClient() {
 export function withActiveClient(callback: (client: Client) => Promise<void>) {
   const client = createDiscordClient();
 
-  client.on("error", err => {
+  client.on("error", (err) => {
     console.error("Discord client error: " + err.toString());
   });
   client.once("ready", () => {

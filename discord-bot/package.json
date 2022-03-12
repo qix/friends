@@ -1,11 +1,13 @@
 {
+  "type": "module",
   "scripts": {
     "start": "ts-node bot.ts"
   },
   "dependencies": {
     "@types/node": "^17.0.19",
     "discord.js": "^13.6.0",
-    "ts-node": "^10.5.0",
+    "got": "^12.0.1",
+    "ts-node": "10.7",
     "typescript": "^4.5.5"
   }
 }
