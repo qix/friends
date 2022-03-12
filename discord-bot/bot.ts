@@ -11,9 +11,7 @@ import {
   ReactionEmoji,
   User,
 } from "discord.js";
-import { createDiscordClient } from "./config";
-
-const client = createDiscordClient();
+import { withActiveClient } from "./config";
 
 function invariant(
   condition: any,
@@ -26,10 +24,6 @@ function invariant(
   const errorMessage = typeof message === "function" ? message() : message;
   throw new Error(errorMessage);
 }
-
-client.once("ready", () => {
-  console.log("Ready!");
-});
 
 async function handleEmoji(props: {
   user: User | PartialUser;
@@ -57,35 +51,41 @@ async function handleEmoji(props: {
     }
   }
 }
-client.on("messageReactionAdd", async (messageReaction, user) => {
-  if (messageReaction.partial) {
-    await messageReaction.fetch();
-  }
-  const { message, emoji } = messageReaction;
-  const { guild } = message;
-  invariant(guild, "Bot only handles guild messages");
-  await handleEmoji({
-    user,
-    guild,
-    message,
-    emoji,
-    set: true,
-  });
-});
-client.on("messageReactionRemove", async (messageReaction, user) => {
-  if (messageReaction.partial) {
-    await messageReaction.fetch();
-  }
-  const { message, emoji } = messageReaction;
-  const { guild } = message;
-  invariant(guild, "Bot only handles guild messages");
-  await handleEmoji({
-    user,
-    guild,
-    message,
-    emoji,
-    set: false,
-  });
-});
+withActiveClient(async client => {
+	client.on("messageReactionAdd", async (messageReaction, user) => {
+	  if (messageReaction.partial) {
+	    await messageReaction.fetch();
+	  }
+	  const { message, emoji } = messageReaction;
+	  const { guild } = message;
+	  invariant(guild, "Bot only handles guild messages");
+	  await handleEmoji({
+	    user,
+	    guild,
+	    message,
+	    emoji,
+	    set: true,
+	  });
+	});
+	client.on("messageReactionRemove", async (messageReaction, user) => {
+	  if (messageReaction.partial) {
+	    await messageReaction.fetch();
+	  }
+	  const { message, emoji } = messageReaction;
+	  const { guild } = message;
+	  invariant(guild, "Bot only handles guild messages");
+	  await handleEmoji({
+	    user,
+	    guild,
+	    message,
+	    emoji,
+	    set: false,
+	  });
+	});
 
-client.login(token);
+
+	console.log('Bot running');
+	await new Promise((resolve, reject) => {
+		// Sleep forever
+	});
+});

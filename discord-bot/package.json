@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "ts-node bot.ts"
+  },
   "dependencies": {
     "@types/node": "^17.0.19",
     "discord.js": "^13.6.0",

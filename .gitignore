@@ -5,6 +5,7 @@
 /website/node_modules
 /.pnp
 .pnp.js
+.envrc
 
 # testing
 /website/coverage
