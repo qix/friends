@@ -70,7 +70,7 @@ const InviteList: NextPage<{
           >
             <div className="card-header">New Invitation</div>
             <div className="card-body">
-              <Link href={{ pathname: "/create-invite" }}>
+              <Link href={{ pathname: "/create-invite" }} passHref={true}>
                 <button className="btn btn-outline-secondary">
                   Create Invite
                 </button>

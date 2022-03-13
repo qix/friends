@@ -13,7 +13,7 @@ import styles from "../styles/Home.module.css";
 
 const schema = object({
   name: string().required("Name is required"),
-  email: string().email().required("Email is required"),
+  email: string().email(),
   vouchMessage: string().required("Message is required"),
 });
 type CreateInviteFields = InferType<typeof schema>;
@@ -95,10 +95,9 @@ const CreateInvite: NextPage = () => {
                     if (rv.error) {
                       setMessage(<div>Error: {rv.error}</div>);
                     } else {
-                      const inviteUrl = resolve(
-                        router.basePath,
-                        "invitation/" + rv.inviteCode
-                      );
+                      // @todo: Full URL
+                      const inviteUrl = "invitation/" + rv.inviteCode;
+
                       setMessage(
                         <div>
                           Okay{" "}
