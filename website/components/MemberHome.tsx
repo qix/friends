@@ -30,13 +30,35 @@ export const MemberHome = (props: {}) => {
   if (isError) return <div>failed to load</div>;
   if (isLoading) return <LoadingSpinner />;
 
+  const blocks: JSX.Element[] = [];
+  const content: string[] = [];
+  const pushRemaining = () => {
+    if (content.length) {
+      blocks.push(
+        <div className="card-body">
+          <ReactMarkdown>{content.join("\n")}</ReactMarkdown>
+        </div>
+      );
+      content.length = 0;
+    }
+  };
+  for (const line of manifesto.split(/\n/)) {
+    if (line.startsWith("# ")) {
+      continue;
+    } else if (line.startsWith("## ")) {
+      pushRemaining();
+      blocks.push(<h5 className="card-header">{line.replace(/^## /, "")}</h5>);
+    } else if (content.length || line.trim()) {
+      content.push(line);
+    }
+  }
+  pushRemaining();
+
   return (
     <main className={styles.main}>
       <div className="card">
         <h5 className="card-header">Welcome Friend</h5>
-        <div className="card-body">
-          <ReactMarkdown>{manifesto.replace(/^# .*$/gm, "")}</ReactMarkdown>
-        </div>
+        {blocks}
         <h5 className="card-header">Discord Chat</h5>
         <div className="card-body">
           <a

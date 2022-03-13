@@ -34,7 +34,7 @@ I've got a lot of hopes for this group, but among the immediate list:
 
 **Long term plans:** Anyone interested in a ski trip in March?
 
-**Group excursions**: I'll plan a trip to Cape Town (March 15-23) if atleast six (max twelve) of you are interested. Estimate $600-$800/head.
+**Group excursions**: I'll plan a trip to Cape Town if atleast six, and up to twelve, of you are interested. Estimate $600-$800/head.
 
 **Dinner parties**: I'm doing a Sunday lamb roast next week and have space for four people, who can commit? (See _trustworthy_ membership requirement)
 
@@ -48,7 +48,7 @@ I've got a lot of hopes for this group, but among the immediate list:
 
 I am hoping to this will spawn a diverse group of friends, but with diversity comes inequality. I would love to see a pay-it-forward approach to group activities.
 
-If you can't afford to host a dinner, but want to, then sure – set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it, pay for another one in the future.
+If you can't afford to host a dinner, but want to, then feel free to set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it, pay for another one in the future.
 
 ## Membership fee
 

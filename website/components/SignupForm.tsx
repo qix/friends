@@ -8,6 +8,7 @@ import { performAction } from "../frontend/performAction";
 import { useState } from "react";
 import { FriendsSession } from "../pages/api/auth/[...nextauth]";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const schema = object({
   email: string()
@@ -39,11 +40,13 @@ const SignupForm = (props: {
   const { vouchFrom, vouchMessage, invitedEmail, invitedName, inviteCode } =
     props;
   const [status, setStatus] = useState<JSX.Element>();
+  const router = useRouter();
 
   const { data: session } = useSession() as {
     data: FriendsSession;
     status: string;
   };
+
   if (!session) {
     return (
       <div className="card">
@@ -196,11 +199,7 @@ const SignupForm = (props: {
                   </div>
                 );
               } else {
-                setStatus(
-                  <div className="alert alert-success" role="alert">
-                    Okay: {JSON.stringify(data)}
-                  </div>
-                );
+                router.push("/");
               }
             },
             (err) => {

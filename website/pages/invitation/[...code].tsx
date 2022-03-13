@@ -4,6 +4,9 @@ import { Person } from "../../models/Person";
 import { InvitationBlock } from "../../components/InvitationBlock";
 import { getPrismaClient } from "../../server/db";
 import { invariant } from "../../server/invariant";
+import { signIn, useSession } from "next-auth/react";
+import { FriendsSession } from "../api/auth/[...nextauth]";
+import Link from "next/link";
 
 const Invitation: NextPage<{
   error: string;
@@ -16,6 +19,11 @@ const Invitation: NextPage<{
   const { error, vouchFrom, message, invitedName, invitedEmail, inviteCode } =
     props;
 
+  const { data: session } = useSession() as {
+    data: FriendsSession;
+    status: string;
+  };
+
   return (
     <div className="container">
       <Head>
@@ -24,8 +32,25 @@ const Invitation: NextPage<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {error ? (
-        <div className="alert alert-danger m-5" role="alert">
-          {error}
+        <div>
+          <div className="alert alert-danger m-5" role="alert">
+            {error}
+          </div>
+          {session ? (
+            <div className="alert alert-success m-5" role="alert">
+              You are logged in as an active member.{" "}
+              <Link href="/">
+                <a>Go to membership page</a>
+              </Link>
+            </div>
+          ) : (
+            <div className="alert alert-info m-5" role="alert">
+              If you already signed up, you can try{" "}
+              <a href="#" onClick={() => signIn("google")}>
+                sign in with Google
+              </a>
+            </div>
+          )}
         </div>
       ) : (
         <InvitationBlock
