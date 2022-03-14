@@ -4,7 +4,7 @@ interface CreateInviteAction {
   type: "createInvite";
   payload: {
     name: string;
-    email: string;
+    email?: string;
     vouchMessage: string;
 
     // Added on server side

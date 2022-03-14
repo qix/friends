@@ -21,7 +21,7 @@ model Invitation {
   isOpen       Boolean @default(true)
   inviteCode   String  @unique
   invitedName  String
-  invitedEmail String  @unique
+  invitedEmail String?
   senderUserId String
   vouchMessage String  @db.Text
 }
@@ -53,7 +53,7 @@ model User {
   memberPronoun2      String?
   memberWhatDo        String? @db.Text
 
-  memberDiscordID     String?
+  memberDiscordID String?
 }
 
 // next-auth models
