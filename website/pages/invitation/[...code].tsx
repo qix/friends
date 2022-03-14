@@ -38,7 +38,7 @@ const Invitation: NextPage<{
         <meta
           property="og:image"
           itemProp="image"
-          content="http://friends.nyc/friends-logo-2.jpg"
+          content="http://friends.nyc/friends-logo-3.jpg"
         />
         <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
