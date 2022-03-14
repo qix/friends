@@ -1,7 +1,7 @@
 import { Client, HexColorString, MessageEmbed } from "discord.js";
-import { got } from "got";
 import { invariant } from "./invariant";
 import { FRIENDS_GUILD_ID, withActiveClient } from "./config";
+import { got } from "got-cjs";
 
 withActiveClient(async function updateNicknames(client: Client) {
   const guild = await client.guilds.fetch(FRIENDS_GUILD_ID);
@@ -17,7 +17,9 @@ withActiveClient(async function updateNicknames(client: Client) {
   for (const member of members.values()) {
     const { id, username, discriminator } = member.user;
 
-    console.log(`${member.user.id} -- ${username}#${discriminator}`);
+    console.log(
+      `${member.user.id} -- ${username}#${discriminator} : ${member.nickname}`
+    );
   }
   //await meyer.setNickname("Mike Meyer");
 });
