@@ -2,14 +2,15 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string, InferType } from "yup";
+import Image from "next/image";
 
-import { AuthRequired } from "../components/AuthRequired";
+import { AuthenticatedPage } from "../components/AuthRequired";
 import { useState } from "react";
 import { performAction } from "../frontend/performAction";
 import { useRouter } from "next/router";
-import { resolve } from "uri-js";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
+import { ErrorAlert, SuccessAlert } from "../components/alerts";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -70,90 +71,69 @@ const CreateInvite: NextPage = () => {
     </fieldset>
   );
   return (
-    <AuthRequired>
-      <Head>
-        <title>Friends</title>
-        <meta name="description" content="Friends.nyc" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <AuthenticatedPage>
+      <div>{message}</div>
+      <Formik
+        initialValues={{
+          ...initalValues,
+        }}
+        validationSchema={schema}
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          setMessage(<></>);
+          performAction({
+            type: "createInvite",
+            payload: values,
+          })
+            .then(
+              (rv) => {
+                if (rv.error) {
+                  setMessage(<ErrorAlert>{rv.error}</ErrorAlert>);
+                } else {
+                  const inviteUrl =
+                    "https://friends.nyc/invitation/" + rv.inviteCode;
 
-      <main className={styles.main}>
-        <div className={styles.container}>
-          <div>{message}</div>
-          <Formik
-            initialValues={{
-              ...initalValues,
-            }}
-            validationSchema={schema}
-            onSubmit={(values, { setSubmitting, resetForm }) => {
-              setMessage(<></>);
-              performAction({
-                type: "createInvite",
-                payload: values,
-              })
-                .then(
-                  (rv) => {
-                    if (rv.error) {
-                      setMessage(
-                        <div className="alert alert-danger m-5" role="alert">
-                          <strong>Error: </strong>
-                          {rv.error}
-                        </div>
-                      );
-                    } else {
-                      const inviteUrl =
-                        "https://friends.nyc/invitation/" + rv.inviteCode;
-
-                      setMessage(
-                        <div className="alert alert-success m-5" role="alert">
-                          <strong>Success!</strong>{" "}
-                          <Link
-                            href={{
-                              href: inviteUrl,
-                            }}
-                          >
-                            {inviteUrl}
-                          </Link>
-                        </div>
-                      );
-                      resetForm();
-                    }
-                  },
-                  (err) => {
-                    setMessage(
-                      <div className="alert alert-danger m-5" role="alert">
-                        <strong>Error: </strong>
-                        {err.toString()}
-                      </div>
-                    );
-                  }
-                )
-                .finally(() => {
-                  setSubmitting(false);
-                });
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <div className="card">
-                  <h5 className="card-header">Create a new invite</h5>
-                  <div className="card-body">
-                    {formFields}
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={isSubmitting}
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </main>
-    </AuthRequired>
+                  setMessage(
+                    <SuccessAlert>
+                      <Link
+                        href={{
+                          href: inviteUrl,
+                        }}
+                      >
+                        <a>{inviteUrl}</a>
+                      </Link>
+                    </SuccessAlert>
+                  );
+                  resetForm();
+                }
+              },
+              (err) => {
+                setMessage(<ErrorAlert>{err.toString()}</ErrorAlert>);
+              }
+            )
+            .finally(() => {
+              setSubmitting(false);
+            });
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <div className="card">
+              <h5 className="card-header">Create a new invite</h5>
+              <div className="card-body">
+                {formFields}
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </AuthenticatedPage>
   );
 };
 

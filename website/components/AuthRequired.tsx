@@ -1,8 +1,10 @@
 import { signOut, useSession } from "next-auth/react";
+import Head from "next/head";
 import { FunctionComponent } from "react";
 import { LoadingSpinner } from "./LoadingSpinner";
+import styles from "../styles/Home.module.css";
 
-export const AuthRequired: FunctionComponent<{}> = ({ children }) => {
+export const AuthenticatedPage: FunctionComponent<{}> = ({ children }) => {
   const { data: session, status } = useSession({ required: true });
 
   if (!children) {
@@ -24,7 +26,19 @@ export const AuthRequired: FunctionComponent<{}> = ({ children }) => {
 
     // @todo: TypeScript isn't happy with `children` but it seems
     // like it will be hard to fix.
-    return children as any;
+    return (
+      <>
+        <Head>
+          <title>Friends</title>
+          <meta name="description" content="Friends.nyc" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <div className={styles.container}>
+          <main className={styles.main}>{children as any}</main>
+        </div>
+      </>
+    );
   }
 
   // Session is being fetched, or no user.
