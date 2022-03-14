@@ -19,6 +19,7 @@ export default sessionAsyncHandler<Action, { message: string; error?: string }>(
     const email = session.user?.email;
 
     if (action.type === "createInvite") {
+      console.log(email, adminUsers);
       if (!email || !adminUsers.includes(email)) {
         throw new HttpError(400, "Admin-only endpoint");
       }

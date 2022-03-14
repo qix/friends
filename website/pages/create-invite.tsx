@@ -94,13 +94,7 @@ const CreateInvite: NextPage = () => {
 
                   setMessage(
                     <SuccessAlert>
-                      <Link
-                        href={{
-                          href: inviteUrl,
-                        }}
-                      >
-                        <a>{inviteUrl}</a>
-                      </Link>
+                      <a href={inviteUrl}>{inviteUrl}</a>
                     </SuccessAlert>
                   );
                   resetForm();

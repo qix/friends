@@ -11,7 +11,7 @@ import {
   ReactionEmoji,
   User,
 } from "discord.js";
-import { withActiveClient } from "./config";
+import { FRIEND_ROLE_ID, withActiveClient } from "./config";
 
 function invariant(
   condition: any,
@@ -45,47 +45,46 @@ async function handleEmoji(props: {
 
     // Add/remove the `friand` role
     if (set) {
-      await guildMember.roles.add(["944631047767863316"]);
+      await guildMember.roles.add([FRIEND_ROLE_ID]);
     } else {
-      await guildMember.roles.remove(["944631047767863316"]);
+      await guildMember.roles.remove([FRIEND_ROLE_ID]);
     }
   }
 }
-withActiveClient(async client => {
-	client.on("messageReactionAdd", async (messageReaction, user) => {
-	  if (messageReaction.partial) {
-	    await messageReaction.fetch();
-	  }
-	  const { message, emoji } = messageReaction;
-	  const { guild } = message;
-	  invariant(guild, "Bot only handles guild messages");
-	  await handleEmoji({
-	    user,
-	    guild,
-	    message,
-	    emoji,
-	    set: true,
-	  });
-	});
-	client.on("messageReactionRemove", async (messageReaction, user) => {
-	  if (messageReaction.partial) {
-	    await messageReaction.fetch();
-	  }
-	  const { message, emoji } = messageReaction;
-	  const { guild } = message;
-	  invariant(guild, "Bot only handles guild messages");
-	  await handleEmoji({
-	    user,
-	    guild,
-	    message,
-	    emoji,
-	    set: false,
-	  });
-	});
+withActiveClient(async (client) => {
+  client.on("messageReactionAdd", async (messageReaction, user) => {
+    if (messageReaction.partial) {
+      await messageReaction.fetch();
+    }
+    const { message, emoji } = messageReaction;
+    const { guild } = message;
+    invariant(guild, "Bot only handles guild messages");
+    await handleEmoji({
+      user,
+      guild,
+      message,
+      emoji,
+      set: true,
+    });
+  });
+  client.on("messageReactionRemove", async (messageReaction, user) => {
+    if (messageReaction.partial) {
+      await messageReaction.fetch();
+    }
+    const { message, emoji } = messageReaction;
+    const { guild } = message;
+    invariant(guild, "Bot only handles guild messages");
+    await handleEmoji({
+      user,
+      guild,
+      message,
+      emoji,
+      set: false,
+    });
+  });
 
-
-	console.log('Bot running');
-	await new Promise((resolve, reject) => {
-		// Sleep forever
-	});
+  console.log("Bot running");
+  await new Promise((resolve, reject) => {
+    // Sleep forever
+  });
 });

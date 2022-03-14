@@ -4,6 +4,7 @@ import styles from "../styles/Home.module.css";
 import { LoadingSpinner } from "./LoadingSpinner";
 import manifesto from "../public/MANIFESTO.md";
 import ReactMarkdown from "react-markdown";
+import { CurrentMemberResponse } from "../pages/api/currentMember";
 
 const fetcher = async (...args: Parameters<typeof fetch>) => {
   const res = await fetch(...args);
@@ -18,7 +19,7 @@ function useCurrentMember() {
   const { data, error } = useSWR(`/api/currentMember`, fetcher);
 
   return {
-    member: data,
+    member: data as CurrentMemberResponse,
     isLoading: !error && !data,
     isError: error,
   };
@@ -73,6 +74,9 @@ export const MemberHome = (props: {}) => {
         </div>
         <h5 className="card-header">Account</h5>
         <div className="card-body">
+          <p>
+            You are logged in as <strong>{member.name}</strong>.
+          </p>
           <button
             className="btn btn-outline-secondary"
             onClick={() => signOut()}
