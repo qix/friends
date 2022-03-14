@@ -11,10 +11,12 @@ import { getPrismaClient } from "../server/db";
 import { Invitation } from ".prisma/client";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import { tryGetFriendsSession } from "../server/getFriendsSession";
 
 const InviteList: NextPage<{
   invitations: Invitation[];
-}> = ({ invitations }) => {
+  error: string;
+}> = ({ invitations, error }) => {
   const router = useRouter();
 
   return (
@@ -27,40 +29,42 @@ const InviteList: NextPage<{
 
       <div className={styles.container}>
         <main className={styles.main}>
-          {invitations.map((invite) => {
-            const inviteUrl = "invitation/" + invite.inviteCode;
+          {error
+            ? error
+            : invitations.map((invite) => {
+                const inviteUrl = "invitation/" + invite.inviteCode;
 
-            return (
-              <div
-                key={invite.id}
-                className="card"
-                style={{
-                  margin: "1rem",
-                }}
-              >
-                <div className="card-header">
-                  {invite.invitedName} &lt;{invite.invitedEmail}&gt;
-                </div>
-                <div className="card-body">
-                  <div>{invite.vouchMessage}</div>
-                </div>
-                <div className="card-footer">
-                  URL:{" "}
-                  {invite.isOpen ? (
-                    <Link
-                      href={{
-                        pathname: inviteUrl,
-                      }}
-                    >
-                      {inviteUrl}
-                    </Link>
-                  ) : (
-                    <em>Closed</em>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+                return (
+                  <div
+                    key={invite.id}
+                    className="card"
+                    style={{
+                      margin: "1rem",
+                    }}
+                  >
+                    <div className="card-header">
+                      {invite.invitedName} &lt;{invite.invitedEmail}&gt;
+                    </div>
+                    <div className="card-body">
+                      <div>{invite.vouchMessage}</div>
+                    </div>
+                    <div className="card-footer">
+                      URL:{" "}
+                      {invite.isOpen ? (
+                        <Link
+                          href={{
+                            pathname: inviteUrl,
+                          }}
+                        >
+                          {inviteUrl}
+                        </Link>
+                      ) : (
+                        <em>Closed</em>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
 
           <div
             className="card"
@@ -83,14 +87,16 @@ const InviteList: NextPage<{
   );
 };
 
-async function requireFriendsSession(req: IncomingMessage) {
-  const session = await getSession({ req });
-  invariant(session, "Expected session");
-  return session as FriendsSession;
-}
-
 export async function getServerSideProps({ req }: { req: IncomingMessage }) {
-  const session = await requireFriendsSession(req);
+  const session = await tryGetFriendsSession(req);
+  if (!session) {
+    return {
+      props: {
+        error: "Not logged in.",
+      },
+    };
+  }
+
   const db = getPrismaClient();
   const invitations = await db.invitation.findMany({
     where: {

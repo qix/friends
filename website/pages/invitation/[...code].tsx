@@ -29,6 +29,18 @@ const Invitation: NextPage<{
       <Head>
         <title>Friends</title>
         <meta name="description" content="Friends.nyc" />
+        <meta property="og:site_name" content="Friends.nyc" />
+        <meta property="og:title" content="Your invitation to Friends.nyc" />
+        <meta
+          property="og:description"
+          content="Your invitation to our new york based social group"
+        />
+        <meta
+          property="og:image"
+          itemProp="image"
+          content="http://friends.nyc/friends-logo.jpg"
+        />
+        <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {error ? (
