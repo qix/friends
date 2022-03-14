@@ -33,7 +33,7 @@ const Invitation: NextPage<{
         <meta property="og:title" content="Your invitation to Friends.nyc" />
         <meta
           property="og:description"
-          content="Your invitation to our new york based social group"
+          content="This is an invitation to our New York-based social group. It's mostly centered around a Discord chat."
         />
         <meta
           property="og:image"
