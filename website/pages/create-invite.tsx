@@ -79,13 +79,14 @@ const CreateInvite: NextPage = () => {
 
       <main className={styles.main}>
         <div className={styles.container}>
+          <div>{message}</div>
           <Formik
             initialValues={{
               ...initalValues,
             }}
             validationSchema={schema}
-            onSubmit={(values, { setSubmitting }) => {
-              setMessage(<div>Submitting...</div>);
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              setMessage(<></>);
               performAction({
                 type: "createInvite",
                 payload: values,
@@ -93,14 +94,19 @@ const CreateInvite: NextPage = () => {
                 .then(
                   (rv) => {
                     if (rv.error) {
-                      setMessage(<div>Error: {rv.error}</div>);
+                      setMessage(
+                        <div className="alert alert-danger m-5" role="alert">
+                          <strong>Error: </strong>
+                          {rv.error}
+                        </div>
+                      );
                     } else {
-                      // @todo: Full URL
-                      const inviteUrl = "invitation/" + rv.inviteCode;
+                      const inviteUrl =
+                        "https://friends.nyc/invitation/" + rv.inviteCode;
 
                       setMessage(
-                        <div>
-                          Okay{" "}
+                        <div className="alert alert-success m-5" role="alert">
+                          <strong>Success!</strong>{" "}
                           <Link
                             href={{
                               href: inviteUrl,
@@ -110,10 +116,16 @@ const CreateInvite: NextPage = () => {
                           </Link>
                         </div>
                       );
+                      resetForm();
                     }
                   },
                   (err) => {
-                    setMessage(<div>Error: {err.toString()}</div>);
+                    setMessage(
+                      <div className="alert alert-danger m-5" role="alert">
+                        <strong>Error: </strong>
+                        {err.toString()}
+                      </div>
+                    );
                   }
                 )
                 .finally(() => {
@@ -139,7 +151,6 @@ const CreateInvite: NextPage = () => {
               </Form>
             )}
           </Formik>
-          <div>{message}</div>
         </div>
       </main>
     </AuthRequired>
