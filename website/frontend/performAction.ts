@@ -1,6 +1,6 @@
 import { Action } from "../models/Action";
 
-export async function performAction(action: Action) {
+export async function remotePerformAction(action: Action) {
   const res = await fetch("/api/performAction", {
     body: JSON.stringify(action),
     headers: {

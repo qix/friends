@@ -11,6 +11,10 @@ interface CreateInviteAction {
     inviteCode?: string;
   };
 }
+interface CreateInviteResponse {
+  message: string;
+  inviteCode: string;
+}
 
 interface AcceptInviteAction {
   type: "acceptInvite";
@@ -25,5 +29,21 @@ interface AcceptInviteAction {
     inviteId?: string;
   };
 }
+interface AcceptInviteResponse {
+  message: string;
+}
 
-export type Action = AcceptInviteAction | CreateInviteAction;
+interface HeartbeatAction {
+  type: "heartbeat";
+  payload: {};
+}
+interface HeartbeatResponse {
+  ok: boolean;
+}
+
+export type Action = AcceptInviteAction | CreateInviteAction | HeartbeatAction;
+
+export type ActionResponse =
+  | AcceptInviteResponse
+  | CreateInviteResponse
+  | HeartbeatResponse;

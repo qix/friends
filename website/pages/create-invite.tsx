@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { AuthenticatedPage } from "../components/AuthRequired";
 import { useState } from "react";
-import { performAction } from "../frontend/performAction";
+import { remotePerformAction } from "../frontend/performAction";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
@@ -80,7 +80,7 @@ const CreateInvite: NextPage = () => {
         validationSchema={schema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setMessage(<></>);
-          performAction({
+          remotePerformAction({
             type: "createInvite",
             payload: values,
           })

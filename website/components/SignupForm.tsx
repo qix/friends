@@ -4,7 +4,7 @@ import { Person, pronounOptions } from "../models/Person";
 import Image from "next/image";
 
 import { useSession, signIn, signOut } from "next-auth/react";
-import { performAction } from "../frontend/performAction";
+import { remotePerformAction } from "../frontend/performAction";
 import { useState } from "react";
 import { FriendsSession } from "../pages/api/auth/[...nextauth]";
 import Link from "next/link";
@@ -182,7 +182,7 @@ const SignupForm = (props: {
             Creating new account...
           </div>
         );
-        performAction({
+        remotePerformAction({
           type: "acceptInvite",
           payload: {
             ...values,
