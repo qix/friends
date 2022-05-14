@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+      domains: ['friends.nyc'],
+  },
   reactStrictMode: true,
   webpack: (config) => {
     return Object.assign({}, config, {

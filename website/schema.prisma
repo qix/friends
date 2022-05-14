@@ -16,6 +16,30 @@ model ActionLog {
   payload String @db.Text
 }
 
+enum EventInviteResponse {
+  NONE
+  GOING
+  NOT_GOING
+}
+
+model Event {
+  id     String  @id @default(cuid())
+  isOpen Boolean @default(true)
+  slug   String  @unique
+  name   String
+}
+
+model EventInvite {
+  id           String              @id @default(cuid())
+  eventId      String
+  invitedName  String
+  invitedEmail String?
+  response     EventInviteResponse @default(NONE)
+  message      String              @db.Text
+  guestCount   Int                 @default(1)
+  guestMax     Int?
+}
+
 model Invitation {
   id           String  @id @default(cuid())
   isOpen       Boolean @default(true)

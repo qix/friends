@@ -1,6 +1,6 @@
 import { PrismaClient, PrismaPromise, User } from "@prisma/client";
 
-import { Action, ActionResponse } from "../models/Action";
+import { Action, ActionResponseByType } from "../models/Action";
 import { randomBytes } from "crypto";
 import { HttpError } from "./asyncHandler";
 import { getPrismaClient } from "./db";
@@ -15,10 +15,10 @@ const adminUsers = (process.env.ADMIN_USERS || "").split(",").filter((v) => v);
 
 const prisma: PrismaClient = getPrismaClient();
 
-export async function performAction<T extends Action>(
+export async function performAction(
   user: User | null,
-  action: T
-): Promise<ActionResponse> {
+  action: Action
+): Promise<ActionResponseByType[typeof action["type"]]> {
   const email = user?.email;
 
   /***
@@ -42,6 +42,10 @@ export async function performAction<T extends Action>(
     action.payload.inviteId = invitation.id;
   } else if (action.type === "heartbeat") {
     // Nothing required
+  } else if (action.type === "rsvp") {
+    throw new Error("Not implemented");
+  } else if (action.type === "createEvent") {
+    throw new Error("Not implemented");
   } else {
     assertNever(action, "Unhandled action type in pre transaction");
   }

@@ -41,9 +41,36 @@ interface HeartbeatResponse {
   ok: boolean;
 }
 
-export type Action = AcceptInviteAction | CreateInviteAction | HeartbeatAction;
+interface RSVPAction {
+  type: "rsvp";
+  payload: {};
+}
+interface RSVPResponse {
+  ok: boolean;
+}
 
-export type ActionResponse =
-  | AcceptInviteResponse
-  | CreateInviteResponse
-  | HeartbeatResponse;
+interface CreateEventAction {
+  type: "createEvent";
+  payload: {
+    name: string;
+    slug: string;
+  };
+}
+interface CreateEventResponse {
+  ok: boolean;
+}
+
+export type Action =
+  | AcceptInviteAction
+  | CreateInviteAction
+  | HeartbeatAction
+  | CreateEventAction
+  | RSVPAction;
+
+export type ActionResponseByType = {
+  heartbeat: HeartbeatResponse;
+  acceptInvite: AcceptInviteResponse;
+  createInvite: CreateInviteResponse;
+  createEvent: CreateEventResponse;
+  rsvp: RSVPResponse;
+};
