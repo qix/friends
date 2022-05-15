@@ -1,33 +1,17 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string, number, date, InferType } from "yup";
-import { Person, pronounOptions } from "../models/Person";
-import Image from "next/image";
-
-import { useSession, signIn, signOut } from "next-auth/react";
+import { object, string, InferType } from "yup";
 import { remotePerformAction } from "../frontend/performAction";
 import { useState } from "react";
-import { FriendsSession } from "../pages/api/auth/[...nextauth]";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const schema = object({
-  email: string()
-    .email()
-    .required("We require your email address for login and updates"),
   name: string().required("Name is required"),
-  pronouns: string()
-    .oneOf([...pronounOptions])
-    .required("Your choice of pronoun is required"),
-  whatDo: string()
-    .required("What you do is a required field")
-    .min(50, "Please include a longer description about what you do"),
+  comments: string(),
 });
 type SignupFields = InferType<typeof schema>;
 const initalValues: SignupFields = {
-  email: "",
   name: "",
-  pronouns: "",
-  whatDo: "",
+  comments: "",
 };
 
 export const RSVPBlock = (props: { invitedName: string }) => {
@@ -42,13 +26,30 @@ export const RSVPBlock = (props: { invitedName: string }) => {
           Name
         </label>
         <Field className="form-control" id="name" name="name" />
-        <div className="form-text">
-          What&apos;s your name? Ideally just your full legal name. To reduce
-          confusion we do require this to be unique across all Friends.
-        </div>
+        <div className="form-text">Just so I know who this is from.</div>
         <ErrorMessage
           className="form-text text-danger"
           name="name"
+          component="div"
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="comments" className="form-label">
+          Bringing someone along?
+        </label>
+        <Field
+          className="form-control"
+          id="comments"
+          name="comments"
+          as="textarea"
+        />
+        <div className="form-text">
+          <em>Optional.</em> If you&apos;re bringing along people, or might
+          bring someone along, just let me know here.
+        </div>
+        <ErrorMessage
+          className="form-text text-danger"
+          name="comments"
           component="div"
         />
       </div>
@@ -64,13 +65,14 @@ export const RSVPBlock = (props: { invitedName: string }) => {
       onSubmit={(values, { setSubmitting }) => {
         setStatus(
           <div className="alert alert-secondary" role="alert">
-            Creating new account...
+            Sending RSVP...
           </div>
         );
         remotePerformAction({
           type: "rsvp",
           payload: {
             ...values,
+            comments: values.comments || "",
           },
         })
           .then(
@@ -88,7 +90,7 @@ export const RSVPBlock = (props: { invitedName: string }) => {
             (err) => {
               setStatus(
                 <div className="alert alert-danger" role="alert">
-                  Failed to create account: {err.toString()}
+                  Failed to send RSVP: {err.toString()}
                 </div>
               );
             }

@@ -43,7 +43,10 @@ interface HeartbeatResponse {
 
 interface RSVPAction {
   type: "rsvp";
-  payload: {};
+  payload: {
+    name: string;
+    comments: string;
+  };
 }
 interface RSVPResponse {
   ok: boolean;

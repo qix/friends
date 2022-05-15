@@ -65,6 +65,26 @@ export function asyncHandler<
     }
   };
 }
+export function optionalSessionAsyncHandler<
+  RequestData,
+  ResponseData extends {
+    error?: string;
+  }
+>(
+  callback: (
+    session: FriendsSession | null,
+    requestBody: RequestData
+  ) => Promise<ResponseData>
+) {
+  return asyncHandler((req) => {
+    return getSession({ req }).then((session) => {
+      return callback(
+        session as FriendsSession | null,
+        req.body as RequestData
+      );
+    });
+  });
+}
 
 export function sessionAsyncHandler<
   RequestData,
@@ -77,12 +97,12 @@ export function sessionAsyncHandler<
     requestBody: RequestData
   ) => Promise<ResponseData>
 ) {
-  return asyncHandler((req) => {
-    return getSession({ req }).then((session) => {
+  return optionalSessionAsyncHandler<RequestData, ResponseData>(
+    (session, requestBody) => {
       if (!session) {
         throw new HttpError(400, "Not signed in");
       }
-      return callback(session as FriendsSession, req.body);
-    });
-  });
+      return callback(session, requestBody);
+    }
+  );
 }

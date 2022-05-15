@@ -30,14 +30,15 @@ model Event {
 }
 
 model EventInvite {
-  id           String              @id @default(cuid())
-  eventId      String
-  invitedName  String
-  invitedEmail String?
-  response     EventInviteResponse @default(NONE)
-  message      String              @db.Text
-  guestCount   Int                 @default(1)
-  guestMax     Int?
+  id            String              @id @default(cuid())
+  eventId       String
+  inviteMessage String
+  invitedName   String
+  invitedEmail  String?
+  response      EventInviteResponse @default(NONE)
+  message       String              @db.Text
+  guestCount    Int                 @default(1)
+  guestMax      Int?
 }
 
 model Invitation {
