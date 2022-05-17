@@ -8,36 +8,29 @@ import { signIn, useSession } from "next-auth/react";
 import { FriendsSession } from "../api/auth/[...nextauth]";
 import Link from "next/link";
 import { EventBlock } from "../../components/EventBlock";
+import { EventInvite } from "@prisma/client";
 
+const Guest = (props: { guest: EventInvite }) => {
+  const { guestName } = props.guest;
+  return (
+    <p>
+      <h5>{guestName}</h5>
+      <code>{JSON.stringify(props)}</code>
+    </p>
+  );
+};
 const EventPage: NextPage<{
   error: string;
-  eventName: string;
-  eventGooglePlaceId: string;
-  eventAddress?: string;
-  invitedName: string;
   eventId: string;
+  guests: EventInvite[];
 }> = (props) => {
-  const { invitedName, eventId, eventGooglePlaceId, eventAddress, error } =
-    props;
-
-  const eventNameWithDate = "Braai on Monday, May 23rd";
-  const description =
-    "I'm hosting a braai (barbecue) for a bunch of friends and neighborhood folk on the 23rd.";
-  const imageHeader = "https://friends.nyc/images/braai-header-light.jpg";
-  const imageSquare = "https://friends.nyc/images/braai-square.jpg";
+  const { eventId, guests, error } = props;
 
   return (
     <div className="main">
       <div className="container">
         <Head>
-          <title>{eventNameWithDate}</title>
-          <meta name="description" content="Friends.nyc" />
-          <meta property="og:site_name" content="Friends.nyc" />
-          <meta property="og:title" content={eventNameWithDate} />
-          <meta property="og:description" content={description} />
-          <meta property="og:image" itemProp="image" content={imageSquare} />
-          <meta property="og:type" content="website" />
-          <link rel="icon" href="/favicon.ico" />
+          <title>Guests</title>
         </Head>
         {error ? (
           <div>
@@ -46,15 +39,7 @@ const EventPage: NextPage<{
             </div>
           </div>
         ) : (
-          <EventBlock
-            eventId={eventId}
-            eventAddress={eventAddress}
-            eventGooglePlaceId={eventGooglePlaceId}
-            eventNameWithDate={eventNameWithDate}
-            description={description}
-            imageHeader={imageHeader}
-            invitedName={invitedName}
-          />
+          guests.map((guest) => <Guest guest={guest} />)
         )}
       </div>
     </div>
@@ -84,12 +69,17 @@ export async function getServerSideProps(context: {
     };
   }
 
+  const guests = await prisma.eventInvite.findMany({
+    where: {
+      eventId: event.id,
+    },
+  });
+  console.log(guests, event.id);
+
   return {
     props: {
       eventId: event.id,
-      eventAddress: event.address,
-      eventGooglePlaceId: event.googlePlaceId,
-      invitedName: "",
+      guests,
     },
   };
 }
