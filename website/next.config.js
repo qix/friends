@@ -3,6 +3,11 @@ const nextConfig = {
   images: {
       domains: ['friends.nyc'],
   },
+  experimental: {
+    images: {
+      layoutRaw: true
+    }
+  },
   reactStrictMode: true,
   webpack: (config) => {
     return Object.assign({}, config, {

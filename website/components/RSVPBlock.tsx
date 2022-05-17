@@ -14,8 +14,8 @@ const initalValues: SignupFields = {
   comments: "",
 };
 
-export const RSVPBlock = (props: { invitedName: string }) => {
-  const { invitedName } = props;
+export const RSVPBlock = (props: { eventId: string; invitedName: string }) => {
+  const { invitedName, eventId } = props;
   const [status, setStatus] = useState<JSX.Element>();
   const router = useRouter();
 
@@ -63,15 +63,12 @@ export const RSVPBlock = (props: { invitedName: string }) => {
       }}
       validationSchema={schema}
       onSubmit={(values, { setSubmitting }) => {
-        setStatus(
-          <div className="alert alert-secondary" role="alert">
-            Sending RSVP...
-          </div>
-        );
+        setStatus(<>Sending rsvp...</>);
         remotePerformAction({
           type: "rsvp",
           payload: {
             ...values,
+            eventId: eventId,
             comments: values.comments || "",
           },
         })
@@ -79,19 +76,23 @@ export const RSVPBlock = (props: { invitedName: string }) => {
             (data) => {
               if (data.error) {
                 setStatus(
-                  <div className="alert alert-danger" role="alert">
-                    Error: {data.error}
-                  </div>
+                  <span className="text-danger">
+                    <strong>Failed to send RSVP:</strong> {data.error}
+                  </span>
                 );
               } else {
-                router.push("/");
+                setStatus(
+                  <span className="text-success">
+                    <strong>Okay!</strong> RSVP Sent
+                  </span>
+                );
               }
             },
             (err) => {
               setStatus(
-                <div className="alert alert-danger" role="alert">
-                  Failed to send RSVP: {err.toString()}
-                </div>
+                <span className="text-danger">
+                  <strong>Failed to send RSVP:</strong> {err.toString()}
+                </span>
               );
             }
           )
@@ -102,20 +103,15 @@ export const RSVPBlock = (props: { invitedName: string }) => {
     >
       {({ isSubmitting }) => (
         <Form>
-          <div className="card">
-            <h5 className="card-header">RSVP</h5>
-            <div className="card-body">
-              {fields}
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={isSubmitting}
-              >
-                Submit
-              </button>
-            </div>
-            {status ? <div className="card-body">{status}</div> : null}
-          </div>
+          {fields}
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={isSubmitting}
+          >
+            Submit
+          </button>
+          {status ? <span className="px-3">{status}</span> : null}
         </Form>
       )}
     </Formik>

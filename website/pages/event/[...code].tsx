@@ -12,9 +12,13 @@ import { EventBlock } from "../../components/EventBlock";
 const EventPage: NextPage<{
   error: string;
   eventName: string;
+  eventGooglePlaceId: string;
+  eventAddress?: string;
   invitedName: string;
+  eventId: string;
 }> = (props) => {
-  const { invitedName, error } = props;
+  const { invitedName, eventId, eventGooglePlaceId, eventAddress, error } =
+    props;
 
   const { data: session } = useSession() as {
     data: FriendsSession;
@@ -25,7 +29,7 @@ const EventPage: NextPage<{
   const eventNameWithDate = "Braai on Monday, May 23rd";
   const description =
     "I'm hosting a braai (barbecue) for a bunch of friends and neighborhood folk on the 23rd.";
-  const imageHeader = "https://friends.nyc/images/braai-header.jpg";
+  const imageHeader = "https://friends.nyc/images/braai-header-light.jpg";
   const imageSquare = "https://friends.nyc/images/braai-square.jpg";
 
   return (
@@ -49,6 +53,9 @@ const EventPage: NextPage<{
           </div>
         ) : (
           <EventBlock
+            eventId={eventId}
+            eventAddress={eventAddress}
+            eventGooglePlaceId={eventGooglePlaceId}
             eventNameWithDate={eventNameWithDate}
             description={description}
             imageHeader={imageHeader}
@@ -76,18 +83,19 @@ export async function getServerSideProps(context: {
     },
   });
   if (!event) {
-    /*
     return {
       props: {
         error: "Could not find an event at the given address.",
       },
     };
-    */
   }
 
   return {
     props: {
-      invitedName: "YourName",
+      eventId: event.id,
+      eventAddress: event.address,
+      eventGooglePlaceId: event.googlePlaceId,
+      invitedName: "",
     },
   };
 }

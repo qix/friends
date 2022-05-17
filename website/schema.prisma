@@ -23,21 +23,24 @@ enum EventInviteResponse {
 }
 
 model Event {
-  id     String  @id @default(cuid())
-  isOpen Boolean @default(true)
-  slug   String  @unique
-  name   String
+  id            String  @id @default(cuid())
+  isOpen        Boolean @default(true)
+  slug          String  @unique
+  name          String
+  address       String?
+  googlePlaceId String?
 }
 
 model EventInvite {
   id            String              @id @default(cuid())
   eventId       String
-  inviteMessage String
-  invitedName   String
+  inviteMessage String?
+  invitedName   String?
   invitedEmail  String?
   response      EventInviteResponse @default(NONE)
   message       String              @db.Text
   guestCount    Int                 @default(1)
+  guestName     String?
   guestMax      Int?
 }
 

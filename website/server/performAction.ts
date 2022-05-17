@@ -20,7 +20,6 @@ export async function performAction(
   action: Action
 ): Promise<ActionResponseByType[typeof action["type"]]> {
   const email = user?.email;
-
   /***
    * performAction pre-checks
    */
@@ -43,9 +42,9 @@ export async function performAction(
   } else if (action.type === "heartbeat") {
     // Nothing required
   } else if (action.type === "rsvp") {
-    throw new Error("Not implemented");
+    // Nothing required
   } else if (action.type === "createEvent") {
-    throw new Error("Not implemented");
+    // Nothing required
   } else {
     assertNever(action, "Unhandled action type in pre transaction");
   }
@@ -125,6 +124,23 @@ export async function performAction(
           isOpen: false,
         },
       });
+    } else if (action.type === "createEvent") {
+      const { payload } = action;
+      await tx.event.create({
+        data: {
+          slug: payload.slug,
+          name: payload.name,
+        },
+      });
+    } else if (action.type === "rsvp") {
+      const { payload } = action;
+      await tx.eventInvite.create({
+        data: {
+          eventId: payload.eventId,
+          guestName: payload.name,
+          message: payload.comments,
+        },
+      });
     } else if (action.type === "heartbeat") {
       // Nothing required
     } else {
@@ -143,6 +159,10 @@ export async function performAction(
   } else if (action.type === "acceptInvite") {
     return { message: "Membership activated!" };
   } else if (action.type === "heartbeat") {
+    return { ok: true };
+  } else if (action.type === "rsvp") {
+    return { ok: true };
+  } else if (action.type === "createEvent") {
     return { ok: true };
   } else {
     assertNever(action, "Unhandled action type post transaction");

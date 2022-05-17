@@ -44,6 +44,7 @@ interface HeartbeatResponse {
 interface RSVPAction {
   type: "rsvp";
   payload: {
+    eventId: string;
     name: string;
     comments: string;
   };
