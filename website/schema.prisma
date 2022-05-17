@@ -34,9 +34,10 @@ model Event {
 model EventInvite {
   id            String              @id @default(cuid())
   eventId       String
-  inviteMessage String?
+  inviteMessage String?             @db.Text
   invitedName   String?
   invitedEmail  String?
+  privateNote   String?             @db.Text
   response      EventInviteResponse @default(NONE)
   message       String              @db.Text
   guestCount    Int                 @default(1)

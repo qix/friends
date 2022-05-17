@@ -41,7 +41,7 @@ export const EventBlock = (props: {
         <div className="card-body">
           <Image
             className="rounded card-img-top"
-            layout="raw"
+            layout="responsive"
             src={imageHeader}
             alt=""
             width={630}
@@ -58,11 +58,25 @@ export const EventBlock = (props: {
               around 8pm.
             </p>
             <p>
-              My address is <a href={googleUrl}>{eventAddress}</a>
+              <strong>Food</strong>: I&apos;m planning on making some burgers,
+              mushroom burgers, and steak rolls. If you want to bring along a
+              salad or any snacking items they&apos;re always encouraged.
             </p>
             <p>
-              <a target="_blank" rel="noreferrer" href={calendarUrl}>
-                Add to calendar
+              <strong>Drinks</strong>: I&apos;ll have some beer and wine, but if
+              you want anything specific (or a lot) please bring it along.
+            </p>
+            <p>
+              <strong>Address</strong>: <a href={googleUrl}>{eventAddress}</a>
+            </p>
+            <p>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={calendarUrl}
+                className="link-secondary"
+              >
+                Add to Google calendar
               </a>
             </p>
           </li>
