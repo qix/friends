@@ -29,31 +29,33 @@ const EventPage: NextPage<{
   const imageSquare = "https://friends.nyc/images/braai-square.jpg";
 
   return (
-    <div className="container">
-      <Head>
-        <title>{eventNameWithDate}</title>
-        <meta name="description" content="Friends.nyc" />
-        <meta property="og:site_name" content="Friends.nyc" />
-        <meta property="og:title" content={eventNameWithDate} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" itemProp="image" content={imageSquare} />
-        <meta property="og:type" content="website" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      {error ? (
-        <div>
-          <div className="alert alert-danger m-5" role="alert">
-            {error}
+    <div className="main">
+      <div className="container">
+        <Head>
+          <title>{eventNameWithDate}</title>
+          <meta name="description" content="Friends.nyc" />
+          <meta property="og:site_name" content="Friends.nyc" />
+          <meta property="og:title" content={eventNameWithDate} />
+          <meta property="og:description" content={description} />
+          <meta property="og:image" itemProp="image" content={imageSquare} />
+          <meta property="og:type" content="website" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        {error ? (
+          <div>
+            <div className="alert alert-danger m-5" role="alert">
+              {error}
+            </div>
           </div>
-        </div>
-      ) : (
-        <EventBlock
-          eventNameWithDate={eventNameWithDate}
-          description={description}
-          imageHeader={imageHeader}
-          invitedName={invitedName}
-        />
-      )}
+        ) : (
+          <EventBlock
+            eventNameWithDate={eventNameWithDate}
+            description={description}
+            imageHeader={imageHeader}
+            invitedName={invitedName}
+          />
+        )}
+      </div>
     </div>
   );
 };
@@ -64,6 +66,7 @@ export async function getServerSideProps(context: {
   };
 }) {
   const prisma = getPrismaClient();
+
   invariant(context.query.code?.length === 1, "Expected a single event code");
   const [code] = context.query.code;
 

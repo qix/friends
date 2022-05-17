@@ -1,4 +1,3 @@
-import styles from "../styles/Invitation.module.css";
 import { RSVPBlock } from "./RSVPBlock";
 import Image from "next/image";
 
@@ -10,16 +9,23 @@ export const EventBlock = (props: {
 }) => {
   const { eventNameWithDate, description, imageHeader, invitedName } = props;
   return (
-    <div className={styles.main}>
-      <div className={styles.invite}>
-        <h1>{eventNameWithDate}</h1>
-        <Image src={imageHeader} alt="" width={630} height={211} />
-
-        <p>{description}</p>
+    <>
+      <div className="card">
+        <h5 className="card-header">{eventNameWithDate}</h5>
+        <div className="card-body">hoho</div>
+        <Image
+          className="rounded card-image-top"
+          src={imageHeader}
+          alt=""
+          width={630}
+          height={211}
+        />
       </div>
-      <div className={styles.signupForm}>
+
+      <p>{description}</p>
+      <div>
         <RSVPBlock invitedName={invitedName} />
       </div>
-    </div>
+    </>
   );
 };
