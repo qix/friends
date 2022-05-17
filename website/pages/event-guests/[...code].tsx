@@ -39,7 +39,7 @@ const EventPage: NextPage<{
             </div>
           </div>
         ) : (
-          guests.map((guest) => <Guest guest={guest} />)
+          guests.map((guest) => <Guest key={guest.id} guest={guest} />)
         )}
       </div>
     </div>
