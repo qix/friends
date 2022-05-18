@@ -193,7 +193,7 @@ const EventPage: NextPage<{
               ...values,
               eventId: event.id!,
               privateNote: values.privateNote || null,
-              guestCount: parseInt(values.guestCount, 10),
+              guestCount: parseInt(`${values.guestCount}`, 10),
             },
           })
             .then(
