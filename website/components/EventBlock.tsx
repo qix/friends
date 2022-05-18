@@ -76,6 +76,9 @@ export const EventBlock = (props: {
               <strong>Address</strong>: <a href={googleUrl}>{eventAddress}</a>
             </p>
             <p>
+              <strong>Coming?</strong> Please RSVP below.
+            </p>
+            <p>
               <a
                 target="_blank"
                 rel="noreferrer"
