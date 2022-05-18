@@ -74,6 +74,7 @@ interface CreateEventInviteAction {
     name: string;
     slug: string;
     privateNote: string | null;
+    guestCount: number;
   };
 }
 interface CreateEventInviteResponse {

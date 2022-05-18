@@ -16,7 +16,7 @@ const schema = object({
   name: string().required("Name is required"),
   slug: string().required("Slug is required"),
   privateNote: string(),
-  guestCount: number(),
+  guestCount: number().required("Guest count is required"),
 });
 type CreateEventFields = InferType<typeof schema>;
 const initalValues: CreateEventFields = {
@@ -193,6 +193,7 @@ const EventPage: NextPage<{
               ...values,
               eventId: event.id!,
               privateNote: values.privateNote || null,
+              guestCount: parseInt(values.guestCount, 10),
             },
           })
             .then(
@@ -270,7 +271,6 @@ export async function getServerSideProps(context: {
       eventId: event.id,
     },
   });
-  console.log(guests, event.id);
 
   return {
     props: {

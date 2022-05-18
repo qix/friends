@@ -141,6 +141,8 @@ export async function performAction(
           eventId: payload.eventId,
           slug: payload.slug,
           invitedName: payload.name,
+          guestCount: payload.guestCount,
+          privateNote: payload.privateNote,
         },
       });
     } else if (action.type === "rsvp") {
