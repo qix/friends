@@ -1,27 +1,74 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { object, string, InferType } from "yup";
 import { remotePerformAction } from "../frontend/performAction";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { EventInvite } from "@prisma/client";
+import { EventInvite, EventInviteResponse } from "@prisma/client";
+import { RSVPAction } from "../models/Action";
 
 const schema = object({
   name: string().required("Name is required"),
   comments: string(),
+  response: string().oneOf(["GOING", "NOT_GOING"]),
 });
-type SignupFields = InferType<typeof schema>;
+type SignupFields = InferType<typeof schema> & {
+  response: EventInviteResponse;
+};
 const initalValues: SignupFields = {
   name: "",
   comments: "",
+  response: "GOING",
 };
 
 export const RSVPBlock = (props: {
   eventId: string;
   eventInvite: Partial<EventInvite>;
+  setResponse: (response: EventInviteResponse) => void;
 }) => {
-  const { eventInvite, eventId } = props;
+  const { eventInvite, eventId, setResponse } = props;
 
   const [status, setStatus] = useState<JSX.Element>();
+
+  const sendRSVP = (
+    payload: Omit<RSVPAction["payload"], "eventId" | "slug">
+  ) => {
+    setStatus(<>Sending rsvp...</>);
+    return remotePerformAction({
+      type: "rsvp",
+      payload: {
+        eventId,
+        slug: eventInvite?.slug || null,
+        ...payload,
+      },
+    }).then(
+      (data) => {
+        if (data.error) {
+          setStatus(
+            <span className="text-danger">
+              <strong>Failed to send RSVP:</strong> {data.error}
+            </span>
+          );
+        } else {
+          setResponse(payload.response);
+          setStatus(
+            <span className="text-success">
+              <strong>
+                Okay{payload.response === "NOT_GOING" ? " :(." : "!"}
+              </strong>{" "}
+              RSVP Sent
+            </span>
+          );
+        }
+      },
+      (err) => {
+        setStatus(
+          <span className="text-danger">
+            <strong>Failed to send RSVP:</strong> {err.toString()}
+          </span>
+        );
+      }
+    );
+  };
 
   const fields = (
     <fieldset>
@@ -59,69 +106,55 @@ export const RSVPBlock = (props: {
       </div>
     </fieldset>
   );
-  console.log(eventInvite);
+
   return (
-    <Formik
-      initialValues={{
-        ...initalValues,
-        name: eventInvite?.guestName || eventInvite?.invitedName || "",
-        comments: eventInvite?.message || "",
-      }}
-      validationSchema={schema}
-      onSubmit={(values, { setSubmitting }) => {
-        setStatus(<>Sending rsvp...</>);
-        remotePerformAction({
-          type: "rsvp",
-          payload: {
+    <>
+      <Formik
+        initialValues={{
+          ...initalValues,
+          name: eventInvite?.guestName || eventInvite?.invitedName || "",
+          comments: eventInvite?.message || "",
+        }}
+        validationSchema={schema}
+        onSubmit={(values, { setSubmitting }) => {
+          sendRSVP({
             ...values,
-            eventId: eventId,
             comments: values.comments || "",
-            slug: eventInvite?.slug || null,
-            response: "GOING",
-          },
-        })
-          .then(
-            (data) => {
-              if (data.error) {
-                setStatus(
-                  <span className="text-danger">
-                    <strong>Failed to send RSVP:</strong> {data.error}
-                  </span>
-                );
-              } else {
-                setStatus(
-                  <span className="text-success">
-                    <strong>Okay!</strong> RSVP Sent
-                  </span>
-                );
-              }
-            },
-            (err) => {
-              setStatus(
-                <span className="text-danger">
-                  <strong>Failed to send RSVP:</strong> {err.toString()}
-                </span>
-              );
-            }
-          )
-          .finally(() => {
+            response: values.response || "GOING",
+          }).finally(() => {
             setSubmitting(false);
           });
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          {fields}
-          <button
-            type="submit"
-            className="btn btn-success"
-            disabled={isSubmitting}
-          >
-            I&apos;ll be there!
-          </button>
-          {status ? <span className="px-3">{status}</span> : null}
-        </Form>
-      )}
-    </Formik>
+        }}
+      >
+        {({ isSubmitting, setFieldValue, submitForm }) => (
+          <Form>
+            {fields}
+            <button
+              className="btn btn-success"
+              disabled={isSubmitting}
+              onClick={(evt: React.MouseEvent) => {
+                evt.preventDefault();
+                setFieldValue("response", "GOING", false);
+                submitForm();
+              }}
+            >
+              I&apos;ll be there!
+            </button>{" "}
+            <button
+              className="btn btn-danger"
+              disabled={isSubmitting}
+              onClick={(evt: React.MouseEvent) => {
+                evt.preventDefault();
+                setFieldValue("response", "NOT_GOING", false);
+                submitForm();
+              }}
+            >
+              I can&apos;t make it
+            </button>{" "}
+            {status ? <span className="px-3">{status}</span> : null}
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };

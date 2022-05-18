@@ -1,7 +1,8 @@
 import { RSVPBlock } from "./RSVPBlock";
 import Image from "next/image";
-import { EventInvite } from "@prisma/client";
+import { EventInvite, EventInviteResponse } from "@prisma/client";
 import ReactMarkdown from "react-markdown";
+import { useState } from "react";
 
 export const EventBlock = (props: {
   eventId: string;
@@ -21,6 +22,10 @@ export const EventBlock = (props: {
     eventInvite,
   } = props;
 
+  const [currentResponse, setResponse] = useState<EventInviteResponse>(
+    eventInvite.response || "NONE"
+  );
+
   const googleUrl =
     `https://www.google.com/maps/search/?api=1&` +
     `query_place_id=${encodeURIComponent(eventGooglePlaceId || "")}&` +
@@ -34,6 +39,21 @@ export const EventBlock = (props: {
     `details=${encodeURIComponent("A braai (barbecue) on Josh's patio")}&` +
     `location=${encodeURIComponent(eventAddress + ", New York")}&` +
     `dates=${encodeURIComponent(startIso)}%2F${encodeURIComponent(endIso)}`;
+
+  let inviteAlert: JSX.Element | null = null;
+  if (currentResponse === "GOING") {
+    inviteAlert = (
+      <div className="alert alert-success" role="alert">
+        You&apos;ve accepted this invite.
+      </div>
+    );
+  } else if (currentResponse === "NOT_GOING") {
+    inviteAlert = (
+      <div className="alert alert-dark" role="alert">
+        You&apos;ve declined this invite.
+      </div>
+    );
+  }
 
   return (
     <>
@@ -89,8 +109,15 @@ export const EventBlock = (props: {
               </a>
             </p>
           </li>
+          {inviteAlert ? (
+            <li className="list-group-item">{inviteAlert}</li>
+          ) : null}
           <li className="list-group-item">
-            <RSVPBlock eventId={eventId} eventInvite={eventInvite} />
+            <RSVPBlock
+              setResponse={setResponse}
+              eventId={eventId}
+              eventInvite={eventInvite}
+            />
           </li>
         </ul>
       </div>

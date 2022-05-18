@@ -6,6 +6,7 @@ import { HttpError } from "./asyncHandler";
 import { getPrismaClient } from "./db";
 import { invariant } from "./invariant";
 import { assertNever } from "../jslib/assertNever";
+import { removeUndefined } from "../jslib/removeUndefined";
 
 type Data = {
   error?: string;
@@ -149,9 +150,11 @@ export async function performAction(
       const { payload } = action;
       const data = {
         eventId: payload.eventId,
-        guestName: payload.name,
-        message: payload.comments,
-        response: payload.response,
+        ...removeUndefined({
+          guestName: payload.name,
+          message: payload.comments,
+          response: payload.response,
+        }),
       };
 
       if (payload.slug) {

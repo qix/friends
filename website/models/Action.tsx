@@ -42,13 +42,13 @@ interface HeartbeatResponse {
   ok: boolean;
 }
 
-interface RSVPAction {
+export interface RSVPAction {
   type: "rsvp";
   payload: {
     eventId: string;
     slug: string | null;
-    name: string;
-    comments: string;
+    name?: string;
+    comments?: string;
     response: EventInviteResponse;
   };
 }

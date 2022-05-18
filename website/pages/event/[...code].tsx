@@ -108,6 +108,7 @@ export async function getServerSideProps(context: {
             guestName: eventInvite.guestName || null,
             message: eventInvite.message || null,
             inviteMessage: eventInvite.inviteMessage || null,
+            response: eventInvite.response,
           }
         : {},
     },
