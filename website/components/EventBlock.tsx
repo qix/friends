@@ -1,5 +1,7 @@
 import { RSVPBlock } from "./RSVPBlock";
 import Image from "next/image";
+import { EventInvite } from "@prisma/client";
+import ReactMarkdown from "react-markdown";
 
 export const EventBlock = (props: {
   eventId: string;
@@ -8,16 +10,15 @@ export const EventBlock = (props: {
   eventNameWithDate: string;
   description: string;
   imageHeader: string;
-  invitedName: string;
+  eventInvite: Partial<EventInvite>;
 }) => {
   const {
     eventId,
     eventAddress,
     eventGooglePlaceId,
     eventNameWithDate,
-    description,
     imageHeader,
-    invitedName,
+    eventInvite,
   } = props;
 
   const googleUrl =
@@ -49,6 +50,11 @@ export const EventBlock = (props: {
           />
         </div>
         <ul className="list-group list-group-flush">
+          {eventInvite?.inviteMessage ? (
+            <li className="list-group-item">
+              <ReactMarkdown>{eventInvite.inviteMessage}</ReactMarkdown>
+            </li>
+          ) : null}
           <li className="list-group-item">
             <p>Hello friends!</p>
             <p>
@@ -81,7 +87,7 @@ export const EventBlock = (props: {
             </p>
           </li>
           <li className="list-group-item">
-            <RSVPBlock eventId={eventId} invitedName={invitedName} />
+            <RSVPBlock eventId={eventId} eventInvite={eventInvite} />
           </li>
         </ul>
       </div>

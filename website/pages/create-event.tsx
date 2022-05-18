@@ -51,7 +51,7 @@ const CreateEvent: NextPage = () => {
     </fieldset>
   );
   return (
-    <AuthenticatedPage>
+    <AuthenticatedPage title="Create Event">
       <div>{message}</div>
       <Formik
         initialValues={{

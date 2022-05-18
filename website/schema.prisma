@@ -32,17 +32,21 @@ model Event {
 }
 
 model EventInvite {
-  id            String              @id @default(cuid())
-  eventId       String
-  inviteMessage String?             @db.Text
-  invitedName   String?
-  invitedEmail  String?
-  privateNote   String?             @db.Text
-  response      EventInviteResponse @default(NONE)
-  message       String              @db.Text
-  guestCount    Int                 @default(1)
-  guestName     String?
-  guestMax      Int?
+  id                String              @id @default(cuid())
+  eventId           String
+  slug              String?
+  inviteMessage     String?             @db.Text
+  invitedName       String?
+  invitedEmail      String?
+  privateNote       String?             @db.Text
+  response          EventInviteResponse @default(NONE)
+  message           String?             @db.Text
+  guestCount        Int                 @default(1)
+  guestName         String?
+  guestMax          Int?
+  confidencePercent Int?
+
+  @@unique([eventId, slug])
 }
 
 model Invitation {

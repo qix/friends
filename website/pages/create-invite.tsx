@@ -71,7 +71,7 @@ const CreateInvite: NextPage = () => {
     </fieldset>
   );
   return (
-    <AuthenticatedPage>
+    <AuthenticatedPage title="Create Invite">
       <div>{message}</div>
       <Formik
         initialValues={{

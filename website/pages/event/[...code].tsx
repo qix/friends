@@ -8,16 +8,17 @@ import { signIn, useSession } from "next-auth/react";
 import { FriendsSession } from "../api/auth/[...nextauth]";
 import Link from "next/link";
 import { EventBlock } from "../../components/EventBlock";
+import { EventInvite } from "@prisma/client";
 
 const EventPage: NextPage<{
   error: string;
   eventName: string;
   eventGooglePlaceId: string;
   eventAddress?: string;
-  invitedName: string;
   eventId: string;
+  eventInvite: Partial<EventInvite>;
 }> = (props) => {
-  const { invitedName, eventId, eventGooglePlaceId, eventAddress, error } =
+  const { eventInvite, eventId, eventGooglePlaceId, eventAddress, error } =
     props;
 
   const eventNameWithDate = "Braai on Monday, May 23rd";
@@ -53,7 +54,7 @@ const EventPage: NextPage<{
             eventNameWithDate={eventNameWithDate}
             description={description}
             imageHeader={imageHeader}
-            invitedName={invitedName}
+            eventInvite={eventInvite}
           />
         )}
       </div>
@@ -64,6 +65,7 @@ const EventPage: NextPage<{
 export async function getServerSideProps(context: {
   query: {
     code: string[];
+    invite?: string;
   };
 }) {
   const prisma = getPrismaClient();
@@ -84,12 +86,30 @@ export async function getServerSideProps(context: {
     };
   }
 
+  let eventInvite: EventInvite | null = null;
+  if (context.query.invite) {
+    eventInvite = await prisma.eventInvite.findFirst({
+      where: {
+        slug: context.query.invite,
+        eventId: event.id,
+      },
+    });
+  }
+
   return {
     props: {
       eventId: event.id,
       eventAddress: event.address,
       eventGooglePlaceId: event.googlePlaceId,
-      invitedName: "",
+      eventInvite: eventInvite
+        ? {
+            slug: eventInvite.slug || null,
+            invitedName: eventInvite.invitedName || null,
+            guestName: eventInvite.guestName || null,
+            message: eventInvite.message || null,
+            inviteMessage: eventInvite.inviteMessage || null,
+          }
+        : {},
     },
   };
 }

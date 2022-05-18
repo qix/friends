@@ -45,6 +45,8 @@ export async function performAction(
     // Nothing required
   } else if (action.type === "createEvent") {
     // Nothing required
+  } else if (action.type === "createEventInvite") {
+    // Nothing required
   } else {
     assertNever(action, "Unhandled action type in pre transaction");
   }
@@ -132,15 +134,38 @@ export async function performAction(
           name: payload.name,
         },
       });
-    } else if (action.type === "rsvp") {
+    } else if (action.type === "createEventInvite") {
       const { payload } = action;
       await tx.eventInvite.create({
         data: {
           eventId: payload.eventId,
-          guestName: payload.name,
-          message: payload.comments,
+          slug: payload.slug,
+          invitedName: payload.name,
         },
       });
+    } else if (action.type === "rsvp") {
+      const { payload } = action;
+      const data = {
+        eventId: payload.eventId,
+        guestName: payload.name,
+        message: payload.comments,
+        response: payload.response,
+      };
+
+      if (payload.slug) {
+        await tx.eventInvite.upsert({
+          update: data,
+          create: data,
+          where: {
+            eventId_slug: {
+              eventId: payload.eventId,
+              slug: payload.slug,
+            },
+          },
+        });
+      } else {
+        await tx.eventInvite.create({ data });
+      }
     } else if (action.type === "heartbeat") {
       // Nothing required
     } else {
@@ -163,6 +188,8 @@ export async function performAction(
   } else if (action.type === "rsvp") {
     return { ok: true };
   } else if (action.type === "createEvent") {
+    return { ok: true };
+  } else if (action.type === "createEventInvite") {
     return { ok: true };
   } else {
     assertNever(action, "Unhandled action type post transaction");

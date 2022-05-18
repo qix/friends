@@ -16,7 +16,7 @@ const InviteList: NextPage<{
   const router = useRouter();
 
   return (
-    <AuthenticatedPage>
+    <AuthenticatedPage title="Invite listing">
       {error
         ? error
         : invitations.map((invite) => {

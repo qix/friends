@@ -4,7 +4,10 @@ import { FunctionComponent } from "react";
 import { LoadingSpinner } from "./LoadingSpinner";
 import styles from "../styles/Home.module.css";
 
-export const AuthenticatedPage: FunctionComponent<{}> = ({ children }) => {
+export const AuthenticatedPage: FunctionComponent<{ title: string }> = ({
+  children,
+  title,
+}) => {
   const { data: session, status } = useSession({ required: true });
 
   if (!children) {
@@ -29,13 +32,13 @@ export const AuthenticatedPage: FunctionComponent<{}> = ({ children }) => {
     return (
       <>
         <Head>
-          <title>Friends</title>
+          <title>{title}</title>
           <meta name="description" content="Friends.nyc" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <div className={styles.container}>
-          <main className={styles.main}>{children as any}</main>
+        <div className="main">
+          <main className="container">{children as any}</main>
         </div>
       </>
     );

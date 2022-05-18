@@ -1,3 +1,4 @@
+import { EventInviteResponse } from "@prisma/client";
 import { pronounOptions } from "./Person";
 
 interface CreateInviteAction {
@@ -45,8 +46,10 @@ interface RSVPAction {
   type: "rsvp";
   payload: {
     eventId: string;
+    slug: string | null;
     name: string;
     comments: string;
+    response: EventInviteResponse;
   };
 }
 interface RSVPResponse {
@@ -64,11 +67,25 @@ interface CreateEventResponse {
   ok: boolean;
 }
 
+interface CreateEventInviteAction {
+  type: "createEventInvite";
+  payload: {
+    eventId: string;
+    name: string;
+    slug: string;
+    privateNote: string | null;
+  };
+}
+interface CreateEventInviteResponse {
+  ok: boolean;
+}
+
 export type Action =
   | AcceptInviteAction
   | CreateInviteAction
   | HeartbeatAction
   | CreateEventAction
+  | CreateEventInviteAction
   | RSVPAction;
 
 export type ActionResponseByType = {
@@ -76,5 +93,6 @@ export type ActionResponseByType = {
   acceptInvite: AcceptInviteResponse;
   createInvite: CreateInviteResponse;
   createEvent: CreateEventResponse;
+  createEventInvite: CreateEventInviteResponse;
   rsvp: RSVPResponse;
 };

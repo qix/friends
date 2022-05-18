@@ -3,6 +3,7 @@ import { object, string, InferType } from "yup";
 import { remotePerformAction } from "../frontend/performAction";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { EventInvite } from "@prisma/client";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -14,10 +15,13 @@ const initalValues: SignupFields = {
   comments: "",
 };
 
-export const RSVPBlock = (props: { eventId: string; invitedName: string }) => {
-  const { invitedName, eventId } = props;
+export const RSVPBlock = (props: {
+  eventId: string;
+  eventInvite: Partial<EventInvite>;
+}) => {
+  const { eventInvite, eventId } = props;
+
   const [status, setStatus] = useState<JSX.Element>();
-  const router = useRouter();
 
   const fields = (
     <fieldset>
@@ -44,7 +48,7 @@ export const RSVPBlock = (props: { eventId: string; invitedName: string }) => {
           as="textarea"
         />
         <div className="form-text">
-          <em>Optional.</em> If you&apos;re bringing along people, or might
+          <em>Optional.</em> If you&apos;re bringing along more people, or might
           bring someone along, just let me know here.
         </div>
         <ErrorMessage
@@ -55,11 +59,13 @@ export const RSVPBlock = (props: { eventId: string; invitedName: string }) => {
       </div>
     </fieldset>
   );
+  console.log(eventInvite);
   return (
     <Formik
       initialValues={{
         ...initalValues,
-        name: invitedName,
+        name: eventInvite?.guestName || eventInvite?.invitedName || "",
+        comments: eventInvite?.message || "",
       }}
       validationSchema={schema}
       onSubmit={(values, { setSubmitting }) => {
@@ -70,6 +76,8 @@ export const RSVPBlock = (props: { eventId: string; invitedName: string }) => {
             ...values,
             eventId: eventId,
             comments: values.comments || "",
+            slug: eventInvite?.slug || null,
+            response: "GOING",
           },
         })
           .then(
@@ -106,10 +114,10 @@ export const RSVPBlock = (props: { eventId: string; invitedName: string }) => {
           {fields}
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-success"
             disabled={isSubmitting}
           >
-            Submit
+            I&apos;ll be there!
           </button>
           {status ? <span className="px-3">{status}</span> : null}
         </Form>
