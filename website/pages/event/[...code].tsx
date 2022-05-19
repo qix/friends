@@ -8,18 +8,33 @@ import { signIn, useSession } from "next-auth/react";
 import { FriendsSession } from "../api/auth/[...nextauth]";
 import Link from "next/link";
 import { EventBlock } from "../../components/EventBlock";
-import { EventInvite } from "@prisma/client";
+import { Event, EventInvite } from "@prisma/client";
 
 const EventPage: NextPage<{
   error: string;
+  event: Partial<Event>;
   eventName: string;
   eventGooglePlaceId: string;
   eventAddress?: string;
   eventId: string;
   eventInvite: Partial<EventInvite>;
 }> = (props) => {
-  const { eventInvite, eventId, eventGooglePlaceId, eventAddress, error } =
-    props;
+  const {
+    event,
+    eventInvite,
+    eventId,
+    eventGooglePlaceId,
+    eventAddress,
+    error,
+  } = props;
+
+  const { data: session } = useSession() as {
+    data: FriendsSession;
+    status: "authenticated" | "loading" | "unauthenticated";
+  };
+
+  // Hard-code the owner for now
+  const isOwner = session?.user?.id === "ckzwprf700006zc59boklxy00";
 
   const eventNameWithDate = "Braai on Monday, May 23rd";
   const description =
@@ -47,15 +62,31 @@ const EventPage: NextPage<{
             </div>
           </div>
         ) : (
-          <EventBlock
-            eventId={eventId}
-            eventAddress={eventAddress}
-            eventGooglePlaceId={eventGooglePlaceId}
-            eventNameWithDate={eventNameWithDate}
-            description={description}
-            imageHeader={imageHeader}
-            eventInvite={eventInvite}
-          />
+          <>
+            {isOwner ? (
+              <ul className="nav nav-tabs">
+                <li className="nav-item active">
+                  <Link href={`/event-guests/${event.slug!}`}>
+                    <a className="active nav-link">Event</a>
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link href={`/event-guests/${event.slug!}`}>
+                    <a className="nav-link">Show event guests</a>
+                  </Link>
+                </li>
+              </ul>
+            ) : null}
+            <EventBlock
+              eventId={eventId}
+              eventAddress={eventAddress}
+              eventGooglePlaceId={eventGooglePlaceId}
+              eventNameWithDate={eventNameWithDate}
+              description={description}
+              imageHeader={imageHeader}
+              eventInvite={eventInvite}
+            />
+          </>
         )}
       </div>
     </div>
@@ -101,6 +132,9 @@ export async function getServerSideProps(context: {
       eventId: event.id,
       eventAddress: event.address,
       eventGooglePlaceId: event.googlePlaceId,
+      event: {
+        slug: event.slug,
+      },
       eventInvite: eventInvite
         ? {
             slug: eventInvite.slug || null,
