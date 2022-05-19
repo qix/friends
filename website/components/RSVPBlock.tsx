@@ -9,7 +9,7 @@ import { RSVPAction } from "../models/Action";
 const schema = object({
   name: string().required("Name is required"),
   comments: string(),
-  response: string().oneOf(["GOING", "NOT_GOING"]),
+  response: string().oneOf(["GOING", "NOT_GOING", "MAYBE"]),
 });
 type SignupFields = InferType<typeof schema> & {
   response: EventInviteResponse;
@@ -32,7 +32,17 @@ export const RSVPBlock = (props: {
   const sendRSVP = (
     payload: Omit<RSVPAction["payload"], "eventId" | "slug">
   ) => {
-    setStatus(<>Sending rsvp...</>);
+    setStatus(
+      <>
+        <div
+          className="spinner-border text-primary spinner-border-sm"
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>{" "}
+        <span className="text-secondary">Sending RSVP...</span>
+      </>
+    );
     return remotePerformAction({
       type: "rsvp",
       payload: {
@@ -55,7 +65,14 @@ export const RSVPBlock = (props: {
               <strong>
                 Okay{payload.response === "NOT_GOING" ? " :(." : "!"}
               </strong>{" "}
-              RSVP Sent
+              {
+                {
+                  NONE: "",
+                  MAYBE: "Please let us know when you know.",
+                  GOING: "Looking forward to seeing you!",
+                  NOT_GOING: "Maybe next time.",
+                }[payload.response]
+              }
             </span>
           );
         }
@@ -129,29 +146,46 @@ export const RSVPBlock = (props: {
         {({ isSubmitting, setFieldValue, submitForm }) => (
           <Form>
             {fields}
-            <button
-              className="btn btn-success"
-              disabled={isSubmitting}
-              onClick={(evt: React.MouseEvent) => {
-                evt.preventDefault();
-                setFieldValue("response", "GOING", false);
-                submitForm();
-              }}
+            <div
+              className="btn-group"
+              role="group"
+              aria-label="Basic mixed styles example"
             >
-              I&apos;ll be there!
-            </button>{" "}
-            <button
-              className="btn btn-danger"
-              disabled={isSubmitting}
-              onClick={(evt: React.MouseEvent) => {
-                evt.preventDefault();
-                setFieldValue("response", "NOT_GOING", false);
-                submitForm();
-              }}
-            >
-              I can&apos;t make it
-            </button>{" "}
-            {status ? <span className="px-3">{status}</span> : null}
+              <button
+                className="btn btn-success"
+                disabled={isSubmitting}
+                onClick={(evt: React.MouseEvent) => {
+                  evt.preventDefault();
+                  setFieldValue("response", "GOING", false);
+                  submitForm();
+                }}
+              >
+                I&apos;ll be there!
+              </button>{" "}
+              <button
+                className="btn btn-warning"
+                disabled={isSubmitting}
+                onClick={(evt: React.MouseEvent) => {
+                  evt.preventDefault();
+                  setFieldValue("response", "MAYBE", false);
+                  submitForm();
+                }}
+              >
+                Maybe?!
+              </button>{" "}
+              <button
+                className="btn btn-danger"
+                disabled={isSubmitting}
+                onClick={(evt: React.MouseEvent) => {
+                  evt.preventDefault();
+                  setFieldValue("response", "NOT_GOING", false);
+                  submitForm();
+                }}
+              >
+                I can&apos;t make it
+              </button>
+            </div>
+            {status ? <div className="py-3">{status}</div> : null}
           </Form>
         )}
       </Formik>

@@ -53,6 +53,12 @@ export const EventBlock = (props: {
         You&apos;ve declined this invite.
       </div>
     );
+  } else if (currentResponse === "MAYBE") {
+    inviteAlert = (
+      <div className="alert alert-warning" role="alert">
+        You haven&apos;t given a definitive answer yet... please RSVP below
+      </div>
+    );
   }
 
   return (

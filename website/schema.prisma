@@ -20,6 +20,7 @@ enum EventInviteResponse {
   NONE
   GOING
   NOT_GOING
+  MAYBE
 }
 
 model Event {

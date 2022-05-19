@@ -11,6 +11,7 @@ import { object, string, number, InferType } from "yup";
 import { useState } from "react";
 import { remotePerformAction } from "../../frontend/performAction";
 import { ErrorAlert, SuccessAlert } from "../../components/alerts";
+import { assertNever } from "../../jslib/assertNever";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -51,15 +52,22 @@ const Guest = (props: {
     badge = <span className="badge bg-success">Yes</span>;
   } else if (guest.response === "NOT_GOING") {
     badge = <span className="badge bg-danger">No</span>;
+  } else if (guest.response === "MAYBE") {
+    badge = <span className="badge bg-warning">???</span>;
   } else if (guest.response === "NONE") {
-    badge = <span className="badge bg-secondary">???</span>;
+    badge = <span className="badge bg-secondary">---</span>;
   } else {
     badge = <em>(Unknown response: {guest.response})</em>;
   }
 
   return (
     <tr>
-      <td className="text-center">{badge}</td>
+      <td className="text-center">
+        {badge}
+        {guest.confidencePercent ? (
+          <div className="text-secondary py-1">{`${guest.confidencePercent}%`}</div>
+        ) : null}
+      </td>
       <td>
         <p>
           <h5>
@@ -94,6 +102,66 @@ const Guest = (props: {
         </p>
       </td>
     </tr>
+  );
+};
+
+const AttendenceSummary = (props: { guests: Partial<EventInvite>[] }) => {
+  const { guests } = props;
+  // Track how many guests have said yes/maybe at each percent confidence
+  const percentCount = new Array(101).fill(0);
+  let unknownConfidence = 0;
+  let noAnswer = 0;
+  let declined = 1;
+  guests.forEach((guest) => {
+    if (guest.response === "MAYBE" || guest.response === "GOING") {
+      if (typeof guest.confidencePercent === "number") {
+        for (let i = 0; i <= Math.min(100, guest.confidencePercent); i++) {
+          percentCount[i] += guest.guestCount ?? 1;
+        }
+      } else {
+        unknownConfidence += guest.guestCount ?? 1;
+      }
+    } else if (guest.response === "NOT_GOING") {
+      declined += guest.guestCount ?? 1;
+    } else if (guest.response === "NONE" || !guest.response) {
+      noAnswer += guest.guestCount ?? 1;
+    } else {
+      assertNever(guest.response, "Unknown guest response for event");
+    }
+  });
+
+  let last = -1;
+  const attendPercents: JSX.Element[] = [];
+  for (let i = 1; i <= 100; i++) {
+    if (i === 100 || percentCount[i] !== percentCount[i + 1]) {
+      attendPercents.push(
+        <>
+          <strong>{i}%</strong> confidence: {percentCount[i]} people
+        </>
+      );
+    }
+  }
+
+  return (
+    <>
+      {attendPercents.map((text) => (
+        <>
+          <div>{text}</div>
+        </>
+      ))}
+      <div>
+        <strong>Unknown confidence: </strong>
+        {unknownConfidence} people
+      </div>
+      <div>
+        <strong>Declined: </strong>
+        {declined} people
+      </div>
+      <div>
+        <strong>Still waiting: </strong>
+        {noAnswer} people
+      </div>
+    </>
   );
 };
 
@@ -170,13 +238,16 @@ const EventPage: NextPage<{
           </div>
         </div>
       ) : (
-        <table className="table table-striped">
-          <tbody>
-            {guests.map((guest) => (
-              <Guest key={guest.id} event={event} guest={guest} />
-            ))}
-          </tbody>
-        </table>
+        <>
+          <AttendenceSummary guests={guests} />
+          <table className="table table-striped">
+            <tbody>
+              {guests.map((guest) => (
+                <Guest key={guest.id} event={event} guest={guest} />
+              ))}
+            </tbody>
+          </table>
+        </>
       )}
 
       <div>{message}</div>
@@ -290,6 +361,7 @@ export async function getServerSideProps(context: {
         guestCount: guest.guestCount,
         guestName: guest.guestName || null,
         guestMax: guest.guestMax || null,
+        confidencePercent: guest.confidencePercent || null,
       })),
     },
   };
