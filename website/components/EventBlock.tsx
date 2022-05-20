@@ -1,35 +1,24 @@
 import { RSVPBlock } from "./RSVPBlock";
 import Image from "next/image";
-import { EventInvite, EventInviteResponse } from "@prisma/client";
+import { Event, EventInvite, EventInviteResponse } from "@prisma/client";
 import ReactMarkdown from "react-markdown";
-import { useState } from "react";
+import { FunctionComponent, useState } from "react";
 
-export const EventBlock = (props: {
-  eventId: string;
-  eventAddress?: string;
-  eventGooglePlaceId?: string;
+export const EventBlock: FunctionComponent<{
+  event: Partial<Event>;
   eventNameWithDate: string;
   description: string;
   imageHeader: string;
   eventInvite: Partial<EventInvite>;
-}) => {
-  const {
-    eventId,
-    eventAddress,
-    eventGooglePlaceId,
-    eventNameWithDate,
-    imageHeader,
-    eventInvite,
-  } = props;
-
+}> = ({ event, eventInvite, imageHeader }) => {
   const [currentResponse, setResponse] = useState<EventInviteResponse>(
     eventInvite.response || "NONE"
   );
 
   const googleUrl =
     `https://www.google.com/maps/search/?api=1&` +
-    `query_place_id=${encodeURIComponent(eventGooglePlaceId || "")}&` +
-    `query=${encodeURIComponent(eventAddress || "")}`;
+    `query_place_id=${encodeURIComponent(event.googlePlaceId! || "")}&` +
+    `query=${encodeURIComponent(event.address! || "")}`;
 
   const startIso = "20220523T210000Z";
   const endIso = "20220524T030000Z";
@@ -37,7 +26,7 @@ export const EventBlock = (props: {
     `https://www.google.com/calendar/render?action=TEMPLATE&` +
     `text=${encodeURIComponent("Josh Braai")}&` +
     `details=${encodeURIComponent("A braai (barbecue) on Josh's patio")}&` +
-    `location=${encodeURIComponent(eventAddress + ", New York")}&` +
+    `location=${encodeURIComponent(event.address! + ", New York")}&` +
     `dates=${encodeURIComponent(startIso)}%2F${encodeURIComponent(endIso)}`;
 
   let inviteAlert: JSX.Element | null = null;
@@ -64,7 +53,7 @@ export const EventBlock = (props: {
   return (
     <>
       <div className="card">
-        <h5 className="card-header">{eventNameWithDate}</h5>
+        <h5 className="card-header">{event.name}</h5>
         <div className="card-body">
           <Image
             className="rounded card-img-top"
@@ -99,7 +88,7 @@ export const EventBlock = (props: {
               you want anything specific (or a lot) please bring it along.
             </p>
             <p>
-              <strong>Address</strong>: <a href={googleUrl}>{eventAddress}</a>
+              <strong>Address</strong>: <a href={googleUrl}>{event.address}</a>
             </p>
             <p>
               <strong>Coming?</strong> Please RSVP below.
@@ -121,7 +110,7 @@ export const EventBlock = (props: {
           <li className="list-group-item">
             <RSVPBlock
               setResponse={setResponse}
-              eventId={eventId}
+              eventId={event.id!}
               eventInvite={eventInvite}
             />
           </li>

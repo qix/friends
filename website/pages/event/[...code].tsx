@@ -9,25 +9,13 @@ import { FriendsSession } from "../api/auth/[...nextauth]";
 import Link from "next/link";
 import { EventBlock } from "../../components/EventBlock";
 import { Event, EventInvite } from "@prisma/client";
+import { EventContainer } from "../../components/EventContainer";
 
 const EventPage: NextPage<{
   error: string;
   event: Partial<Event>;
-  eventName: string;
-  eventGooglePlaceId: string;
-  eventAddress?: string;
-  eventId: string;
   eventInvite: Partial<EventInvite>;
-}> = (props) => {
-  const {
-    event,
-    eventInvite,
-    eventId,
-    eventGooglePlaceId,
-    eventAddress,
-    error,
-  } = props;
-
+}> = ({ event, eventInvite, error }) => {
   const { data: session } = useSession() as {
     data: FriendsSession;
     status: "authenticated" | "loading" | "unauthenticated";
@@ -62,31 +50,19 @@ const EventPage: NextPage<{
             </div>
           </div>
         ) : (
-          <>
-            {isOwner ? (
-              <ul className="nav nav-tabs">
-                <li className="nav-item active">
-                  <Link href={`/event-guests/${event.slug!}`}>
-                    <a className="active nav-link">Event</a>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link href={`/event-guests/${event.slug!}`}>
-                    <a className="nav-link">Show event guests</a>
-                  </Link>
-                </li>
-              </ul>
-            ) : null}
+          <EventContainer
+            isOwner={isOwner}
+            eventSlug={event.slug || null}
+            isLoggedIn={!!session}
+          >
             <EventBlock
-              eventId={eventId}
-              eventAddress={eventAddress}
-              eventGooglePlaceId={eventGooglePlaceId}
               eventNameWithDate={eventNameWithDate}
               description={description}
               imageHeader={imageHeader}
               eventInvite={eventInvite}
+              event={event}
             />
-          </>
+          </EventContainer>
         )}
       </div>
     </div>
@@ -129,11 +105,12 @@ export async function getServerSideProps(context: {
 
   return {
     props: {
-      eventId: event.id,
-      eventAddress: event.address,
-      eventGooglePlaceId: event.googlePlaceId,
       event: {
+        id: event.id,
+        address: event.address,
+        googlePlaceId: event.googlePlaceId,
         slug: event.slug,
+        name: event.name,
       },
       eventInvite: eventInvite
         ? {
@@ -150,3 +127,6 @@ export async function getServerSideProps(context: {
 }
 
 export default EventPage;
+function FunctionComponent<T>(arg0: { isOwner: any; children: any }) {
+  throw new Error("Function not implemented.");
+}

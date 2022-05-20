@@ -8,10 +8,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Event, EventInvite } from "@prisma/client";
 import { AuthenticatedPage } from "../../components/AuthRequired";
 import { object, string, number, InferType } from "yup";
-import { useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { remotePerformAction } from "../../frontend/performAction";
 import { ErrorAlert, SuccessAlert } from "../../components/alerts";
 import { assertNever } from "../../jslib/assertNever";
+import { EventContainer } from "../../components/EventContainer";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -111,7 +112,7 @@ const AttendenceSummary = (props: { guests: Partial<EventInvite>[] }) => {
   const percentCount = new Array(101).fill(0);
   let unknownConfidence = 0;
   let noAnswer = 0;
-  let declined = 1;
+  let declined = 0;
   guests.forEach((guest) => {
     if (guest.response === "MAYBE" || guest.response === "GOING") {
       if (typeof guest.confidencePercent === "number") {
@@ -165,13 +166,7 @@ const AttendenceSummary = (props: { guests: Partial<EventInvite>[] }) => {
   );
 };
 
-const EventPage: NextPage<{
-  error: string;
-  event: Partial<Event>;
-  guests: Partial<EventInvite>[];
-}> = (props) => {
-  const { event, guests, error } = props;
-
+const EventForm: FunctionComponent<{ event: Partial<Event> }> = ({ event }) => {
   const [message, setMessage] = useState<JSX.Element>();
 
   const formFields = (
@@ -230,26 +225,7 @@ const EventPage: NextPage<{
   );
 
   return (
-    <AuthenticatedPage title="Event Guests">
-      {error ? (
-        <div>
-          <div className="alert alert-danger m-5" role="alert">
-            {error}
-          </div>
-        </div>
-      ) : (
-        <>
-          <AttendenceSummary guests={guests} />
-          <table className="table table-striped">
-            <tbody>
-              {guests.map((guest) => (
-                <Guest key={guest.id} event={event} guest={guest} />
-              ))}
-            </tbody>
-          </table>
-        </>
-      )}
-
+    <>
       <div>{message}</div>
       <Formik
         initialValues={{
@@ -310,6 +286,42 @@ const EventPage: NextPage<{
           </Form>
         )}
       </Formik>
+    </>
+  );
+};
+const EventPage: NextPage<{
+  error: string;
+  event: Partial<Event>;
+  guests: Partial<EventInvite>[];
+}> = (props) => {
+  const isOwner = true;
+  const { event, guests, error } = props;
+
+  return (
+    <AuthenticatedPage title="Event Guests">
+      {error ? (
+        <div>
+          <div className="alert alert-danger m-5" role="alert">
+            {error}
+          </div>
+        </div>
+      ) : (
+        <EventContainer
+          isOwner={isOwner}
+          eventSlug={event.slug!}
+          isLoggedIn={true}
+        >
+          <AttendenceSummary guests={guests} />
+          <table className="table table-striped">
+            <tbody>
+              {guests.map((guest) => (
+                <Guest key={guest.id} event={event} guest={guest} />
+              ))}
+            </tbody>
+          </table>
+          <EventForm event={event} />
+        </EventContainer>
+      )}
     </AuthenticatedPage>
   );
 };
