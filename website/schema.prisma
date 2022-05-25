@@ -36,6 +36,8 @@ model Event {
   endAtIso            String?
   metaDescription     String? @db.Text
   datedName           String?
+  opengraphImage      String?
+  headerImage         String?
 }
 
 model EventInvite {

@@ -26,8 +26,12 @@ const EventPage: NextPage<{
 
   const eventNameWithDate = event.datedName || event.name!;
   const description = event.metaDescription || "";
-  const imageHeader = "https://friends.nyc/images/braai-header-light.jpg";
-  const imageSquare = "https://friends.nyc/images/braai-square.jpg";
+  const imageHeader = `https://friends.nyc/images/${
+    event.headerImage || "default-header"
+  }.jpg`;
+  const imageSquare = `https://friends.nyc/images/${
+    event.opengraphImage || "default-square"
+  }.jpg`;
 
   return (
     <div className="main">
