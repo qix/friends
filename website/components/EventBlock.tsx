@@ -22,14 +22,16 @@ export const EventBlock: FunctionComponent<{
     `query_place_id=${encodeURIComponent(event.googlePlaceId! || "")}&` +
     `query=${encodeURIComponent(event.address! || "")}`;
 
-  const startIso = "20220523T210000Z";
-  const endIso = "20220524T030000Z";
-  const calendarUrl =
-    `https://www.google.com/calendar/render?action=TEMPLATE&` +
-    `text=${encodeURIComponent("Josh Braai")}&` +
-    `details=${encodeURIComponent("A braai (barbecue) on Josh's patio")}&` +
-    `location=${encodeURIComponent(event.address! + ", New York")}&` +
-    `dates=${encodeURIComponent(startIso)}%2F${encodeURIComponent(endIso)}`;
+  const { startAtIso, endAtIso } = event;
+  let calendarUrl: string | null = null;
+  if (startAtIso && endAtIso) {
+    calendarUrl =
+      `https://www.google.com/calendar/render?action=TEMPLATE&` +
+      `text=${encodeURIComponent(event.calendarTitle || event.name!)}&` +
+      `details=${encodeURIComponent(event.calendarDescription || "")}&` +
+      `location=${encodeURIComponent(event.address! + ", New York")}&` +
+      `dates=${encodeURIComponent([startAtIso, endAtIso].join("/"))}`;
+  }
 
   let inviteAlert: JSX.Element | null = null;
   if (currentResponse === "GOING") {
@@ -78,6 +80,8 @@ export const EventBlock: FunctionComponent<{
     I'm hosting event on Saturday, June 18th on my patio. I'll add some more details later, but
     expect chilled sunshine drinks, food and conversation.
 
+    **Timing**: I'm thinking early afternoon, maybe a 1pm potluck?
+
     Feel free to add an RSVP below, but I'll check in again closer to the time.
   `);
 
@@ -109,16 +113,18 @@ export const EventBlock: FunctionComponent<{
           ) : null}
           <li className="list-group-item">
             <ReactMarkdown>{description}</ReactMarkdown>
-            <p>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={calendarUrl}
-                className="link-secondary"
-              >
-                Add to Google calendar
-              </a>
-            </p>
+            {calendarUrl ? (
+              <p>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={calendarUrl}
+                  className="link-secondary"
+                >
+                  Add to Google calendar
+                </a>
+              </p>
+            ) : null}
           </li>
           {inviteAlert ? (
             <li className="list-group-item">{inviteAlert}</li>

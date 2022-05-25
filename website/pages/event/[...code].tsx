@@ -24,9 +24,8 @@ const EventPage: NextPage<{
   // Hard-code the owner for now
   const isOwner = session?.user?.id === "ckzwprf700006zc59boklxy00";
 
-  const eventNameWithDate = "Braai on Monday, May 23rd";
-  const description =
-    "I'm hosting a braai (barbecue) for a bunch of friends and neighborhood folk on the 23rd.";
+  const eventNameWithDate = event.datedName || event.name!;
+  const description = event.metaDescription || "";
   const imageHeader = "https://friends.nyc/images/braai-header-light.jpg";
   const imageSquare = "https://friends.nyc/images/braai-square.jpg";
 
@@ -111,6 +110,12 @@ export async function getServerSideProps(context: {
         googlePlaceId: event.googlePlaceId,
         slug: event.slug,
         name: event.name,
+        startAtIso: event.startAtIso || null,
+        endAtIso: event.endAtIso || null,
+        calendarTitle: event.calendarTitle || null,
+        calendarDescription: event.calendarDescription || null,
+        datedName: event.datedName || null,
+        metaDescription: event.metaDescription || null,
       },
       eventInvite: eventInvite
         ? {
@@ -127,6 +132,3 @@ export async function getServerSideProps(context: {
 }
 
 export default EventPage;
-function FunctionComponent<T>(arg0: { isOwner: any; children: any }) {
-  throw new Error("Function not implemented.");
-}

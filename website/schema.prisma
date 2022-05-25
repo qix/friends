@@ -24,12 +24,18 @@ enum EventInviteResponse {
 }
 
 model Event {
-  id            String  @id @default(cuid())
-  isOpen        Boolean @default(true)
-  slug          String  @unique
-  name          String
-  address       String?
-  googlePlaceId String?
+  id                  String  @id @default(cuid())
+  isOpen              Boolean @default(true)
+  slug                String  @unique
+  name                String
+  calendarTitle       String?
+  calendarDescription String? @db.Text
+  address             String?
+  googlePlaceId       String?
+  startAtIso          String?
+  endAtIso            String?
+  metaDescription     String? @db.Text
+  datedName           String?
 }
 
 model EventInvite {

@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { object, string, number, date, InferType } from "yup";
-import { Person, pronounOptions } from "../models/Person";
+import { object, string, InferType } from "yup";
+import { Person } from "../models/Person";
 import Image from "next/image";
 
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -15,9 +15,11 @@ const schema = object({
     .email()
     .required("We require your email address for login and updates"),
   name: string().required("Name is required"),
+  /*
+  @ Pronouns commented out until I can make a better selection box.
   pronouns: string()
     .oneOf([...pronounOptions])
-    .required("Your choice of pronoun is required"),
+    .required("Your choice of pronoun is required"),*/
   whatDo: string()
     .required("What you do is a required field")
     .min(50, "Please include a longer description about what you do"),
@@ -26,7 +28,7 @@ type SignupFields = InferType<typeof schema>;
 const initalValues: SignupFields = {
   email: "",
   name: "",
-  pronouns: "",
+  // pronouns: "",
   whatDo: "",
 };
 
@@ -117,6 +119,8 @@ const SignupForm = (props: {
           component="div"
         />
       </div>
+
+      {/*
       <div className="mb-3">
         <label className="form-label">Pronouns</label>
         <Field name="pronouns" as="select" className="form-control">
@@ -134,6 +138,8 @@ const SignupForm = (props: {
           component="div"
         />
       </div>
+      */}
+
       <div className="mb-3">
         <label htmlFor="initialVouch">Message from {vouchFrom.name}</label>
         <textarea
@@ -186,7 +192,7 @@ const SignupForm = (props: {
           type: "acceptInvite",
           payload: {
             ...values,
-            pronouns: values.pronouns as typeof pronounOptions[number],
+            pronouns: "they/them", // values.pronouns as typeof pronounOptions[number],
             inviteCode,
           },
         })
