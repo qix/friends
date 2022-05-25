@@ -120,6 +120,8 @@ export async function getServerSideProps(context: {
         calendarDescription: event.calendarDescription || null,
         datedName: event.datedName || null,
         metaDescription: event.metaDescription || null,
+        opengraphImage: event.opengraphImage || null,
+        headerImage: event.headerImage || null,
       },
       eventInvite: eventInvite
         ? {
