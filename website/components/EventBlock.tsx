@@ -3,6 +3,8 @@ import Image from "next/image";
 import { Event, EventInvite, EventInviteResponse } from "@prisma/client";
 import ReactMarkdown from "react-markdown";
 import { FunctionComponent, useState } from "react";
+import { invariant } from "../server/invariant";
+import { stripMargin } from "../jslib/stripMargin";
 
 export const EventBlock: FunctionComponent<{
   event: Partial<Event>;
@@ -50,6 +52,41 @@ export const EventBlock: FunctionComponent<{
     );
   }
 
+  const braaiMessage = stripMargin(`
+    Hello friends!
+    
+    I'm hosting another braai (barbecue) on Monday, May
+    23rd on my patio. I'll be around from 5pm onwards, so feel free to
+    come any time from then onwards. Aiming to have food ready around
+    8pm.
+
+    **Food**: I'm planning on making some burgers,
+    mushroom burgers, and steak rolls. If you want to bring along a
+    salad or any snacking items they&apos;re always encouraged.
+
+    **Drinks**: I'll have some beer and wine, but if
+    you want anything specific (or a lot) please bring it along.
+    
+    **Address**: [${event.address}](${googleUrl})
+    
+    **Coming?** Please RSVP below.
+  `);
+
+  const juneMessage = stripMargin(`
+    Hello friends!
+    
+    I'm hosting event on Saturday, June 18th on my patio. I'll add some more details later, but
+    expect chilled sunshine drinks, food and conversation.
+
+    Feel free to add an RSVP below, but I'll check in again closer to the time.
+  `);
+
+  const description =
+    event.id === "cl3ad1bmp0060km59wh60o2h2"
+      ? braaiMessage
+      : event.id === "cl3ek3sho014309l00gfayij6"
+      ? juneMessage
+      : "No description found";
   return (
     <>
       <div className="card">
@@ -71,28 +108,7 @@ export const EventBlock: FunctionComponent<{
             </li>
           ) : null}
           <li className="list-group-item">
-            <p>Hello friends!</p>
-            <p>
-              I&apos;m hosting another braai (<em>barbecue</em>) on Monday, May
-              23rd on my patio. I&apos;ll be around from 5pm onwards, so feel
-              free to come any time from then onwards. Aiming to have food ready
-              around 8pm.
-            </p>
-            <p>
-              <strong>Food</strong>: I&apos;m planning on making some burgers,
-              mushroom burgers, and steak rolls. If you want to bring along a
-              salad or any snacking items they&apos;re always encouraged.
-            </p>
-            <p>
-              <strong>Drinks</strong>: I&apos;ll have some beer and wine, but if
-              you want anything specific (or a lot) please bring it along.
-            </p>
-            <p>
-              <strong>Address</strong>: <a href={googleUrl}>{event.address}</a>
-            </p>
-            <p>
-              <strong>Coming?</strong> Please RSVP below.
-            </p>
+            <ReactMarkdown>{description}</ReactMarkdown>
             <p>
               <a
                 target="_blank"
