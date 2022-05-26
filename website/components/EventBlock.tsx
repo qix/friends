@@ -82,6 +82,8 @@ export const EventBlock: FunctionComponent<{
 
     **Timing**: I'm thinking early afternoon, maybe a 1pm potluck?
 
+    **Address**: [${event.address}](${googleUrl})
+    
     Feel free to add an RSVP below, but I'll check in again closer to the time.
   `);
 
