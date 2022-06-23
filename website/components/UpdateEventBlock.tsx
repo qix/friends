@@ -14,8 +14,10 @@ export const UpdateEventBlock = ({ event }: { event: Partial<Event> }) => {
       }}
       action="updateEvent"
       buildActionPayload={(payload) => ({
-        id: event.id,
-        event: payload,
+        id: event.id!,
+        event: {
+          description: payload.description || "",
+        },
       })}
     >
       <fieldset>

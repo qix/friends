@@ -3,9 +3,9 @@ import { InferType } from "yup";
 import { remotePerformAction } from "../frontend/performAction";
 import React, { useState } from "react";
 import { TypedSchema } from "yup/lib/util/types";
-import { Action } from "../models/Action";
+import { Action, ActionByType } from "../models/Action";
 
-export function CreateForm<DbObject, T extends TypedSchema, A extends Action>({
+export function CreateForm<T extends TypedSchema, A extends Action["type"]>({
   schema,
   initialValues,
   action,
@@ -14,8 +14,8 @@ export function CreateForm<DbObject, T extends TypedSchema, A extends Action>({
 }: {
   schema: T;
   initialValues: InferType<T>;
-  action: A["type"];
-  buildActionPayload: (payload: InferType<T>) => A["payload"];
+  action: A;
+  buildActionPayload: (payload: InferType<T>) => ActionByType[A]["payload"];
   children: JSX.Element;
 }) {
   type FormFields = InferType<T>;

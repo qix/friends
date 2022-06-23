@@ -112,3 +112,13 @@ export type ActionResponseByType = {
   createEventInvite: CreateEventInviteResponse;
   rsvp: RSVPResponse;
 };
+
+export type ActionByType = {
+  heartbeat: HeartbeatAction;
+  acceptInvite: AcceptInviteAction;
+  createInvite: CreateInviteAction;
+  createEvent: CreateEventAction;
+  updateEvent: UpdateEventAction;
+  createEventInvite: CreateEventInviteAction;
+  rsvp: RSVPAction;
+};
