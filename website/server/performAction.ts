@@ -20,6 +20,7 @@ export async function performAction(
   user: User | null,
   action: Action
 ): Promise<ActionResponseByType[typeof action["type"]]> {
+  console.log("PERFORM", action);
   const email = user?.email;
   /***
    * performAction pre-checks
