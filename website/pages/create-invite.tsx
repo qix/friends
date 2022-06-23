@@ -18,7 +18,7 @@ const schema = object({
   vouchMessage: string().required("Message is required"),
 });
 type CreateInviteFields = InferType<typeof schema>;
-const initalValues: CreateInviteFields = {
+const initialValues: CreateInviteFields = {
   name: "",
   email: "",
   vouchMessage: "",
@@ -75,7 +75,7 @@ const CreateInvite: NextPage = () => {
       <div>{message}</div>
       <Formik
         initialValues={{
-          ...initalValues,
+          ...initialValues,
         }}
         validationSchema={schema}
         onSubmit={(values, { setSubmitting, resetForm }) => {

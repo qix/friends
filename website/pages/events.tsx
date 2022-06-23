@@ -22,7 +22,7 @@ const schema = object({
   guestCount: number().required("Guest count is required"),
 });
 type CreateEventFields = InferType<typeof schema>;
-const initalValues: CreateEventFields = {
+const initialValues: CreateEventFields = {
   name: "",
   slug: "",
   privateNote: "",

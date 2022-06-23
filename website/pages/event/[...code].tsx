@@ -114,6 +114,7 @@ export async function getServerSideProps(context: {
         googlePlaceId: event.googlePlaceId,
         slug: event.slug,
         name: event.name,
+        description: event.description,
         startAtIso: event.startAtIso || null,
         endAtIso: event.endAtIso || null,
         calendarTitle: event.calendarTitle || null,

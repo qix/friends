@@ -67,6 +67,19 @@ interface CreateEventResponse {
   ok: boolean;
 }
 
+interface UpdateEventAction {
+  type: "updateEvent";
+  payload: {
+    id: string;
+    event: {
+      description: string;
+    };
+  };
+}
+interface UpdateEventResponse {
+  ok: boolean;
+}
+
 interface CreateEventInviteAction {
   type: "createEventInvite";
   payload: {
@@ -86,6 +99,7 @@ export type Action =
   | CreateInviteAction
   | HeartbeatAction
   | CreateEventAction
+  | UpdateEventAction
   | CreateEventInviteAction
   | RSVPAction;
 
@@ -94,6 +108,7 @@ export type ActionResponseByType = {
   acceptInvite: AcceptInviteResponse;
   createInvite: CreateInviteResponse;
   createEvent: CreateEventResponse;
+  updateEvent: UpdateEventResponse;
   createEventInvite: CreateEventInviteResponse;
   rsvp: RSVPResponse;
 };

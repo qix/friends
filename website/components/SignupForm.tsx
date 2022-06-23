@@ -25,7 +25,7 @@ const schema = object({
     .min(50, "Please include a longer description about what you do"),
 });
 type SignupFields = InferType<typeof schema>;
-const initalValues: SignupFields = {
+const initialValues: SignupFields = {
   email: "",
   name: "",
   // pronouns: "",
@@ -177,7 +177,7 @@ const SignupForm = (props: {
   return (
     <Formik
       initialValues={{
-        ...initalValues,
+        ...initialValues,
         email: invitedEmail,
         name: invitedName,
       }}

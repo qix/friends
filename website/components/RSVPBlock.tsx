@@ -14,7 +14,7 @@ const schema = object({
 type SignupFields = InferType<typeof schema> & {
   response: EventInviteResponse;
 };
-const initalValues: SignupFields = {
+const initialValues: SignupFields = {
   name: "",
   comments: "",
   response: "GOING",
@@ -128,7 +128,7 @@ export const RSVPBlock = (props: {
     <>
       <Formik
         initialValues={{
-          ...initalValues,
+          ...initialValues,
           name: eventInvite?.guestName || eventInvite?.invitedName || "",
           comments: eventInvite?.message || "",
         }}

@@ -28,6 +28,7 @@ model Event {
   isOpen              Boolean @default(true)
   slug                String  @unique
   name                String
+  description         String? @db.Text
   calendarTitle       String?
   calendarDescription String? @db.Text
   address             String?

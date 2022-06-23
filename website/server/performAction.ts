@@ -46,6 +46,8 @@ export async function performAction(
     // Nothing required
   } else if (action.type === "createEvent") {
     // Nothing required
+  } else if (action.type === "updateEvent") {
+    // Nothing required
   } else if (action.type === "createEventInvite") {
     // Nothing required
   } else {
@@ -171,6 +173,14 @@ export async function performAction(
       } else {
         await tx.eventInvite.create({ data });
       }
+    } else if (action.type === "updateEvent") {
+      const { payload } = action;
+      await tx.event.update({
+        where: {
+          id: payload.id,
+        },
+        data: payload.event,
+      });
     } else if (action.type === "heartbeat") {
       // Nothing required
     } else {
@@ -195,6 +205,8 @@ export async function performAction(
   } else if (action.type === "createEvent") {
     return { ok: true };
   } else if (action.type === "createEventInvite") {
+    return { ok: true };
+  } else if (action.type === "updateEvent") {
     return { ok: true };
   } else {
     assertNever(action, "Unhandled action type post transaction");
