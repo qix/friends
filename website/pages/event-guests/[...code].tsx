@@ -173,7 +173,12 @@ const EventPage: NextPage<{
               ))}
             </tbody>
           </table>
-          <UpdateEventBlock event={event} />
+          <div className="card">
+            <h5 className="card-header">Update the event</h5>
+            <div className="card-body">
+              <UpdateEventBlock event={event} />
+            </div>
+          </div>
           <EventInviteForm event={event} />
         </EventContainer>
       )}
@@ -215,7 +220,17 @@ export async function getServerSideProps(context: {
       event: {
         id: event.id,
         slug: event.slug,
+        name: event.name,
+        datedName: event.datedName,
         description: event.description,
+        calendarTitle: event.calendarTitle,
+        calendarDescription: event.calendarDescription,
+        metaDescription: event.metaDescription,
+        address: event.address,
+        startAtIso: event.startAtIso,
+        endAtIso: event.endAtIso,
+        opengraphImage: event.opengraphImage,
+        headerImage: event.headerImage,
       },
       guests: guests.map((guest) => ({
         id: guest.id,

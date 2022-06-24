@@ -83,7 +83,7 @@ export function CreateForm<T extends TypedSchema, A extends Action["type"]>({
             >
               Submit
             </button>
-            {status ? <div className="py-3">{status}</div> : null}
+            {status ? <span className="px-3">{status}</span> : null}
           </Form>
         )}
       </Formik>

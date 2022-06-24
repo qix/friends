@@ -1,5 +1,6 @@
-import { EventInviteResponse } from "@prisma/client";
+import { Event, EventInviteResponse } from "@prisma/client";
 import { pronounOptions } from "./Person";
+import { object, string } from "yup";
 
 interface CreateInviteAction {
   type: "createInvite";
@@ -67,13 +68,39 @@ interface CreateEventResponse {
   ok: boolean;
 }
 
+export const EventUpdateKeys: Array<keyof Event> = [
+  "slug",
+  "name",
+  "datedName",
+  "description",
+  "calendarTitle",
+  "calendarDescription",
+  "metaDescription",
+  "address",
+  "startAtIso",
+  "endAtIso",
+  "opengraphImage",
+  "headerImage",
+];
+export const EventUpdateSchema = object({
+  name: string(),
+  datedName: string(),
+  calendarTitle: string(),
+  calendarDescription: string(),
+  metaDescription: string(),
+  address: string(),
+  startAtIso: string(),
+  endAtIso: string(),
+  description: string(),
+  opengraphImage: string(),
+  headerImage: string(),
+});
+
 interface UpdateEventAction {
   type: "updateEvent";
   payload: {
     id: string;
-    event: {
-      description: string;
-    };
+    event: Pick<Event, typeof EventUpdateKeys[number]>;
   };
 }
 interface UpdateEventResponse {

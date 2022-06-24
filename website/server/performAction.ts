@@ -1,6 +1,10 @@
 import { PrismaClient, PrismaPromise, User } from "@prisma/client";
 
-import { Action, ActionResponseByType } from "../models/Action";
+import {
+  Action,
+  ActionResponseByType,
+  EventUpdateSchema,
+} from "../models/Action";
 import { randomBytes } from "crypto";
 import { HttpError } from "./asyncHandler";
 import { getPrismaClient } from "./db";
@@ -180,7 +184,7 @@ export async function performAction(
         where: {
           id: payload.id,
         },
-        data: payload.event,
+        data: EventUpdateSchema.validateSync(payload.event),
       });
     } else if (action.type === "heartbeat") {
       // Nothing required
