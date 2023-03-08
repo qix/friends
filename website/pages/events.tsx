@@ -47,7 +47,7 @@ const EventsPage: NextPage<{
         </li>
         {events.map((event) => (
           <Link key={event.id} href={`/event/${event.slug}`}>
-            <a>{event.name}</a>
+            {event.name}
           </Link>
         ))}
       </AdminContainer>

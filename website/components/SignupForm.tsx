@@ -76,7 +76,7 @@ const SignupForm = (props: {
           <div className="alert alert-danger" role="alert">
             You are already logged in as an active member.{" "}
             <Link href="/">
-              <a>Go to membership page</a>
+              Go to membership page
             </Link>
           </div>
         </div>

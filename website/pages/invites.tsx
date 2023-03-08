@@ -43,7 +43,7 @@ const InviteList: NextPage<{
                       href={{
                         pathname: inviteUrl,
                       }}
-                    >
+                      legacyBehavior>
                       {inviteUrl}
                     </Link>
                   ) : (
@@ -62,7 +62,7 @@ const InviteList: NextPage<{
       >
         <div className="card-header">New Invitation</div>
         <div className="card-body">
-          <Link href={{ pathname: "/create-invite" }} passHref={true}>
+          <Link href={{ pathname: "/create-invite" }} passHref={true} legacyBehavior>
             <button className="btn btn-outline-secondary">Create Invite</button>
           </Link>
         </div>
