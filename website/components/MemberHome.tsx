@@ -66,7 +66,6 @@ export const MemberHome = (props: {}) => {
             href={member.whatsappLink}
             className="btn btn-primary btn-lg"
             role="button"
-            target="_blank"
             rel="noreferrer"
           >
             Join the WhatsApp group

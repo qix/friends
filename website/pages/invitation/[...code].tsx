@@ -52,7 +52,7 @@ const Invitation: NextPage<{
             <div className="alert alert-success m-5" role="alert">
               You are logged in as an active member.{" "}
               <Link href="/">
-                <a>Go to membership page</a>
+                Go to membership page
               </Link>
             </div>
           ) : (

@@ -11,13 +11,13 @@ export const EventContainer: FunctionComponent<{
   if (eventSlug && isOwner) {
     tabs.push(
       <li className="nav-item active">
-        <Link href={`/event/${eventSlug}`}>
-          <a className="active nav-link">Event</a>
+        <Link href={`/event/${eventSlug}`} className="active nav-link">
+          Event
         </Link>
       </li>,
       <li className="nav-item">
-        <Link href={`/event-guests/${eventSlug}`}>
-          <a className="nav-link">Show event guests</a>
+        <Link href={`/event-guests/${eventSlug}`} className="nav-link">
+          Show event guests
         </Link>
       </li>
     );
@@ -26,8 +26,8 @@ export const EventContainer: FunctionComponent<{
   if (isLoggedIn) {
     tabs.push(
       <li className="nav-item">
-        <Link href={`/events`}>
-          <a className="nav-link">All events</a>
+        <Link href={`/events`} className="nav-link">
+          All events
         </Link>
       </li>
     );
