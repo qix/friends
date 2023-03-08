@@ -100,7 +100,7 @@ interface UpdateEventAction {
   type: "updateEvent";
   payload: {
     id: string;
-    event: Pick<Event, typeof EventUpdateKeys[number]>;
+    event: Partial<Pick<Event, typeof EventUpdateKeys[number]>>;
   };
 }
 interface UpdateEventResponse {

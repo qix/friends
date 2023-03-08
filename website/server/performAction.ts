@@ -1,4 +1,4 @@
-import { PrismaClient, PrismaPromise, User } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 
 import {
   Action,

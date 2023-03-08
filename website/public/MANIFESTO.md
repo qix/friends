@@ -16,7 +16,7 @@ A couple broad characteristics are required to be a member:
 
 **Tasteful**: No-one can dictate what you like, but we're looking for people who think about what they consume. Make concious decisions about what your food, music and art choices.
 
-**Active**: Lurkers and inactive members make it harder to build the trust we're looking for. If you're not active we may ask you to leave to make room for people that want to be involved and contribute.
+**Active**: Lurkers and inactive members make it harder to build the trust we're looking for. If you're not active you may be removed to make room for people that want to be involved and contribute.
 
 ## New members
 
@@ -25,6 +25,20 @@ Every member in the club needs to be vouched for by at least one other member.
 Vouching for a new member declares confidence in your trust for the new person. If a club member betrays the trust of the group both them, and any members who vouched for them, may be removed.
 
 This is a requirement, but not sufficient, for membership. In order to ensure the groups quality, and to slow down the growth of the group, there will be other requirements to be added.
+
+If there's someone you want to vouch for send Josh Yudaken a message and I'll get them an invite!
+
+## Noise
+
+I'm expecting this group is going to get quite big, and as such the chat might get a little noisy. In order to counteract that I'm going to enforce some basic etiquette that I'll evolve over time and add to the group description.
+
+For now simply keep chatter inside the _main group_ to a minimum, and create new groups whenever you have an event you'd like to join.
+
+## Sharing and inequality
+
+I am hoping to this will spawn a diverse group of friends, but with diversity comes inequality. I would love to see a pay-it-forward approach to group activities.
+
+If you can't afford to host a dinner, but want to, then feel free to set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it, pay for another one in the future.
 
 ## Use cases
 
@@ -43,13 +57,3 @@ I've got a lot of hopes for this group, but among the immediate list:
 **Travelling**: Find contacts in a city in the group, or friends of the group.
 
 **Sublets**: I'm headed out of town, anyone trusted want to sublet my place?
-
-## Sharing and inequality
-
-I am hoping to this will spawn a diverse group of friends, but with diversity comes inequality. I would love to see a pay-it-forward approach to group activities.
-
-If you can't afford to host a dinner, but want to, then feel free to set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it, pay for another one in the future.
-
-## Membership fee
-
-**Free**.

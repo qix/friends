@@ -60,17 +60,29 @@ export const MemberHome = (props: {}) => {
       <div className="card">
         <h5 className="card-header">Welcome Friend</h5>
         {blocks}
-        <h5 className="card-header">Discord Chat</h5>
+        <h5 className="card-header">WhatsApp Group</h5>
         <div className="card-body">
           <a
-            href={member.discordLink}
+            href={member.whatsappLink}
             className="btn btn-primary btn-lg"
             role="button"
             target="_blank"
             rel="noreferrer"
           >
-            Join the Discord Server
+            Join the WhatsApp group
           </a>
+          <p>
+            <div
+              className="alert alert-warning"
+              style={{
+                margin: "1em",
+              }}
+              role="alert"
+            >
+              ^ Please don&apos;t share this link, and instead speak to Josh
+              Yudaken about personal invites
+            </div>
+          </p>
         </div>
         <h5 className="card-header">Account</h5>
         <div className="card-body">

@@ -1,4 +1,4 @@
-import { PrismaClient, PrismaPromise } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 import { Action } from "../../models/Action";
 import { randomBytes } from "crypto";
