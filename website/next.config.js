@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-      domains: ['friends.nyc'],
-  },
-  experimental: {
-    images: {
-      layoutRaw: true
-    }
+    domains: ['friends.nyc'],
   },
   reactStrictMode: true,
   webpack: (config) => {
