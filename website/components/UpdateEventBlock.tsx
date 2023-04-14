@@ -42,7 +42,7 @@ export const UpdateEventBlock = ({ event }: { event: Partial<Event> }) => {
       initialValues={{
         name: event.name,
         datedName: event.datedName || "",
-        calendarTitle: event.calendarDescription || "",
+        calendarTitle: event.calendarTitle || "",
         calendarDescription: event.calendarDescription || "",
         metaDescription: event.metaDescription || "",
         address: event.address || "",

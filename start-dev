@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eo pipefail
+
+config_file=$(mktemp --tmpdir "$(basename "$0")-XXX.yml")
+echo 'org: jyud' > "$config_file"
+trap "rm -f ${config_file@Q}" EXIT
+exec pscale connect --port "$MYSQL_PORT" --config="$config_file" friands

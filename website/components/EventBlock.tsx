@@ -30,6 +30,7 @@ export const EventBlock: FunctionComponent<{
       `text=${encodeURIComponent(event.calendarTitle || event.name!)}&` +
       `details=${encodeURIComponent(event.calendarDescription || "")}&` +
       `location=${encodeURIComponent(event.address! + ", New York")}&` +
+      `ctz=${encodeURIComponent("America/New_York")}&` +
       `dates=${encodeURIComponent([startAtIso, endAtIso].join("/"))}`;
   }
 
