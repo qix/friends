@@ -15,11 +15,12 @@ export const ErrorAlert = ({
 export const SuccessAlert = ({
   children,
 }: {
-  children: JSX.Element | string;
+  children: JSX.Element[] | JSX.Element | string;
 }) => {
   return (
     <div className="alert alert-success" role="alert">
       {SPARKLES_EMOJI} <strong>Success!</strong> {children}
+      <i className="bi bi-clipboard" onClick={() => { }}></i>
     </div>
   );
 };

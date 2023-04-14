@@ -113,9 +113,14 @@ export const EventInviteForm: FunctionComponent<{ event: Partial<Event> }> = ({
                 } else {
                   const eventUrl = buildInviteUrl(event.slug!, values.slug);
 
+                  // @todo: Dont always copy to clipboard
+                  navigator.clipboard.writeText(eventUrl);
+
                   setMessage(
                     <SuccessAlert>
                       <a href={eventUrl}>{eventUrl}</a>
+
+
                     </SuccessAlert>
                   );
                   resetForm();
@@ -142,7 +147,7 @@ export const EventInviteForm: FunctionComponent<{ event: Partial<Event> }> = ({
                   className="btn btn-primary"
                   disabled={isSubmitting}
                 >
-                  Clowncopterize
+                  Clowncopterize (and clipboard)
                 </button>
               </div>
             </div>

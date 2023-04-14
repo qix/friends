@@ -1,13 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity", "interactiveTransactions"]
 
 }
 
 datasource db {
   provider             = "mysql"
   url                  = env("PLANETSCALE_PRISMA_DATABASE_URL")
-  referentialIntegrity = "prisma"
+  relationMode = "prisma"
 }
 
 model ActionLog {

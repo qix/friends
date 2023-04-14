@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
+import { AdminContainer } from "./AdminContainer";
+import { ReactElement } from "react-markdown/lib/react-markdown";
 
 export const EventContainer: FunctionComponent<{
   isOwner: boolean;
@@ -7,43 +9,24 @@ export const EventContainer: FunctionComponent<{
   eventSlug: string | null;
   page: "event" | "guests" | "update";
 }> = ({ isLoggedIn, isOwner, eventSlug, children, page }) => {
-  const tabs: JSX.Element[] = [];
 
-  if (eventSlug && isOwner) {
-    const tabMap = {
-      event: "Event",
-      guests: "Show event guests",
-      update: "Update event",
-    };
-
-    tabs.push(
-      ...Object.entries(tabMap).map(([key, caption]) => {
-        return (
-          <Link
-            href={`/event/${eventSlug}/${key}`}
-            className={`nav-link ${page === key ? "active" : ""}`}
-          >
-            <a>{caption}</a>
-          </Link>
-        );
-      })
-    );
-  }
+  let wrapped: ReactNode = children;
 
   if (isLoggedIn) {
-    tabs.push(
-      <li className="nav-item">
-        <Link href={`/events`}>
-          <a className="nav-link">All events</a>
-        </Link>
-      </li>
-    );
+    const tabs: Array<{ uri: string, caption: string }> = [];
+
+    if (eventSlug && isOwner) {
+      tabs.push(
+        { uri: `/event/${eventSlug}`, caption: "Event" },
+        { uri: `/event/${eventSlug}/guests`, caption: "Show event guests" },
+        { uri: `/event/${eventSlug}/update`, caption: "Update event" },
+      );
+      tabs.push(
+        { uri: '/events', caption: 'All events' });
+    }
+
+    wrapped = <AdminContainer tabs={tabs} uri={`/event/${eventSlug}`}>{wrapped}</AdminContainer>
   }
 
-  return (
-    <>
-      {tabs ? <ul className="nav nav-tabs">{tabs}</ul> : null}
-      {children}
-    </>
-  );
+  return <>{wrapped}</>;
 };

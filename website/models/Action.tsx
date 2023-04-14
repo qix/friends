@@ -68,8 +68,7 @@ interface CreateEventResponse {
   ok: boolean;
 }
 
-export const EventUpdateKeys: Array<keyof Event> = [
-  "slug",
+export const EventUpdateKeys = [
   "name",
   "datedName",
   "description",
@@ -81,7 +80,7 @@ export const EventUpdateKeys: Array<keyof Event> = [
   "endAtIso",
   "opengraphImage",
   "headerImage",
-];
+] as const;
 export const EventUpdateSchema = object({
   name: string(),
   datedName: string(),
@@ -100,9 +99,10 @@ interface UpdateEventAction {
   type: "updateEvent";
   payload: {
     id: string;
-    event: Pick<Event, typeof EventUpdateKeys[number]>;
+    event: Partial<Pick<Event, typeof EventUpdateKeys[number]>>;
   };
 }
+
 interface UpdateEventResponse {
   ok: boolean;
 }
