@@ -5,18 +5,9 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import manifesto from "../public/MANIFESTO.md";
 import ReactMarkdown from "react-markdown";
 import { CurrentMemberResponse } from "../pages/api/currentMember";
-
-const fetcher = async (...args: Parameters<typeof fetch>) => {
-  const res = await fetch(...args);
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.error || "An error occurred while fetching data");
-  }
-  return res.json();
-};
-
+import { swrFetcher } from "../server/swrFetcher";
 function useCurrentMember() {
-  const { data, error } = useSWR(`/api/currentMember`, fetcher);
+  const { data, error } = useSWR(`/api/currentMember`, swrFetcher);
 
   return {
     member: data as CurrentMemberResponse,

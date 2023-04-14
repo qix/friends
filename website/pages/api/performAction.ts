@@ -1,10 +1,5 @@
 import { Action, ActionResponseByType } from "../../models/Action";
-import {
-  sessionAsyncHandler,
-  HttpError,
-  optionalSessionAsyncHandler,
-} from "../../server/asyncHandler";
-import { FriendsSession } from "./auth/[...nextauth]";
+import { optionalSessionAsyncHandler } from "../../server/asyncHandler";
 import { performAction } from "../../server/performAction";
 
 export default optionalSessionAsyncHandler<

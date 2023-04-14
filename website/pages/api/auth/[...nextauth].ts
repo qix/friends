@@ -9,7 +9,9 @@ const prisma = getPrismaClient();
 
 export type FriendsSession = Session & {
   user: User;
+  isAdmin: boolean;
 };
+const adminUsers = (process.env.ADMIN_USERS || "").split(",").filter((v) => v);
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -24,6 +26,7 @@ export default NextAuth({
       return {
         ...session,
         user,
+        isAdmin: adminUsers.includes(user.email || ""),
       } as FriendsSession;
     },
   },

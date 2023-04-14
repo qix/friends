@@ -10,12 +10,16 @@ import Link from "next/link";
 import { EventBlock } from "../../components/EventBlock";
 import { Event, EventInvite } from "@prisma/client";
 import { EventContainer } from "../../components/EventContainer";
+import { EventGuests } from "../../components/EventGuests";
+import { UpdateEventBlock } from "../../components/UpdateEventBlock";
+import { assertNever } from "../../jslib/assertNever";
 
 const EventPage: NextPage<{
   error: string;
+  page: "event" | "guests" | "update";
   event: Partial<Event>;
   eventInvite: Partial<EventInvite>;
-}> = ({ event, eventInvite, error }) => {
+}> = ({ event, eventInvite, error, page }) => {
   const { data: session } = useSession() as {
     data: FriendsSession;
     status: "authenticated" | "loading" | "unauthenticated";
@@ -32,6 +36,32 @@ const EventPage: NextPage<{
   const imageSquare = `https://friends.nyc/images/${
     event.opengraphImage || "default-square"
   }.jpg`;
+
+  let block: JSX.Element;
+  if (page === "event") {
+    block = (
+      <EventBlock
+        eventNameWithDate={eventNameWithDate}
+        description={description}
+        imageHeader={imageHeader}
+        eventInvite={eventInvite}
+        event={event}
+      />
+    );
+  } else if (page === "guests") {
+    block = <EventGuests event={event}></EventGuests>;
+  } else if (page === "update") {
+    block = (
+      <div className="card">
+        <h5 className="card-header">Update the event</h5>
+        <div className="card-body">
+          <UpdateEventBlock event={event} />
+        </div>
+      </div>
+    );
+  } else {
+    assertNever(page, "Unexpected page");
+  }
 
   return (
     <div className="main">
@@ -54,17 +84,12 @@ const EventPage: NextPage<{
           </div>
         ) : (
           <EventContainer
+            page={page}
             isOwner={isOwner}
             eventSlug={event.slug || null}
             isLoggedIn={!!session}
           >
-            <EventBlock
-              eventNameWithDate={eventNameWithDate}
-              description={description}
-              imageHeader={imageHeader}
-              eventInvite={eventInvite}
-              event={event}
-            />
+            {block}
           </EventContainer>
         )}
       </div>
@@ -74,18 +99,23 @@ const EventPage: NextPage<{
 
 export async function getServerSideProps(context: {
   query: {
-    code: string[];
+    slugs: string[];
     invite?: string;
   };
 }) {
   const prisma = getPrismaClient();
+  const { slugs } = context.query;
+  const [eventSlug, page] = [...slugs, "event"];
 
-  invariant(context.query.code?.length === 1, "Expected a single event code");
-  const [code] = context.query.code;
+  invariant(eventSlug, "Expected a event code");
+  invariant(
+    page === "event" || page === "guests" || page === "update",
+    "Unknown page"
+  );
 
   const event = await prisma.event.findFirst({
     where: {
-      slug: code,
+      slug: eventSlug,
     },
   });
   if (!event) {
@@ -108,6 +138,7 @@ export async function getServerSideProps(context: {
 
   return {
     props: {
+      page,
       event: {
         id: event.id,
         address: event.address,

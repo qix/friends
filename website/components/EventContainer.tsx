@@ -5,21 +5,28 @@ export const EventContainer: FunctionComponent<{
   isOwner: boolean;
   isLoggedIn: boolean;
   eventSlug: string | null;
-}> = ({ isLoggedIn, isOwner, eventSlug, children }) => {
+  page: "event" | "guests" | "update";
+}> = ({ isLoggedIn, isOwner, eventSlug, children, page }) => {
   const tabs: JSX.Element[] = [];
 
   if (eventSlug && isOwner) {
+    const tabMap = {
+      event: "Event",
+      guests: "Show event guests",
+      update: "Update event",
+    };
+
     tabs.push(
-      <li className="nav-item active">
-        <Link href={`/event/${eventSlug}`}>
-          <a className="active nav-link">Event</a>
-        </Link>
-      </li>,
-      <li className="nav-item">
-        <Link href={`/event-guests/${eventSlug}`}>
-          <a className="nav-link">Show event guests</a>
-        </Link>
-      </li>
+      ...Object.entries(tabMap).map(([key, caption]) => {
+        return (
+          <Link
+            href={`/event/${eventSlug}/${key}`}
+            className={`nav-link ${page === key ? "active" : ""}`}
+          >
+            <a>{caption}</a>
+          </Link>
+        );
+      })
     );
   }
 

@@ -1,15 +1,11 @@
-import type { NextPage } from "next";
-import { getPrismaClient } from "../../server/db";
-import { invariant } from "../../server/invariant";
 import { Event, EventInvite } from "@prisma/client";
-import { AuthenticatedPage } from "../../components/AuthRequired";
-import { assertNever } from "../../jslib/assertNever";
-import { EventContainer } from "../../components/EventContainer";
-import {
-  buildInviteUrl,
-  EventInviteForm,
-} from "../../components/EventInviteForm";
-import { UpdateEventBlock } from "../../components/UpdateEventBlock";
+import Link from "next/link";
+import { FunctionComponent, useEffect } from "react";
+import useSWR from "swr";
+import { assertNever } from "../jslib/assertNever";
+import { EventGuestsResponse } from "../pages/api/eventGuests";
+import { swrFetcher } from "../server/swrFetcher";
+import { buildInviteUrl, EventInviteForm } from "./EventInviteForm";
 
 const Guest = (props: {
   event: Partial<Event>;
@@ -143,111 +139,27 @@ const AttendenceSummary = (props: { guests: Partial<EventInvite>[] }) => {
   );
 };
 
-const EventPage: NextPage<{
-  error: string;
+export const EventGuests: FunctionComponent<{
   event: Partial<Event>;
-  guests: Partial<EventInvite>[];
-}> = (props) => {
-  const isOwner = true;
-  const { event, guests, error } = props;
+}> = ({ event }) => {
+  const { data, error } = useSWR<EventGuestsResponse>(
+    `/api/eventGuests?event=${encodeURIComponent(event.slug!)}`,
+    swrFetcher
+  );
 
-  return (
-    <AuthenticatedPage title="Event Guests">
-      {error ? (
-        <div>
-          <div className="alert alert-danger m-5" role="alert">
-            {error}
-          </div>
-        </div>
-      ) : (
-        <EventContainer
-          isOwner={isOwner}
-          eventSlug={event.slug!}
-          isLoggedIn={true}
-        >
-          <AttendenceSummary guests={guests} />
-          <table className="table table-striped">
-            <tbody>
-              {guests.map((guest) => (
-                <Guest key={guest.id} event={event} guest={guest} />
-              ))}
-            </tbody>
-          </table>
-          <div className="card">
-            <h5 className="card-header">Update the event</h5>
-            <div className="card-body">
-              <UpdateEventBlock event={event} />
-            </div>
-          </div>
-          <EventInviteForm event={event} />
-        </EventContainer>
-      )}
-    </AuthenticatedPage>
+  return data ? (
+    <>
+      <AttendenceSummary guests={data.guests} />
+      <table className="table table-striped">
+        <tbody>
+          {data.guests.map((guest) => (
+            <Guest key={guest.id} event={event} guest={guest} />
+          ))}
+        </tbody>
+      </table>
+      <EventInviteForm event={event} />
+    </>
+  ) : (
+    <>Loading...</>
   );
 };
-
-export async function getServerSideProps(context: {
-  query: {
-    code: string[];
-  };
-}) {
-  const prisma = getPrismaClient();
-
-  invariant(context.query.code?.length === 1, "Expected a single event code");
-  const [code] = context.query.code;
-
-  const event = await prisma.event.findFirst({
-    where: {
-      slug: code,
-    },
-  });
-  if (!event) {
-    return {
-      props: {
-        error: "Could not find an event at the given address.",
-      },
-    };
-  }
-
-  const guests = await prisma.eventInvite.findMany({
-    where: {
-      eventId: event.id,
-    },
-  });
-
-  return {
-    props: {
-      event: {
-        id: event.id,
-        slug: event.slug,
-        name: event.name,
-        datedName: event.datedName,
-        description: event.description,
-        calendarTitle: event.calendarTitle,
-        calendarDescription: event.calendarDescription,
-        metaDescription: event.metaDescription,
-        address: event.address,
-        startAtIso: event.startAtIso,
-        endAtIso: event.endAtIso,
-        opengraphImage: event.opengraphImage,
-        headerImage: event.headerImage,
-      },
-      guests: guests.map((guest) => ({
-        id: guest.id,
-        slug: guest.slug || null,
-        inviteMessage: guest.inviteMessage || null,
-        invitedName: guest.invitedName || null,
-        invitedEmail: guest.invitedEmail || null,
-        privateNote: guest.privateNote || null,
-        response: guest.response,
-        message: guest.message,
-        guestCount: guest.guestCount,
-        guestName: guest.guestName || null,
-        guestMax: guest.guestMax || null,
-        confidencePercent: guest.confidencePercent || null,
-      })),
-    },
-  };
-}
-
-export default EventPage;
