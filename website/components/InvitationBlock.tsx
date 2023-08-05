@@ -21,7 +21,7 @@ export const InvitationBlock = (props: {
           Firstly well done, and thank you! In order to receive one of these
           invites, you are one of the nicer inhabitants of our lovely planet.
           You&apos;ve also shown yourself to be trustworthy, creative and
-          tasteful. Atleast {vouchFrom.name} thinks so, and strongly enough that{" "}
+          tasteful. At least {vouchFrom.name} thinks so, and strongly enough that{" "}
           {vouchFrom.pronoun1} vouched for you. Here&apos;s what{" "}
           {vouchFrom.pronoun1} had to say:
         </p>
