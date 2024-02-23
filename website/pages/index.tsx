@@ -10,9 +10,8 @@ import { AuthenticatedPage } from "../components/AuthRequired";
 const Home: NextPage<{
   discordLink: string;
 }> = (props) => {
-  const { discordLink } = props;
   const { data: session, status: sessionStatus } = useSession() as {
-    data: FriendsSession;
+    data: FriendsSession | null;
     status: "authenticated" | "loading" | "unauthenticated";
   };
 

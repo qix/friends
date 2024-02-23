@@ -58,7 +58,7 @@ const SignupForm = (props: {
   const router = useRouter();
 
   const { data: session } = useSession() as {
-    data: FriendsSession;
+    data: FriendsSession | null;
     status: string;
   };
 

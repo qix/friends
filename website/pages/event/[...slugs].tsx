@@ -21,7 +21,7 @@ const EventPage: NextPage<{
   eventInvite: Partial<EventInvite>;
 }> = ({ event, eventInvite, error, page }) => {
   const { data: session } = useSession() as {
-    data: FriendsSession;
+    data: FriendsSession | null;
     status: "authenticated" | "loading" | "unauthenticated";
   };
 

@@ -28,7 +28,7 @@ const Invitation: NextPage<{
   } = props;
 
   const { data: session } = useSession() as {
-    data: FriendsSession;
+    data: FriendsSession | null;
     status: string;
   };
 
