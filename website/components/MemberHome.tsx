@@ -6,6 +6,7 @@ import manifesto from "../public/MANIFESTO.md";
 import ReactMarkdown from "react-markdown";
 import { CurrentMemberResponse } from "../pages/api/currentMember";
 import { swrFetcher } from "../server/swrFetcher";
+import Link from "next/link";
 function useCurrentMember() {
   const { data, error } = useSWR(`/api/currentMember`, swrFetcher);
 
@@ -47,34 +48,41 @@ export const MemberHome = (props: {}) => {
   pushRemaining();
 
   return (
-    <main className={styles.main}>
-      <div className="card">
-        <h5 className="card-header">Welcome Friend</h5>
-        {blocks}
-        <h5 className="card-header">WhatsApp Group</h5>
-        <div className="card-body">
-          <a
-            href={member.whatsappLink}
-            className="btn btn-primary btn-lg"
-            role="button"
-            rel="noreferrer"
-          >
-            Join the WhatsApp group
-          </a>
-        </div>
-        <h5 className="card-header">Account</h5>
-        <div className="card-body">
-          <p>
-            You are logged in as <strong>{member.name}</strong>.
-          </p>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => signOut()}
-          >
-            Sign out
-          </button>
-        </div>
+    <div className="card">
+      <h5 className="card-header">Welcome Friend</h5>
+      {blocks}
+      <h5 className="card-header">WhatsApp Group</h5>
+      <div className="card-body">
+        <p>
+          <strong>This link is intended for you alone. Do not share it.</strong>
+          <br />
+          &gt;{" "}
+          <Link href={member.whatsappLink} role="button" rel="noreferrer">
+            Click here to join the WhatsApp group
+          </Link>
+          <br />
+          Your cellphone number is registered as: {member.phone}
+        </p>
       </div>
-    </main>
+      <h5 className="card-header">Invitations</h5>
+      <div className="card-body">
+        <p>
+          You have <strong>one</strong> invite left.
+        </p>
+        <Link href="/invitations" className="btn btn-primary">
+          Click here to invite a friend
+        </Link>
+      </div>
+
+      <h5 className="card-header">Account</h5>
+      <div className="card-body">
+        <p>
+          You&apos;re signed in as <strong>{member.name}</strong>
+        </p>
+        <button className="btn btn-outline-secondary" onClick={() => signOut()}>
+          Sign out
+        </button>
+      </div>
+    </div>
   );
 };

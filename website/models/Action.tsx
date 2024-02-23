@@ -7,6 +7,7 @@ interface CreateInviteAction {
   payload: {
     name: string;
     email?: string;
+    phone?: string;
     vouchMessage: string;
 
     // Added on server side
@@ -24,7 +25,8 @@ interface AcceptInviteAction {
     inviteCode: string;
     name: string;
     email: string;
-    pronouns: typeof pronounOptions[number];
+    phone: string;
+    pronouns: (typeof pronounOptions)[number];
     whatDo: string;
 
     // Added on server side
@@ -99,7 +101,7 @@ interface UpdateEventAction {
   type: "updateEvent";
   payload: {
     id: string;
-    event: Partial<Pick<Event, typeof EventUpdateKeys[number]>>;
+    event: Partial<Pick<Event, (typeof EventUpdateKeys)[number]>>;
   };
 }
 

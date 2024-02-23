@@ -8,52 +8,22 @@ import { getPrismaClient } from "../server/db";
 import { Invitation } from ".prisma/client";
 import Link from "next/link";
 import { tryGetFriendsSession } from "../server/getFriendsSession";
+import { CreateInvite } from "../components/CreateInvite";
+import { InvitationsList } from "../components/InvitationsList";
 
 const InviteList: NextPage<{
   invitations: Invitation[];
   error: string;
 }> = ({ invitations, error }) => {
-  const router = useRouter();
-
   return (
-    <AuthenticatedPage title="Invite listing">
-      {error
-        ? error
-        : invitations.map((invite) => {
-            const inviteUrl = "invitation/" + invite.inviteCode;
+    <AuthenticatedPage title="Invitations">
+      <CreateInvite />
+      <hr />
+      <h2>Your previous invitations:</h2>
+      {error ? error : <InvitationsList invitations={invitations} />}
 
-            return (
-              <div
-                key={invite.id}
-                className="card"
-                style={{
-                  margin: "1rem",
-                }}
-              >
-                <div className="card-header">
-                  {invite.invitedName} &lt;{invite.invitedEmail}&gt;
-                </div>
-                <div className="card-body">
-                  <div>{invite.vouchMessage}</div>
-                </div>
-                <div className="card-footer">
-                  URL:{" "}
-                  {invite.isOpen ? (
-                    <Link
-                      href={{
-                        pathname: inviteUrl,
-                      }}
-                      legacyBehavior>
-                      {inviteUrl}
-                    </Link>
-                  ) : (
-                    <em>Closed</em>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
+      {/*
+      Form is just included for now
       <div
         className="card"
         style={{
@@ -62,11 +32,16 @@ const InviteList: NextPage<{
       >
         <div className="card-header">New Invitation</div>
         <div className="card-body">
-          <Link href={{ pathname: "/create-invite" }} passHref={true} legacyBehavior>
+          <Link
+            href={{ pathname: "/create-invite" }}
+            passHref={true}
+            legacyBehavior
+          >
             <button className="btn btn-outline-secondary">Create Invite</button>
           </Link>
         </div>
       </div>
+      */}
     </AuthenticatedPage>
   );
 };

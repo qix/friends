@@ -23,8 +23,7 @@ const prisma: PrismaClient = getPrismaClient();
 export async function performAction(
   user: User | null,
   action: Action
-): Promise<ActionResponseByType[typeof action["type"]]> {
-  console.log("PERFORM", action);
+): Promise<ActionResponseByType[(typeof action)["type"]]> {
   const email = user?.email;
   /***
    * performAction pre-checks
@@ -79,6 +78,7 @@ export async function performAction(
           vouchMessage: p.vouchMessage,
           inviteCode: p.inviteCode!,
           invitedEmail: p.email,
+          invitedPhone: p.phone,
           invitedName: p.name,
           senderUserId: user.id,
         },
@@ -113,6 +113,7 @@ export async function performAction(
           memberActive: true,
           memberName: p.name,
           memberEmail: p.email,
+          memberPhone: p.phone,
           memberPronoun1: splitPronouns[0],
           memberPronoun2: splitPronouns[1],
           memberInvitationId: p.inviteId,

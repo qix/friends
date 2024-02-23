@@ -47,6 +47,7 @@ model EventInvite {
   inviteMessage     String?             @db.Text
   invitedName       String?
   invitedEmail      String?
+  invitedPhone      String?
   privateNote       String?             @db.Text
   response          EventInviteResponse @default(NONE)
   message           String?             @db.Text
@@ -64,6 +65,7 @@ model Invitation {
   inviteCode   String  @unique
   invitedName  String
   invitedEmail String?
+  invitedPhone String?
   senderUserId String
   vouchMessage String  @db.Text
 }
@@ -90,6 +92,8 @@ model User {
   memberName          String?
   memberEmail         String?
   memberEmailVerified Boolean @default(false)
+  memberPhone         String?
+  memberPhoneVerified Boolean @default(false)
   memberInvitationId  String?
   memberPronoun1      String?
   memberPronoun2      String?

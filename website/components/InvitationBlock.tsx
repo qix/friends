@@ -7,10 +7,17 @@ export const InvitationBlock = (props: {
   vouchMessage: string;
   invitedName: string;
   invitedEmail: string;
+  invitedPhone: string;
   inviteCode: string;
 }) => {
-  const { vouchFrom, vouchMessage, invitedName, invitedEmail, inviteCode } =
-    props;
+  const {
+    vouchFrom,
+    vouchMessage,
+    invitedName,
+    invitedEmail,
+    invitedPhone,
+    inviteCode,
+  } = props;
   return (
     <div className={styles.main}>
       <div className={styles.invite}>
@@ -49,6 +56,7 @@ export const InvitationBlock = (props: {
           vouchMessage={vouchMessage}
           invitedName={invitedName}
           invitedEmail={invitedEmail}
+          invitedPhone={invitedPhone}
           inviteCode={inviteCode}
         />
       </div>

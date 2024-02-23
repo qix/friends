@@ -14,10 +14,18 @@ const Invitation: NextPage<{
   message: string;
   invitedName: string;
   invitedEmail: string;
+  invitedPhone: string;
   inviteCode: string;
 }> = (props) => {
-  const { error, vouchFrom, message, invitedName, invitedEmail, inviteCode } =
-    props;
+  const {
+    error,
+    vouchFrom,
+    message,
+    invitedName,
+    invitedEmail,
+    invitedPhone,
+    inviteCode,
+  } = props;
 
   const { data: session } = useSession() as {
     data: FriendsSession;
@@ -51,9 +59,7 @@ const Invitation: NextPage<{
           {session ? (
             <div className="alert alert-success m-5" role="alert">
               You are logged in as an active member.{" "}
-              <Link href="/">
-                Go to membership page
-              </Link>
+              <Link href="/">Go to membership page</Link>
             </div>
           ) : (
             <div className="alert alert-info m-5" role="alert">
@@ -70,6 +76,7 @@ const Invitation: NextPage<{
           vouchMessage={message}
           invitedName={invitedName}
           invitedEmail={invitedEmail}
+          invitedPhone={invitedPhone}
           inviteCode={inviteCode}
         />
       )}
@@ -125,6 +132,7 @@ export async function getServerSideProps(context: {
       },
       invitedName: invitation.invitedName,
       invitedEmail: invitation.invitedEmail,
+      invitedPhone: invitation.invitedPhone,
       inviteCode: invitation.inviteCode,
       message: invitation.vouchMessage,
     },

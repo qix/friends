@@ -9,11 +9,16 @@ import { useState } from "react";
 import { FriendsSession } from "../pages/api/auth/[...nextauth]";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { phoneRegExp } from "../jslib/phone";
 
 const schema = object({
   email: string()
     .email()
     .required("We require your email address for login and updates"),
+  phone: string()
+    .matches(phoneRegExp, "Phone number is not valid")
+    .required("Your phone number is required for the WhatsApp group"),
+
   name: string().required("Name is required"),
   /*
   @ Pronouns commented out until I can make a better selection box.
@@ -27,6 +32,7 @@ const schema = object({
 type SignupFields = InferType<typeof schema>;
 const initialValues: SignupFields = {
   email: "",
+  phone: "",
   name: "",
   // pronouns: "",
   whatDo: "",
@@ -37,10 +43,17 @@ const SignupForm = (props: {
   vouchMessage: string;
   invitedName: string;
   invitedEmail: string;
+  invitedPhone: string;
   inviteCode: string;
 }) => {
-  const { vouchFrom, vouchMessage, invitedEmail, invitedName, inviteCode } =
-    props;
+  const {
+    vouchFrom,
+    vouchMessage,
+    invitedEmail,
+    invitedPhone,
+    invitedName,
+    inviteCode,
+  } = props;
   const [status, setStatus] = useState<JSX.Element>();
   const router = useRouter();
 
@@ -75,9 +88,7 @@ const SignupForm = (props: {
         <div className="card-body">
           <div className="alert alert-danger" role="alert">
             You are already logged in as an active member.{" "}
-            <Link href="/">
-              Go to membership page
-            </Link>
+            <Link href="/">Go to membership page</Link>
           </div>
         </div>
       </div>
@@ -116,6 +127,21 @@ const SignupForm = (props: {
         <ErrorMessage
           className="form-text text-danger"
           name="name"
+          component="div"
+        />
+      </div>
+
+      <div className="mb-3">
+        <label htmlFor="phone" className="form-label">
+          WhatsApp Phone Number
+        </label>
+        <Field className="form-control" id="phone" name="phone" />
+        <div className="form-text">
+          Your phone number for the WhatsApp group, use format: +14154815341
+        </div>
+        <ErrorMessage
+          className="form-text text-danger"
+          name="phone"
           component="div"
         />
       </div>
@@ -178,7 +204,8 @@ const SignupForm = (props: {
     <Formik
       initialValues={{
         ...initialValues,
-        email: invitedEmail,
+        email: invitedEmail || session.user.email || "",
+        phone: invitedPhone,
         name: invitedName,
       }}
       validationSchema={schema}
@@ -266,7 +293,7 @@ const SignupForm = (props: {
                   height="16"
                   className="icon"
                 />
-                Everything below will be visible to all other Friends.nyc
+                Everything below will be visible to all other friends.nyc
                 members
               </div>
               {publicFields}

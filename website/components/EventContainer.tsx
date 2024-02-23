@@ -20,6 +20,7 @@ export const EventContainer: FunctionComponent<{
       ...Object.entries(tabMap).map(([key, caption]) => {
         return (
           <Link
+            key={key}
             href={`/event/${eventSlug}/${key}`}
             className={`nav-link ${page === key ? "active" : ""}`}
           >
