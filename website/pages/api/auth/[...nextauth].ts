@@ -1,4 +1,4 @@
-import NextAuth, { Session } from "next-auth";
+import NextAuth, { AuthOptions, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -13,7 +13,7 @@ export type FriendsSession = Session & {
 };
 const adminUsers = (process.env.ADMIN_USERS || "").split(",").filter((v) => v);
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -30,4 +30,6 @@ export default NextAuth({
       } as FriendsSession;
     },
   },
-});
+};
+
+export default NextAuth(authOptions);

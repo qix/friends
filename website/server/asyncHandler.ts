@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
-import { FriendsSession } from "../pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
+import { authOptions, FriendsSession } from "../pages/api/auth/[...nextauth]";
+import { tryGetFriendsSession } from "./getFriendsSession";
 import { invariant } from "./invariant";
 
 function thrownErrorMessage(err: unknown) {
@@ -21,7 +22,9 @@ export function asyncHandler<
   ResponseData extends {
     error?: string;
   }
->(callback: (req: NextApiRequest) => Promise<ResponseData>) {
+>(
+  callback: (req: NextApiRequest, res: NextApiResponse) => Promise<ResponseData>
+) {
   return function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData | { error: string }>
@@ -33,7 +36,7 @@ export function asyncHandler<
         throw new Error("Unhandled request method");
       }
 
-      return callback(req)
+      return callback(req, res)
         .then(
           (responseData) => {
             invariant(
@@ -76,12 +79,9 @@ export function optionalSessionAsyncHandler<
     requestBody: RequestData
   ) => Promise<ResponseData>
 ) {
-  return asyncHandler((req) => {
-    return getSession({ req }).then((session) => {
-      return callback(
-        session as FriendsSession | null,
-        req.body as RequestData
-      );
+  return asyncHandler((req, res) => {
+    return tryGetFriendsSession(req, res).then((session) => {
+      return callback(session, req.body as RequestData);
     });
   });
 }

@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
 
 import { AuthenticatedPage } from "../components/AuthRequired";
@@ -63,8 +63,8 @@ const InviteList: NextPage<{
   );
 };
 
-export async function getServerSideProps({ req }: { req: IncomingMessage }) {
-  const session = await tryGetFriendsSession(req);
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await tryGetFriendsSession(context.req, context.res);
   if (!session) {
     return {
       props: {
@@ -85,4 +85,5 @@ export async function getServerSideProps({ req }: { req: IncomingMessage }) {
     },
   };
 }
+
 export default InviteList;
