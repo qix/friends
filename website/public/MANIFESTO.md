@@ -1,6 +1,6 @@
 # Friends.nyc
 
-I am creating a new social members club. It will initially start small, but I'm going to be working hard on keeping it awesome while still allowing it to grow.
+I am creating a new community based in NYC. We'll be a WhatsApp group, but the real focus is offline interactions. It'll start small, but I'm going to be working hard on keeping it awesome while still allowing it to grow.
 
 ## Membership
 
@@ -20,9 +20,9 @@ A couple broad characteristics are required to be a member:
 
 ## New members
 
-Every member in the club needs to be vouched for by at least one other member.
+Every member in the group needs to be vouched for by at least one other member.
 
-Vouching for a new member declares confidence in your trust for the new person. If a club member betrays the trust of the group both them, and any members who vouched for them, may be removed.
+Vouching for a new member declares confidence in your trust for the new person. If a member betrays the trust of the group both them, and any members who vouched for them, may be removed.
 
 This is a requirement, but not sufficient, for membership. In order to ensure the groups quality, and to slow down the growth of the group, there will be other requirements to be added.
 
