@@ -10,6 +10,7 @@ import { FriendsSession } from "../pages/api/auth/[...nextauth]";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { phoneRegExp } from "../jslib/phone";
+import { PhoneInputField } from "./PhoneInputField";
 
 const schema = object({
   email: string()
@@ -135,7 +136,7 @@ const SignupForm = (props: {
         <label htmlFor="phone" className="form-label">
           WhatsApp Phone Number
         </label>
-        <Field className="form-control" id="phone" name="phone" />
+        <PhoneInputField name="phone" id="phone" className="form-control" />
         <div className="form-text">
           Your phone number for the WhatsApp group, use format: +14154815341
         </div>

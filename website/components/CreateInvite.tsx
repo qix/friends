@@ -50,9 +50,7 @@ export const CreateInvite = (props: { skipHeading?: boolean }) => {
       </div>
       <div className="mb-3">
         <label htmlFor="phone">Phone number (for WhatsApp)</label>
-
         <PhoneInputField name="phone" id="phone" className="form-control" />
-
         <div className="form-text">
           WhatsApp phone number, use format: +14154815341
         </div>
