@@ -25,10 +25,11 @@ export const MemberHome = (props: {}) => {
 
   const blocks: JSX.Element[] = [];
   const content: string[] = [];
+  let idx = 0;
   const pushRemaining = () => {
     if (content.length) {
       blocks.push(
-        <div className="card-body">
+        <div key={idx++} className="card-body">
           <ReactMarkdown>{content.join("\n")}</ReactMarkdown>
         </div>
       );
@@ -40,7 +41,11 @@ export const MemberHome = (props: {}) => {
       continue;
     } else if (line.startsWith("## ")) {
       pushRemaining();
-      blocks.push(<h5 className="card-header">{line.replace(/^## /, "")}</h5>);
+      blocks.push(
+        <h5 key={idx++} className="card-header">
+          {line.replace(/^## /, "")}
+        </h5>
+      );
     } else if (content.length || line.trim()) {
       content.push(line);
     }

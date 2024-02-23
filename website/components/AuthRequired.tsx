@@ -67,18 +67,16 @@ export const AuthenticatedPage: FunctionComponent<{ title: string }> = ({
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 {menuItems.map((item) => (
-                  <>
-                    <li className="nav-item">
-                      <a
-                        className={
-                          "nav-link" + (pathname === item.uri ? " active" : "")
-                        }
-                        href={item.uri}
-                      >
-                        {item.name}
-                      </a>
-                    </li>
-                  </>
+                  <li className="nav-item" key={item.uri}>
+                    <a
+                      className={
+                        "nav-link" + (pathname === item.uri ? " active" : "")
+                      }
+                      href={item.uri}
+                    >
+                      {item.name}
+                    </a>
+                  </li>
                 ))}
               </ul>
               <div className="navbar-nav">
