@@ -8,7 +8,7 @@ import {
   asyncHandler,
 } from "../../server/asyncHandler";
 import { getPrismaClient } from "../../server/db";
-import { invariant } from "../../server/invariant";
+import { invariant } from "../../jslib/invariant";
 import { NextApiRequest } from "next";
 
 type Data = {

@@ -1,4 +1,4 @@
-import { invariant } from "../server/invariant";
+import { invariant } from "./invariant";
 
 export function stripMargin(str: string) {
   const lines = str.trimEnd().split("\n");

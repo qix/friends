@@ -1,6 +1,6 @@
 import { Action } from "../../models/Action";
 import { sessionAsyncHandler, HttpError } from "../../server/asyncHandler";
-import { invariant } from "../../server/invariant";
+import { invariant } from "../../jslib/invariant";
 
 export interface CurrentMemberResponse {
   discordLink: string;

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { invariant } from "./invariant";
+import { invariant } from "../jslib/invariant";
 
 declare global {
   // allow global `var` declarations

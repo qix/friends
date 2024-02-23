@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions, FriendsSession } from "../pages/api/auth/[...nextauth]";
 import { tryGetFriendsSession } from "./getFriendsSession";
-import { invariant } from "./invariant";
+import { invariant } from "../jslib/invariant";
 
 function thrownErrorMessage(err: unknown) {
   return err instanceof Error ? err.toString() : "Unexpected thrown error type";

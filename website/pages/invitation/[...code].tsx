@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Person } from "../../models/Person";
 import { InvitationBlock } from "../../components/InvitationBlock";
 import { getPrismaClient } from "../../server/db";
-import { invariant } from "../../server/invariant";
+import { invariant } from "../../jslib/invariant";
 import { signIn, useSession } from "next-auth/react";
 import { FriendsSession } from "../api/auth/[...nextauth]";
 import Link from "next/link";

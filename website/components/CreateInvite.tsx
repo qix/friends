@@ -6,6 +6,7 @@ import { ErrorAlert, SuccessAlert } from "../components/alerts";
 import { phoneRegExp } from "../jslib/phone";
 import PhoneInput from "react-phone-number-input";
 import { PhoneInputField } from "./PhoneInputField";
+import { useSession } from "next-auth/react";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -25,6 +26,7 @@ const initialValues: CreateInviteFields = {
 
 export const CreateInvite = (props: { skipHeading?: boolean }) => {
   const [message, setMessage] = useState<JSX.Element>();
+  const { update: updateSession } = useSession();
 
   const formFields = (
     <fieldset>
@@ -108,6 +110,9 @@ export const CreateInvite = (props: { skipHeading?: boolean }) => {
                     </SuccessAlert>
                   );
                   resetForm();
+
+                  // Number of invites remaining is stored in the session
+                  updateSession();
                 }
               },
               (err) => {

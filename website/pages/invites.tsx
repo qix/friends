@@ -10,36 +10,53 @@ import Link from "next/link";
 import { tryGetFriendsSession } from "../server/getFriendsSession";
 import { CreateInvite } from "../components/CreateInvite";
 import { InvitationsList } from "../components/InvitationsList";
+import { useSession } from "next-auth/react";
+import { FriendsSession } from "./api/auth/[...nextauth]";
+import { invariant } from "../jslib/invariant";
+import { useFriendsSession } from "../frontend/useFriendsSession";
 
 const InviteList: NextPage<{
   invitations: Invitation[];
   error: string;
 }> = ({ invitations, error }) => {
+  const session = useFriendsSession();
   return (
     <AuthenticatedPage title="Invitations">
-      <h3>Create a new invitation</h3>
-      <div
-        style={{
-          margin: "1rem",
-        }}
-      >
-        <CreateInvite skipHeading={true} />
-      </div>
-
-      {invitations?.length ? (
+      {session ? (
         <>
-          <h3>Your previous invitations</h3>
-          <div
-            style={{
-              margin: "0 1rem",
-            }}
-          >
-            {error ? error : <InvitationsList invitations={invitations} />}
-          </div>
-        </>
-      ) : null}
+          {session.user.memberInvitesRemaining > 0 ? (
+            <>
+              <h3>
+                Create a new invitation ({session.user.memberInvitesRemaining}{" "}
+                remaining)
+              </h3>
+              <div
+                style={{
+                  margin: "1rem",
+                }}
+              >
+                <CreateInvite skipHeading={true} />
+              </div>
+            </>
+          ) : (
+            <>
+              <h3>Create an Invitation</h3>
+              <div className="alert alert-info m-3" role="alert">
+                You don&apos;t have any remaining invitations to send out.
+              </div>
+            </>
+          )}
 
-      {/*
+          {invitations?.length ? (
+            <>
+              <h3>Your previous invitations</h3>
+              <div className="m-3">
+                {error ? error : <InvitationsList invitations={invitations} />}
+              </div>
+            </>
+          ) : null}
+
+          {/*
       Form is just included for now
       <div
         className="card"
@@ -59,6 +76,10 @@ const InviteList: NextPage<{
         </div>
       </div>
       */}
+        </>
+      ) : (
+        <></>
+      )}
     </AuthenticatedPage>
   );
 };

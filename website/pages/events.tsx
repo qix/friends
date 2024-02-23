@@ -3,7 +3,7 @@ import Head from "next/head";
 import { Person } from "../models/Person";
 import { InvitationBlock } from "../components/InvitationBlock";
 import { getPrismaClient } from "../server/db";
-import { invariant } from "../server/invariant";
+import { invariant } from "../jslib/invariant";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Event, EventInvite } from "@prisma/client";
 import { AuthenticatedPage } from "../components/AuthRequired";

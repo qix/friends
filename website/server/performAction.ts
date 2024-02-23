@@ -8,7 +8,7 @@ import {
 import { randomBytes } from "crypto";
 import { HttpError } from "./asyncHandler";
 import { getPrismaClient } from "./db";
-import { invariant } from "./invariant";
+import { invariant } from "../jslib/invariant";
 import { assertNever } from "../jslib/assertNever";
 import { removeUndefined } from "../jslib/removeUndefined";
 
@@ -70,7 +70,19 @@ export async function performAction(
 
     if (action.type === "createInvite") {
       invariant(user, "createInvite requires a session");
+      invariant(
+        user && user.memberInvitesRemaining > 0,
+        "User does not have invitations remaining"
+      );
       const p = action.payload;
+      await tx.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          memberInvitesRemaining: user.memberInvitesRemaining - 1,
+        },
+      });
       await tx.invitation.create({
         data: {
           vouchMessage: p.vouchMessage,

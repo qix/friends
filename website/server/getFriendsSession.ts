@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
 import { authOptions, FriendsSession } from "../pages/api/auth/[...nextauth]";
-import { invariant } from "./invariant";
+import { invariant } from "../jslib/invariant";
 
 export async function requireFriendsSession(
   req: IncomingMessage & {

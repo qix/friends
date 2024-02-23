@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Event, EventInvite, EventInviteResponse } from "@prisma/client";
 import ReactMarkdown from "react-markdown";
 import { FunctionComponent, useState } from "react";
-import { invariant } from "../server/invariant";
+import { invariant } from "../jslib/invariant";
 import { stripMargin } from "../jslib/stripMargin";
 
 export const EventBlock: FunctionComponent<{
