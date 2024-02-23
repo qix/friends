@@ -18,15 +18,14 @@ const InviteList: NextPage<{
   return (
     <AuthenticatedPage title="Invitations">
       <h3>Create a new invitation</h3>
-      <p>
-        <div
-          style={{
-            margin: "1rem",
-          }}
-        >
-          <CreateInvite skipHeading={true} />
-        </div>
-      </p>
+      <div
+        style={{
+          margin: "1rem",
+        }}
+      >
+        <CreateInvite skipHeading={true} />
+      </div>
+
       {invitations?.length && (
         <>
           <h3>Your previous invitations</h3>
