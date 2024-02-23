@@ -4,6 +4,8 @@ import { remotePerformAction } from "../frontend/performAction";
 import React, { useState } from "react";
 import { ErrorAlert, SuccessAlert } from "../components/alerts";
 import { phoneRegExp } from "../jslib/phone";
+import PhoneInput from "react-phone-number-input";
+import { PhoneInputField } from "./PhoneInputField";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -48,7 +50,9 @@ export const CreateInvite = (props: { skipHeading?: boolean }) => {
       </div>
       <div className="mb-3">
         <label htmlFor="phone">Phone number (for WhatsApp)</label>
-        <Field id="phone" type="phone" name="phone" className="form-control" />
+
+        <PhoneInputField name="phone" id="phone" className="form-control" />
+
         <div className="form-text">
           WhatsApp phone number, use format: +14154815341
         </div>

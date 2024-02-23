@@ -49,7 +49,3 @@ I've got a lot of hopes for this group, but among the immediate list:
 I am hoping to this will spawn a diverse group of friends, but with diversity comes inequality. I would love to see a pay-it-forward approach to group activities.
 
 If you can't afford to host a dinner, but want to, then feel free to set a attendance price. If you're comfortable covering it, then make it free. If you got a free dinner, and can afford it, pay for another one in the future.
-
-## Membership fee
-
-**Free**.

@@ -28,13 +28,10 @@ export async function performAction(
   /***
    * performAction pre-checks
    */
-  if (action.type === "createInvite") {
+  if (action.type === "createEvent") {
     if (!email || !adminUsers.includes(email)) {
       throw new HttpError(400, "Admin-only endpoint");
     }
-
-    const inviteCode = randomBytes(8).toString("hex").toUpperCase();
-    action.payload.inviteCode = inviteCode;
   } else if (action.type === "acceptInvite") {
     invariant(action.payload.inviteCode, "Expected inviteCode");
     const invitation = await prisma.invitation.findUnique({
@@ -44,11 +41,12 @@ export async function performAction(
     });
     invariant(invitation, "Expected to find invitation");
     action.payload.inviteId = invitation.id;
+  } else if (action.type === "createInvite") {
+    const inviteCode = randomBytes(8).toString("hex").toUpperCase();
+    action.payload.inviteCode = inviteCode;
   } else if (action.type === "heartbeat") {
     // Nothing required
   } else if (action.type === "rsvp") {
-    // Nothing required
-  } else if (action.type === "createEvent") {
     // Nothing required
   } else if (action.type === "updateEvent") {
     // Nothing required
