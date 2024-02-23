@@ -26,7 +26,7 @@ const InviteList: NextPage<{
         <CreateInvite skipHeading={true} />
       </div>
 
-      {invitations?.length && (
+      {invitations?.length ? (
         <>
           <h3>Your previous invitations</h3>
           <div
@@ -37,7 +37,7 @@ const InviteList: NextPage<{
             {error ? error : <InvitationsList invitations={invitations} />}
           </div>
         </>
-      )}
+      ) : null}
 
       {/*
       Form is just included for now
