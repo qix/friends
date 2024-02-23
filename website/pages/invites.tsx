@@ -17,10 +17,28 @@ const InviteList: NextPage<{
 }> = ({ invitations, error }) => {
   return (
     <AuthenticatedPage title="Invitations">
-      <CreateInvite />
-      <hr />
-      <h2>Your previous invitations:</h2>
-      {error ? error : <InvitationsList invitations={invitations} />}
+      <h3>Create a new invitation</h3>
+      <p>
+        <div
+          style={{
+            margin: "1rem",
+          }}
+        >
+          <CreateInvite skipHeading={true} />
+        </div>
+      </p>
+      {invitations?.length && (
+        <>
+          <h3>Your previous invitations</h3>
+          <div
+            style={{
+              margin: "0 1rem",
+            }}
+          >
+            {error ? error : <InvitationsList invitations={invitations} />}
+          </div>
+        </>
+      )}
 
       {/*
       Form is just included for now

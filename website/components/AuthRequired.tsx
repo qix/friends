@@ -81,6 +81,11 @@ export const AuthenticatedPage: FunctionComponent<{ title: string }> = ({
                   </>
                 ))}
               </ul>
+              <div className="navbar-nav">
+                <a className={"nav-link"} href="#" onClick={() => signOut()}>
+                  Sign out
+                </a>
+              </div>
             </div>
           </div>
         </nav>

@@ -21,7 +21,7 @@ const initialValues: CreateInviteFields = {
   vouchMessage: "",
 };
 
-export const CreateInvite = (props: {}) => {
+export const CreateInvite = (props: { skipHeading?: boolean }) => {
   const [message, setMessage] = useState<JSX.Element>();
 
   const formFields = (
@@ -120,7 +120,9 @@ export const CreateInvite = (props: {}) => {
         {({ isSubmitting }) => (
           <Form>
             <div className="card">
-              <h5 className="card-header">Create a new invite</h5>
+              {props.skipHeading ? null : (
+                <h5 className="card-header">Create a new invite</h5>
+              )}
               <div className="card-body">
                 {formFields}
                 <button

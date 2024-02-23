@@ -12,7 +12,7 @@ export const InvitationsList = (props: { invitations: Invitation[] }) => {
             key={invite.id}
             className="card"
             style={{
-              margin: "1rem",
+              margin: "1rem 0",
             }}
           >
             <div className="card-header">

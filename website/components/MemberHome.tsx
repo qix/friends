@@ -69,7 +69,7 @@ export const MemberHome = (props: {}) => {
         <p>
           You have <strong>one</strong> invite left.
         </p>
-        <Link href="/invitations" className="btn btn-primary">
+        <Link href="/invites" className="btn btn-primary">
           Click here to invite a friend
         </Link>
       </div>
