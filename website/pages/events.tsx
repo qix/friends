@@ -35,16 +35,16 @@ const EventsPage: NextPage<{
 }> = ({ events }) => {
   return (
     <AuthenticatedPage title="Events">
-      <li className="nav-item">
-        <Link href={`/events`} className="active nav-link">
-          All events
-        </Link>
-      </li>
-      {events.map((event) => (
-        <Link key={event.id} href={`/event/${event.slug}`}>
-          {event.name}
-        </Link>
-      ))}
+      <AdminContainer tabs={[{
+        uri: '/events',
+        caption: 'All events'
+      }]} uri="/events">
+        {events.map((event) => (
+          <Link key={event.id} href={`/event/${event.slug}`}>
+            {event.name}
+          </Link>
+        ))}
+      </AdminContainer>
     </AuthenticatedPage>
   );
 };

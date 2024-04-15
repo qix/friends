@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 
 export interface AdminTab {
@@ -8,20 +9,21 @@ export interface AdminTab {
 export const AdminContainer: FunctionComponent<{
   tabs: Array<AdminTab>
   uri: string
-}> = ({ tabs, uri, children }) => {
+}> = ({ tabs, children }) => {
+  const router = useRouter()
 
   return (
     <>
       <ul className="nav nav-tabs">{(
-        tabs.map(({ uri: pageUri, caption }) => {
+        tabs.map(({ uri, caption }) => {
           return (
-            <li className="nav-item" key={pageUri}>
+            <li className="nav-item" key={uri}>
               <Link
-                key={pageUri}
-                href={pageUri}
+                key={uri}
+                href={uri}
 
               >
-                <a className={`nav-link ${uri === pageUri ? "active" : ""}`}>{caption}</a>
+                <a className={`nav-link ${router.asPath === uri ? "active" : ""}`}>{caption}</a>
               </Link>
             </li>
           );

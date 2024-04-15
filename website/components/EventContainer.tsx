@@ -16,19 +16,19 @@ export const EventContainer: FunctionComponent<{
       update: "Update event",
     };
 
-    tabs.push(
-      ...Object.entries(tabMap).map(([key, caption]) => {
-        return (
-          <Link
-            key={key}
-            href={`/event/${eventSlug}/${key}`}
-            className={`nav-link ${page === key ? "active" : ""}`}
-          >
-            {caption}
-          </Link>
-        );
-      })
-    );
+  if (isLoggedIn) {
+    const tabs: Array<{ uri: string, caption: string }> = [];
+
+    if (eventSlug && isOwner) {
+      tabs.push(
+        { uri: `/event/${eventSlug}`, caption: "Event" },
+        { uri: `/event/${eventSlug}/guests`, caption: "Show event guests" },
+        { uri: `/event/${eventSlug}/update`, caption: "Update event" },
+      );
+      tabs.push(
+        { uri: '/events', caption: 'All events' });
+    }
+
   }
 
   if (isLoggedIn) {
