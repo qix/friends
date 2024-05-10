@@ -9,26 +9,17 @@ export const EventContainer: FunctionComponent<{
 }> = ({ isLoggedIn, isOwner, eventSlug, children, page }) => {
   const tabs: JSX.Element[] = [];
 
-  if (eventSlug && isOwner) {
-    const tabMap = {
-      event: "Event",
-      guests: "Show event guests",
-      update: "Update event",
-    };
-
   if (isLoggedIn) {
-    const tabs: Array<{ uri: string, caption: string }> = [];
+    const tabs: Array<{ uri: string; caption: string }> = [];
 
     if (eventSlug && isOwner) {
       tabs.push(
         { uri: `/event/${eventSlug}`, caption: "Event" },
         { uri: `/event/${eventSlug}/guests`, caption: "Show event guests" },
-        { uri: `/event/${eventSlug}/update`, caption: "Update event" },
+        { uri: `/event/${eventSlug}/update`, caption: "Update event" }
       );
-      tabs.push(
-        { uri: '/events', caption: 'All events' });
+      tabs.push({ uri: "/events", caption: "All events" });
     }
-
   }
 
   if (isLoggedIn) {

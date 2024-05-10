@@ -14,6 +14,7 @@ import { ErrorAlert, SuccessAlert } from "../components/alerts";
 import { assertNever } from "../jslib/assertNever";
 import { EventContainer } from "../components/EventContainer";
 import Link from "next/link";
+import { AdminContainer } from "../components/AdminContainer";
 
 const schema = object({
   name: string().required("Name is required"),
@@ -35,10 +36,15 @@ const EventsPage: NextPage<{
 }> = ({ events }) => {
   return (
     <AuthenticatedPage title="Events">
-      <AdminContainer tabs={[{
-        uri: '/events',
-        caption: 'All events'
-      }]} uri="/events">
+      <AdminContainer
+        tabs={[
+          {
+            uri: "/events",
+            caption: "All events",
+          },
+        ]}
+        uri="/events"
+      >
         {events.map((event) => (
           <Link key={event.id} href={`/event/${event.slug}`}>
             {event.name}
